@@ -8,38 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nhn.android.maps.NMapContext;
-import com.nhn.android.maps.NMapController;
-import com.nhn.android.maps.NMapOverlayItem;
-import com.nhn.android.maps.NMapView;
-import com.nhn.android.maps.maplib.NGeoPoint;
+import com.example.dobitnarae.NaverMapLibrary.NaverMapFragement;
 
 @SuppressLint("ValidFragment")
 public class StoreInfoFragment extends Fragment {
-    Store store;
+    private Store store;
 
-    private NMapController mMapController;
-    private NMapView mMapView;// 지도 화면 View
-    private NMapContext mMapContext;
-    private final String CLIENT_ID = "kq6ZsHG_bYYKmox3mPqw";// 애플리케이션 클라이언트 아이디 값
-
-    private NMapOverlayItem mOverlayItem;
-
-
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     public StoreInfoFragment(Store store) {
         this.store = store;
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
     public static StoreInfoFragment newInstance(int sectionNumber, Store store) {
         StoreInfoFragment fragment = new StoreInfoFragment(store);
         Bundle args = new Bundle();
@@ -66,52 +46,11 @@ public class StoreInfoFragment extends Fragment {
         TextView address = (TextView)rootView.findViewById(R.id.content_address);
         address.setText(store.getAddress());
 
+        this.getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.naver_map_layout, NaverMapFragement.newInstance(0, store))
+                .commit();
+
         return rootView;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mMapContext =  new NMapContext(super.getActivity());
-        mMapContext.onCreate();
-    }
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mMapView = (NMapView)getView().findViewById(R.id.mapView);
-        mMapView.setClientId(CLIENT_ID);// 클라이언트 아이디 설정
-        mMapContext.setupMapView(mMapView);
-
-        mMapController = mMapView.getMapController();
-        mMapController.setMapCenter(new NGeoPoint(store.getLongitude(), store.getLatitude()), 12);
-    }
-    @Override
-    public void onStart(){
-        super.onStart();
-        mMapContext.onStart();
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapContext.onResume();
-    }
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapContext.onPause();
-    }
-    @Override
-    public void onStop() {
-        mMapContext.onStop();
-        super.onStop();
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-    @Override
-    public void onDestroy() {
-        mMapContext.onDestroy();
-        super.onDestroy();
     }
 }
