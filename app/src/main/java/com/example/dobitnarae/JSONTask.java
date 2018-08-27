@@ -209,7 +209,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             JT.setUser_id(user_id);
             String str = JT.execute("http://192.168.219.104:3443/account").get();
             JSONArray ja = new JSONArray(str);
-            // txtView.setText(str);
+
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 String ID = jo.getString("ID");

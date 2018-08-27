@@ -40,10 +40,12 @@ public class LoginActivity extends AppCompatActivity {
                     if(DBPassword.equals(Password)) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("ID", IDTxt.getText().toString());
+                        Toast.makeText(getApplicationContext(),IDTxt.getText().toString()+"님 두빛나래에 오신걸 환영합니다."+Password,Toast.LENGTH_LONG).show();
                         startActivityForResult(intent, 1000);
+
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),"비밀번호를 다시 입력하세요"+Password,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"비밀번호를 다시 입력하세요",Toast.LENGTH_LONG).show();
                     }
                 }else{
                    Toast.makeText(getApplicationContext(),"로그인에 실패하였습니다.",Toast.LENGTH_LONG).show();
