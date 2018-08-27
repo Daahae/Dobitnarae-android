@@ -1,9 +1,13 @@
 package com.example.dobitnarae;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +27,19 @@ import java.util.ArrayList;
 public class DBstoreActivity extends AppCompatActivity {// db실험용
 
     TextView txtView;
+    ImageView imageView;
+    ImageView imageView2;
+    Button button;
     Store store;
     Clothes inCloth;
+
     ArrayList<Store> storeList = new ArrayList<Store>();
     ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
     ArrayList<Order> orderList = new ArrayList<Order>();
+    BasketItem basketItem;
     ArrayList<BasketItem> bascketList = new ArrayList<>();
+    ArrayList<Account> accountList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +49,19 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
         Intent intent = getIntent();
 
         txtView = (TextView) findViewById(R.id.txtView);
+        imageView = (ImageView)findViewById(R.id.imageView);
+        imageView2 = (ImageView)findViewById(R.id.imageView2);
+        button = (Button)findViewById(R.id.button);
 
         try {
+           Bitmap BM = serverIMG.getStoreImage(1);
+           Bitmap BM2 = serverIMG.getClothImage(1);
 
+           imageView.setImageBitmap(BM);
+           imageView2.setImageBitmap(BM2);
+
+            //Bitmap BMT = SI.execute("http://192.168.219.104:3443/서버사진저장구조.png").get();
+           // imageView2.setImageBitmap(BMT);
             /*
             clothesList = JSONTask.getInstance().getClothesAll("jong4876");// jong4876 매장의 옷들 검색
             inCloth = clothesList.get(0);// 업데이트 할 데이터 -> cloth의 첫 데이터
@@ -49,7 +70,6 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             JSONTask.getInstance().updateCloth(inCloth);// 바꿀 cloth의 id역시 set으로 만들어 준 후 보냄
             */
             //cloth 수정 예시
-
 
 
             // JSONTask.getInstance().deleteCloth("만신홍 모자충");
@@ -92,25 +112,60 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             //JSONTask.getInstance().updateOrderAccept(5,1);
             //update accept 예시
 
-            storeList = JSONTask.getInstance().getCustomerStoreAll();
+           // storeList = JSONTask.getInstance().getCustomerStoreAll();
 
+            //JSONTask.getInstance().insertAccount(newAccount);
+            //account 삽입 예시
+
+            /*
+
+            clothesList = JSONTask.getInstance().getBascketCustomerAll("su123");
+            Clothes clothes = clothesList.get(0);
+            clothes.setCloth_id(7);
+            basketItem = new BasketItem(clothes, 1);
+
+            orderList = JSONTask.getInstance().getOrderCustomerAll("su123");
+            Order order = orderList.get(0);
+            order.setAdminID("jong4876");
+            JSONTask.getInstance().insertOrderAndBasket(order,basketItem);
+            */
+            //order, basket 동시삽입 예시
+
+            /*
+            JSONTask.getInstance().deleteOrderAndBasket(7);
+
+            */
+            //order, basket 동시삭제 예시
+            orderList = JSONTask.getInstance().getOrderCustomerAll("su123");
 
             StringBuffer sb = new StringBuffer();
-
-            for(int i=0; i<storeList.size(); i++){
+            /*
+            for (int i = 0; i < accountList.size(); i++) {
                 sb.append(// test용 stringbuffer
-                        "한복id: " + storeList.get(i).getId()+
-                                "\n\n매장명: " + storeList.get(i).getName()  +
-                                "\n\n매장아이디: " + storeList.get(i).getAdmin_id()  +
-                                "\n\n매장번호: " + storeList.get(i).getTel()  +
-                                "\n\n매장소개: " + storeList.get(i).getIntro()  +
-                                "\n\n매장정보: " + storeList.get(i).getInform()  +
-                                "\n\n매장주소: " + storeList.get(i).getAddress()  +
-                                "\n\n매장구역: " + storeList.get(i).getSector()  +
+                        "한복id: " + accountList.get(i).getId() +
+                                "\n\n매장명: " + accountList.get(i).getPw() +
+                                "\n\n매장아이디: " + accountList.get(i).getName() +
+                                "\n\n매장번호: " + accountList.get(i).getPhone() +
+                                "\n\n매장소개: " + accountList.get(i).getPrivilege() +
                                 "\n\n\n"
                 );
             }
-
+            */
+            /*
+            for (int i = 0; i < storeList.size(); i++) {
+                sb.append(// test용 stringbuffer
+                        "한복id: " + storeList.get(i).getId() +
+                                "\n\n매장명: " + storeList.get(i).getName() +
+                                "\n\n매장아이디: " + storeList.get(i).getAdmin_id() +
+                                "\n\n매장번호: " + storeList.get(i).getTel() +
+                                "\n\n매장소개: " + storeList.get(i).getIntro() +
+                                "\n\n매장정보: " + storeList.get(i).getInform() +
+                                "\n\n매장주소: " + storeList.get(i).getAddress() +
+                                "\n\n매장구역: " + storeList.get(i).getSector() +
+                                "\n\n\n"
+                );
+            }
+*/
 
             /*
             for(int i=0; i<clothesList.size(); i++){
@@ -128,7 +183,7 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             }
             */
 
-/*
+
             for(int i=0; i<orderList.size(); i++){
 
                 sb.append(// test용 stringbuffer
@@ -140,13 +195,12 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
                                 "\n\n\n"
                 );
             }
-*/
+
 
             txtView.setText(sb);
-        }catch(Exception E){
+        } catch (Exception E) {
             E.printStackTrace();
         }
-
 
 
     }
