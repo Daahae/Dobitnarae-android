@@ -56,31 +56,8 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container_clothes);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        // 탭 페이지 전환 설정
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.store_tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-        LinearLayout gotoBasket = (LinearLayout) findViewById(R.id.store_basket);
-        gotoBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "장바구니", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(StoreActivity.this, BasketActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // 옷 성별 선택 메뉴
+        final LinearLayout sexMenu = (LinearLayout)findViewById(R.id.store_select_sex_menu);
         LinearLayout man = toolbar.findViewById(R.id.store_clothes_sex_man);
         manTextView = toolbar.findViewById(R.id.store_clothes_sex_man_text);
 
@@ -110,6 +87,52 @@ public class StoreActivity extends AppCompatActivity {
                 manTextView.setTextColor(Color.parseColor("#aaaaaa"));
                 manTextView.setBackground(null);
                 refresh();
+            }
+        });
+
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container_clothes);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        // 탭 페이지 전환 설정
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.store_tabs);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int tabPosition = tab.getPosition();
+                mViewPager.setCurrentItem(tabPosition);
+                if(tabPosition == 0){
+                    sexMenu.setVisibility(View.INVISIBLE);
+                }
+                else if(tabPosition == 1){
+                    sexMenu.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        LinearLayout gotoBasket = (LinearLayout) findViewById(R.id.store_basket);
+        gotoBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "장바구니", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(StoreActivity.this, BasketActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -170,7 +193,6 @@ public class StoreActivity extends AppCompatActivity {
 
 
         public int getCount () {
-            // Show 3 total pages.
             return 2;
         }
     }
