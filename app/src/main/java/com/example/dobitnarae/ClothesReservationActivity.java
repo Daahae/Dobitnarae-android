@@ -110,8 +110,7 @@ public class ClothesReservationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Basket basket = Basket.getInstance();
-                    basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())));
-                    finish();
+                    basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 0);
                 }
             });
 
@@ -120,10 +119,7 @@ public class ClothesReservationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Basket basket = Basket.getInstance();
-                    basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())));
-                    finish();
-                    Intent intent = new Intent(ClothesReservationActivity.this, BasketActivity.class);
-                    startActivity(intent);
+                    basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 1);
                 }
             });
         }

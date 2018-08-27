@@ -91,7 +91,7 @@ public class ClothesCategoryListRecyclerAdapter extends RecyclerView.Adapter<Clo
 
         // 성별로 분류
         ArrayList<Clothes> tmp = new ArrayList<>();
-        int sex = ((StoreActivity)context).getSex();
+        int sex = ((StoreActivity)context).getSelectedSex();
         for(Clothes item : originItems){
             if(item.getSex() == sex)
                 tmp.add(item);

@@ -21,13 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+
 public class StoreActivity extends AppCompatActivity {
-    Store store;
-    ArrayList<Clothes> items;
+    private Store store;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -60,7 +64,8 @@ public class StoreActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container_clothes);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.store_tabs);
+        // 탭 페이지 전환 설정
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.store_tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -115,9 +120,6 @@ public class StoreActivity extends AppCompatActivity {
         // 툴바 타이틀 이름 상점이름으로 변경
         TextView titleName = (TextView) findViewById(R.id.toolbar_title);
         titleName.setText(store.getName());
-
-        // 판매중인 옷 가져옴
-        items = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
     }
 
     @Override
@@ -161,9 +163,9 @@ public class StoreActivity extends AppCompatActivity {
                 case 0:
                     return StoreInfoFragment.newInstance(0, store);
                 case 1:
-                    return storeClothesFragment = StoreClothesFragment.newInstance(1, items, store);
+                    return storeClothesFragment = StoreClothesFragment.newInstance(1, store);
             }
-                return null;
+            return null;
         }
 
 
@@ -173,13 +175,15 @@ public class StoreActivity extends AppCompatActivity {
         }
     }
 
-    public int getSex() {
+    public int getSelectedSex() {
         return sex;
     }
 
     private void refresh(){
         storeClothesFragment.refresh();
     }
+
+
 }
 
 

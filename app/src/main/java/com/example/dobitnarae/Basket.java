@@ -2,12 +2,14 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class Basket {
@@ -50,7 +52,12 @@ public class Basket {
         basket.clear();
     }
 
-    public void addClothes(final Context context, BasketItem item){
+    public void addClothes(Context context, BasketItem item) {
+        addClothes(context, item, 0);
+    }
+
+    // btn 0: 장바구니 담기, 1: 대여하기
+    public void addClothes(final Context context, BasketItem item, int btn){
         /*
          * 1. 선택된 가게가 없을때
          *   - 담기
@@ -61,25 +68,25 @@ public class Basket {
          *     - client에게 기존 목록 지울껀지 묻고 담기
          *
          */
-        Date today = new Date();
-        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        date.setTimeZone(TimeZone.getTimeZone("GMT+9"));
-        rentalDate = date.format(today);
-        Log.e("Sdfsdf", rentalDate);
-        if(selectedStoreID == -1 || basket.size() == 0){
+        if(basket.size() == 0){
             basket.add(item);
             selectedStoreID = item.getClothes().getStore_id();
+            closeReservationActivity(context);
+            openBasketActivity(context, btn);
         }
         else {
-            if(selectedStoreID == item.getClothes().getStore_id())
+            if(selectedStoreID == item.getClothes().getStore_id()){
                 basket.add(item);
+                closeReservationActivity(context);
+                openBasketActivity(context, btn);
+            }
             else {
-                showAlert(context, item);
+                showAlert(context, item, btn);
             }
         }
     }
 
-    private void showAlert(Context context, final BasketItem item){
+    private void showAlert(final Context context, final BasketItem item, final int btn){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("장바구니에는 한 매장의 한복만 담을수 있습니다\n" +
                 "장바구니를 비우고 이 한복을 담으시겠습니까?");
@@ -90,6 +97,8 @@ public class Basket {
                         clearBasket();
                         basket.add(item);
                         selectedStoreID = item.getClothes().getStore_id();
+                        closeReservationActivity(context);
+                        openBasketActivity(context, btn);
                     }
                 });
         builder.setNegativeButton("아니요",
@@ -100,6 +109,17 @@ public class Basket {
                     }
                 });
         builder.show();
+    }
+
+    private void openBasketActivity(Context context, int btn){
+        if(btn == 1){
+            Intent intent = new Intent((ClothesReservationActivity)context, BasketActivity.class);
+            context.startActivity(intent);
+        }
+    }
+
+    private void closeReservationActivity(Context context){
+        ((ClothesReservationActivity)context).finish();
     }
 
     public void deleteClothes(int position)

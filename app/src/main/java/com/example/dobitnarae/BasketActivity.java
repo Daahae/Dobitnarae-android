@@ -153,6 +153,7 @@ public class BasketActivity extends AppCompatActivity {
             public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
                 // TODO
                 // 서버로 선택한 옷, 사용자 정보, 예약 날짜및 시간 전송
+
             }
         });
     }
