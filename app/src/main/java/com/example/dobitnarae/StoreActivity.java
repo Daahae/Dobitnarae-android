@@ -90,7 +90,6 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -130,7 +129,6 @@ public class StoreActivity extends AppCompatActivity {
         gotoBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "장바구니", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(StoreActivity.this, BasketActivity.class);
                 startActivity(intent);
             }

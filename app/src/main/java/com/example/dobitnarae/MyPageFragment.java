@@ -70,7 +70,13 @@ public class MyPageFragment extends Fragment {
                             password = tmp;
                         name = nameET.getText().toString();
                         phone = phoneET.getText().toString();
-                        // TODO 서버로 전송
+
+                        account.setName(name);
+                        account.setPhone(phone);
+                        account.setPw(password);
+
+                        // 서버에 계정 정보 갱신
+                        JSONTask.getInstance().updateAccount(account);
 
                         Toast.makeText(context, "수정 완료", Toast.LENGTH_SHORT).show();
                         refresh();

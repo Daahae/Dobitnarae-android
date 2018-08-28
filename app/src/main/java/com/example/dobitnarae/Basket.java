@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,6 +118,9 @@ public class Basket {
             Intent intent = new Intent((ClothesReservationActivity)context, BasketActivity.class);
             context.startActivity(intent);
         }
+        Toast toast = Toast.makeText(context, "장바구니에 담겼습니다", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     private void closeReservationActivity(Context context){

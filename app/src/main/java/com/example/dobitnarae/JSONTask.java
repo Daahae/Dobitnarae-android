@@ -296,6 +296,34 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         return storeList;
     }
 
+    public ArrayList<Clothes> getStoreClothesList(int storeID){ //storeID로 해당 매장 옷 검색
+        ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
+        Clothes clothes;
+
+        try{
+            JSONTask JT = new JSONTask();
+            JT.setUser_id(""+storeID);
+            String str = JT.execute("http://13.209.89.187:3443/clothes").get();
+
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                int cloth_ids = jo.getInt("cloth_id");
+                int store_ids = jo.getInt("store_id");
+                int category = jo.getInt("category");
+                String name= jo.getString("name");
+                String intro = jo.getString("intro");
+                int price = jo.getInt("price");
+                int count = jo.getInt("count");
+                int sex = jo.getInt("sex");
+                clothes = new Clothes(cloth_ids,store_ids,category, name,intro, price, count, sex);
+                clothesList.add(clothes);//accountList 차례대로 삽입
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return clothesList;
+    }
 
     public ArrayList<Clothes> getClothesAll(String admin_id){ // 아이디에 해당하는 매장의 옷 검색
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();

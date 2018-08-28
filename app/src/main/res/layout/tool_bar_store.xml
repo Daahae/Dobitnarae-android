@@ -30,6 +30,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginRight="16dp"
+            android:fontFamily="@font/jejuhallasan"
             />
         <LinearLayout
             android:id="@+id/store_select_sex_menu"
