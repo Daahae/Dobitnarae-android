@@ -19,6 +19,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     String user_id;
     int reserve_ID = 0;
     int acceptStatus = 0;
+    String password = "0";
     Store upStore = new Store(0,"example","example","example",
             "example","example","example",0,
             0.0,0.0,"09:00", "22:00");
@@ -44,6 +45,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
     public void setReserve_ID(int reserve_ID) {
         this.reserve_ID = reserve_ID;
@@ -84,6 +88,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             // 연결 url 설정
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("user_id", user_id);
+            jsonObject.accumulate("password", password);
             jsonObject.accumulate("reserve_ID", reserve_ID);
             jsonObject.accumulate("acceptStatus", acceptStatus);
 
@@ -190,7 +195,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 id = jo.getInt("id");
-                Log.e("err",""+id);
+
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -207,7 +212,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         try {
             JSONTask JT = new JSONTask();
             JT.setUser_id(user_id);
-            String str = JT.execute("http://192.168.219.104:3443/account").get();
+            String str = JT.execute("http://13.209.89.187:3443/account").get();
             JSONArray ja = new JSONArray(str);
 
             for(int i=0; i<ja.length(); i++){
@@ -625,4 +630,48 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     }
 
 
+    //로그인 메서드
+    public int getLoginResult(String user_id, String password){ // user_id가 주문한 옷 전체 검색
+       int result = -999;
+
+        try{
+            JSONTask JT = new JSONTask();
+            JT.setUser_id(user_id);
+            JT.setPassword(password);
+            String str = JT.execute("http://13.209.89.187:3443/login").get();
+            JSONArray ja = new JSONArray(str);
+            if(ja.length() == 0)
+                return 0;
+
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                String ID = jo.getString("ID");
+                Log.e("err",""+ID);
+            }
+
+            return 1;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public String getLoginID(){// 현재 로그인 중인 아이디 가져오기(세션에 있는 아이디)
+        String userID = null;
+        try{
+            JSONTask JT = new JSONTask();
+            String str = JT.execute("http://13.209.89.187:3443/getLoginID").get();
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                userID = jo.getString("ID");
+                Log.e("err",""+userID);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return userID;
+
+    }
 }
