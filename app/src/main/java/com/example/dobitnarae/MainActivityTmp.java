@@ -66,6 +66,8 @@ public class MainActivityTmp extends AppCompatActivity {
         LinearLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
+        recyclerView.setNestedScrollingEnabled(false);
+
         // 랜덤으로 옷 추출
         // 더미
         int ITEM_SIZE = 8;

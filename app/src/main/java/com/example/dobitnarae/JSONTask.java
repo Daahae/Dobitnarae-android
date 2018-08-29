@@ -26,6 +26,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     BasketItem basketItem = new BasketItem(inCloth, 0);
     Order order = new Order(0,"example","example",0,"example");
     Account account = new Account("example","example","example","example",0);
+    Reserve reserve = new Reserve(0, "example", "example", 0, "example");
     ArrayList<Store> storeList;
 
     int flag = 0;
@@ -71,8 +72,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         this.basketItem = basketItem;
         flag = 5;
     }
-
-
+    public void setReserve(Reserve reserve){
+        this.reserve = reserve;
+        flag = 6;
+    }
 
 
     @Override
@@ -134,6 +137,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("count", basketItem.getCnt());
                 flag = 0;
             }
+            if(flag == 6) { // insertReserve
+                jsonObject.accumulate("user_ID", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
+                jsonObject.accumulate("admin_ID", reserve.getAdmin_id());
+                jsonObject.accumulate("accept", reserve.getAcceptStatus());
+                flag = 0;
+            }
 
 
             URL url = new URL(urls[0]);
@@ -168,7 +177,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
             br.close();
             conn.disconnect();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -573,36 +581,36 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void insertOrder(Order order){ // user_id에 해당하는 매장에 옷 추가(관리자)
+    public void insertReserve(Reserve reserve){ // user_id에 해당하는 매장에 옷 추가(관리자)
         try {
             JSONTask JT = new JSONTask();
-            JT.setOrder(order);
+            JT.setReserve(this.reserve);
             JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
             Log.e("err","cloth삽입 성공!!");
-
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public void insertBasket(BasketItem basketItem, int reserve_ID){ // user_id에 해당하는 매장에 옷 추가(관리자)
-        try {
-            JSONTask JT = new JSONTask();
-            JT.setReserve_ID(reserve_ID);
-            JT.setBasketItem(basketItem);
-            JT.execute("http://13.209.89.187:3443/insertBasket");
-            Log.e("err","Basket삽입 성공!!");
+    public void insertBasketItems(ArrayList<BasketItem> basketItem, int reserve_ID){ // user_id에 해당하는 매장에 옷 추가(관리자)
+        JSONTask JT = new JSONTask();
 
-        }catch(Exception e){
-            e.printStackTrace();
+        for(BasketItem b : basketItem) {
+            try {
+                JT.setReserve_ID(reserve_ID);
+                JT.setBasketItem(b);
+                JT.execute("http://13.209.89.187:3443/insertBasket");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        Log.e("err", "Basket삽입 성공!!");
     }
 
-    public void insertOrderAndBasket(Order order, BasketItem basketItem){// order basket 삽입한번에
-        JSONTask.getInstance().insertOrder(order);
-        JSONTask.getInstance().insertBasket(basketItem,order.getOrderNo());
-
-
+    public void insertOrderAndBasket(Reserve reserve, ArrayList<BasketItem> basketItems){// order basket 삽입한번에
+        JSONTask.getInstance().insertReserve(reserve);
+        JSONTask.getInstance().insertBasketItems(basketItems, order.getOrderNo());
     }
 
 
@@ -648,8 +656,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public void deleteOrderAndBasket(int reserve_ID){// order basket 삽입한번에
         //JSONTask.getInstance().deleteBasket(reserve_ID);
         JSONTask.getInstance().deleteOrder(reserve_ID);//cascade로 삭제
-
-
     }
 
 
