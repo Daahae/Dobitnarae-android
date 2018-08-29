@@ -87,12 +87,7 @@ public class BasketActivity extends AppCompatActivity {
                 if(Basket.getInstance().getClothesCnt() == 0)
                     Toast.makeText(v.getContext(), "담은 한복이 없습니다", Toast.LENGTH_SHORT).show();
                 else {
-                    //dpd.show(getFragmentManager(), "Datepickerdialog");
-
-                    Basket basket = Basket.getInstance();
-                    Account account = Account.getInstance();
-                    Reserve reserve = new Reserve(0, "myong123", "jong4876", 0, "2018-08-29 11:11:11");
-                    JSONTask.getInstance().insertReserve(reserve, basket.getBasket());
+                    dpd.show(getFragmentManager(), "Datepickerdialog");
                 }
             }
         });
@@ -156,15 +151,13 @@ public class BasketActivity extends AppCompatActivity {
                 Basket basket = Basket.getInstance();
                 Account account = Account.getInstance();
 
-                Reserve reserve = new Reserve(0, "myong123", "jong4876", 0, date);
+                Reserve reserve = new Reserve(0, account.getId(), "jong4876", 0, date);
                 jt.insertReserve(reserve, basket.getBasket());
 
-                //basket.clearBasket();
+                basket.clearBasket();
                 Toast.makeText(getApplicationContext(), "대여 신청 완료", Toast.LENGTH_SHORT).show();
 
-//                finish();
-//                Intent intent = new Intent(BasketActivity.this, MyPageActivity.class);
-//                startActivity(intent);
+                finish();
             }
         });
     }

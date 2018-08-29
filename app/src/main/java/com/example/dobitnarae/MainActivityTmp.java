@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,13 +21,21 @@ import android.widget.Toast;
 
 import com.example.dobitnarae.RecyclerViewAdapter.ClothesRecommendationListRecyclerAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivityTmp extends AppCompatActivity {
     private Account account;
     private ClothesRecommendationListRecyclerAdapter cAdapter;
     private ArrayList<Clothes> clothes;
+
+    // 날씨
+    private final String[] skyStatus = {"맑음", "구름조금", "구름많음", "흐림"};
+    private final String[] precipitationType = {"", "비", "비/눈", "눈"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +94,39 @@ public class MainActivityTmp extends AppCompatActivity {
         // 고궁 알아보기
         setPalaceRedirection();
 
+        // 날씨 설정
+        try {
+            TextView temperature = (TextView) findViewById(R.id.weather_temperature);
+            TextView weatherStatusMsg = (TextView)findViewById(R.id.weather_status_text);
+            ImageView weatherImg = (ImageView)findViewById(R.id.weather_status_img);
+            TextView weatherContext = (TextView)findViewById(R.id.weather_context);
+
+            JSONObject weatherInfo = new WeatherTask().execute().get();
+            temperature.setText(weatherInfo.getString("기온"));
+
+            int sky = weatherInfo.getInt("하늘상태");
+            int pty = weatherInfo.getInt("강수상태");
+
+            if(pty == 0)
+                weatherStatusMsg.setText(skyStatus[sky]);
+            else
+                weatherStatusMsg.setText(precipitationType[pty]);
+
+            // 추천 문구
+            weatherContext.setText(getWeatherMessage(sky, pty));
+
+            // 날씨 이미지
+            Drawable drawable = ContextCompat.getDrawable(this, getWeatherImg(sky, pty));
+            weatherImg.setBackground(drawable);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         // 지울것
         account = Account.getInstance();
     }
@@ -141,4 +183,56 @@ public class MainActivityTmp extends AppCompatActivity {
         });
     }
 
+    private int getWeatherImg(int skyStatus, int precipitationType){
+        if(precipitationType == 0){ // 비 or 눈 안올때
+            switch (skyStatus){
+                case 0: // 맑음
+                    return R.drawable.sunny_day_weather_symbol;
+                case 1: // 구름 조금
+                    return R.drawable.cloudy_day;
+                default:    // 구름많음, 흐림
+                    return R.drawable.cloud_outline;
+            }
+        }
+        else {  // 비 or 눈 올때
+            if(skyStatus == 0){ // 맑음
+                switch (precipitationType){
+                    case 1: //비
+                        return R.drawable.rainy_day;
+                    case 2: //눈비
+                        return R.drawable.hail;
+                    case 3: //눈
+                        return R.drawable.snowy_weather_symbol;
+                }
+            }
+            else{
+                switch (precipitationType){
+                    case 1: //비
+                        return R.drawable.cloud_with_rain_drops;
+                    case 2: //눈비
+                        return R.drawable.hail_crystals_falling_of_a_cloud;
+                    case 3: //눈
+                        return R.drawable.snow_weather_symbol;
+                }
+            }
+        }
+        return R.drawable.sunny_day_weather_symbol;
+    }
+
+    private String getWeatherMessage(int skyStatus, int precipitationType){
+        if(precipitationType == 0){
+            if(skyStatus == 0 || skyStatus == 1) { // 맑음, 구름 조금
+                return "화창한 오늘, 한복입고 고궁을 거닐어 보세요";
+            }
+            else{   // 구름 많음, 흐림
+                return "당신의 나래가 되어줄 한복 구경 어떠세요?";
+            }
+        }
+        else if(precipitationType == 3){ // 눈
+            return "다채로운 한복으로\n 하얀 고궁을 채워보는건 어떨까요?";
+        }
+        else { // 비, 눈비
+            return "눈부신 날을 위해\n 아름다운 한복을 구경해보세요";
+        }
+    }
 }

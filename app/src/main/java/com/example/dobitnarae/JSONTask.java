@@ -88,7 +88,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         this.reserve = reserve;
         this.basketList = basketList;
         flag = 6;
-        Log.e("asdfadsfasdfs","asdfadsfdasfads");
     }
 
 
@@ -681,14 +680,16 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     }
 
     public void insertReserve(Reserve reserve, ArrayList<BasketItem> basketList){ // user_id에 해당하는 매장에 옷 추가(관리자)
-        try {////
-            JSONTask JT = new JSONTask();
+        JSONTask JT = new JSONTask();
+        try {
             JT.setReserveBasket(reserve, basketList);
             JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
             Log.e("err","order삽입 성공!!");
 
         }catch(Exception e){
             e.printStackTrace();
+        } finally {
+            JT.cancel(true);
         }
     }
 
