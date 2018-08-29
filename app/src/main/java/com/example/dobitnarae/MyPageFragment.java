@@ -44,8 +44,12 @@ public class MyPageFragment extends Fragment {
 
         account = Account.getInstance();
 
-        nameET.setText(account.getName());
-        phoneET.setText(account.getPhone());
+        password = account.getPw();
+        name = account.getName();
+        phone = account.getPhone();
+
+        nameET.setText(name);
+        phoneET.setText(phone);
 
         CardView editBtn = (CardView)rootView.findViewById(R.id.myPage_edit_btn);
         editBtn.setOnClickListener(new CardView.OnClickListener() {

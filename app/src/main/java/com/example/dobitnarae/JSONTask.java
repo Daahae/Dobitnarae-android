@@ -14,6 +14,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public  class JSONTask extends AsyncTask<String, String, String> {
     String user_id;
@@ -406,18 +409,18 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         return reserves;
     }
 
-    public ArrayList<Order> getOrderBeforeReserveID(String user_id, String admin_id){ // reserve_id가 주문한 옷 전체 검색
-        ArrayList<Order> orderList = new ArrayList<Order>();
-        Order order;
+    public ArrayList<Reserve> getReserveBeforeReserveID(String user_id, String admin_id) { // reserve_id가 주문한 옷 전체 검색
+        ArrayList<Reserve> reserveArrayList = new ArrayList<>();
+        Reserve reserve;
 
-        try{
+        try {
             JSONTask JT = new JSONTask();
             JT.setUser_id(user_id);
             JT.setAdmin_id(admin_id);
 
             String str = JT.execute("http://13.209.89.187:3443/reserveID").get();
             JSONArray ja = new JSONArray(str);
-            for(int i=0; i<ja.length(); i++){
+            for (int i = 0; i < ja.length(); i++) {
                 JSONObject jo = ja.getJSONObject(i);
                 int orderNo = jo.getInt("ID");
                 String userID = jo.getString("user_ID");
@@ -425,13 +428,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int acceptStatus = jo.getInt("accept");
                 String date = jo.getString("date");//Date형?
 
-                order = new Order(orderNo,userID,adminID,acceptStatus,date);
-                orderList.add(order);
+                reserve = new Reserve(orderNo, userID, adminID, acceptStatus, date);
+                reserveArrayList.add(reserve);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return orderList;
+        return reserveArrayList;
     }
 
     public ArrayList<Order> getOrderCustomerAll(String customer_id){ // user_id가 주문한 옷 전체 검색
@@ -542,8 +545,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         return clothesList;
     }
 
-
-
     //////////수정메서드
     public void updateAccount(Account upAccount){ //바꿀 값이 들어 있는 account 클래스와, 바꿀 account의 아이디 전달
         try {
@@ -624,21 +625,21 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void insertReserve(Reserve reserve){ // user_id에 해당하는 매장에 옷 추가(관리자)
+    public void insertReserve(Reserve reserve) { // user_id에 해당하는 매장에 옷 추가(관리자)
         try {
             JSONTask JT = new JSONTask();
-            JT.setReserve(this.reserve);
+            JT.setReserve(reserve);
             JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
-            Log.e("err","cloth삽입 성공!!");
-        }catch(Exception e){
+            Log.e("err", "cloth삽입 성공!!");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void insertBasketItems(ArrayList<BasketItem> basketItem, int reserve_ID){ // user_id에 해당하는 매장에 옷 추가(관리자)
+    public void insertBasketItems(ArrayList<BasketItem> basketItem, int reserve_ID) { // user_id에 해당하는 매장에 옷 추가(관리자)
         JSONTask JT = new JSONTask();
 
-        for(BasketItem b : basketItem) {
+        for (BasketItem b : basketItem) {
             try {
                 JT.setReserve_ID(reserve_ID);
                 JT.setBasketItem(b);
@@ -649,15 +650,11 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void insertOrderAndBasket(Reserve reserve, ArrayList<BasketItem> basketItems){// order basket 삽입한번에
-        JSONTask.getInstance().insertReserve(reserve);
-        JSONTask.getInstance().insertBasketItems(basketItems, order.getOrderNo());
+    public void insertReserveAndBasketItems(Reserve reserve, ArrayList<BasketItem> basketItems){// order basket 삽입한번에
+        insertReserve(reserve);
+        Reserve tmpOrder = getReserveBeforeReserveID(reserve.getUser_id(), reserve.getAdmin_id()).get(0);
+        insertBasketItems(basketItems, tmpOrder.getId());
     }
-
-
-
-
-
 
     /////////삭제메서드
     public void deleteCloth(int clothID){ // user_id에 해당하는 매장에 옷 삭제(관리자)

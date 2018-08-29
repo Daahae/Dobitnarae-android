@@ -20,9 +20,10 @@ public class Account {
     }
 
     public void setClientAccount(){
-        this.id = "Kuril951";
-        this.name = "홍길동";
-        this.phone = "01012345678";
+        this.id = "myoung123";
+        this.name = "김명길";
+        this.pw = "1111";
+        this.phone = "010-1111-2222";
         this.privilege = Constant.CLIENT;
     }
 

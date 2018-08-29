@@ -38,7 +38,9 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sejong);
         holder.image.setBackground(drawable);
 
-        holder.name.setText("세종대학교");
+        Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
+
+        holder.name.setText(store.getName());
         holder.time.setText(item.getRentalDate());
         holder.storeView.setId(item.getId());
         holder.storeView.setOnClickListener(new View.OnClickListener() {

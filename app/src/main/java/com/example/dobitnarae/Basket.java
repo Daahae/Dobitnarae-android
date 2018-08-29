@@ -50,8 +50,9 @@ public class Basket {
         return basket;
     }
 
-    private void clearBasket(){
+    public void clearBasket(){
         basket.clear();
+        selectedStoreID = -1;
     }
 
     public void addClothes(Context context, BasketItem item) {
