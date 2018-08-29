@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public  class JSONTask extends AsyncTask<String, String, String> {
     String user_id;
+    String admin_id;
     int reserve_ID = 0;
     int acceptStatus = 0;
     String password = "0";
@@ -42,7 +43,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public static JSONTask getInstance(){
         return Singleton.instance;
     }
-
+    public void setAdmin_id(String admin_id) {
+        this.admin_id = admin_id;
+    }
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
@@ -88,6 +91,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             // 연결 url 설정
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("user_id", user_id);
+            jsonObject.accumulate("admin_id", admin_id);
             jsonObject.accumulate("password", password);
             jsonObject.accumulate("reserve_ID", reserve_ID);
             jsonObject.accumulate("acceptStatus", acceptStatus);
@@ -185,7 +189,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
     public int changeStoreID(String admin_id){ // "jong4876" 값을 -> 1로
         int id = -1;
-
         try{
             JSONTask JT = new JSONTask();
             JT.setUser_id(admin_id);
@@ -358,6 +361,34 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
         return reserves;
+    }
+
+    public ArrayList<Order> getOrderBeforeReserveID(String user_id, String admin_id){ // reserve_id가 주문한 옷 전체 검색
+        ArrayList<Order> orderList = new ArrayList<Order>();
+        Order order;
+
+        try{
+            JSONTask JT = new JSONTask();
+            JT.setUser_id(user_id);
+            JT.setAdmin_id(admin_id);
+
+            String str = JT.execute("http://192.168.43.77:3443/reserveID").get();
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                int orderNo = jo.getInt("ID");
+                String userID = jo.getString("user_ID");
+                String adminID = jo.getString("admin_ID");
+                int acceptStatus = jo.getInt("accept");
+                String date = jo.getString("date");//Date형?
+
+                order = new Order(orderNo,userID,adminID,acceptStatus,date);
+                orderList.add(order);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return orderList;
     }
 
     public ArrayList<Order> getOrderCustomerAll(String customer_id){ // user_id가 주문한 옷 전체 검색
@@ -577,7 +608,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
     public void insertOrderAndBasket(Order order, BasketItem basketItem){// order basket 삽입한번에
         JSONTask.getInstance().insertOrder(order);
-        JSONTask.getInstance().insertBasket(basketItem,order.getOrderNo());
+        Order tmpOrder = JSONTask.getInstance().getOrderBeforeReserveID(order.getUserID(),order.getAdminID()).get(0);
+        JSONTask.getInstance().insertBasket(basketItem,tmpOrder.getOrderNo());
 
 
     }
