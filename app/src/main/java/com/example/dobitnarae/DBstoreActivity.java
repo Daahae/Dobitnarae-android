@@ -38,7 +38,7 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
     ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
     ArrayList<Order> orderList = new ArrayList<Order>();
     BasketItem basketItem;
-    ArrayList<BasketItem> bascketList = new ArrayList<>();
+    ArrayList<BasketItem> basketList = new ArrayList<>();
     ArrayList<Account> accountList = new ArrayList<>();
 
 
@@ -143,8 +143,15 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             clothesList = JSONTask.getInstance().getClothesAll("jong4876");
             Clothes clothes = clothesList.get(0);
 
-            basketItem = new BasketItem(clothes,1);
-            JSONTask.getInstance().insertOrder(order, basketItem);
+            BasketItem basketItem1 = new BasketItem(clothes,1);
+            clothes.setCloth_id(2);
+            BasketItem basketItem2 = new BasketItem(clothes,2);
+
+
+            basketList.add(basketItem1);
+            basketList.add(basketItem2);
+
+            JSONTask.getInstance().insertOrder(order, basketList);
 
 
             StringBuffer sb = new StringBuffer();

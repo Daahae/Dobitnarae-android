@@ -29,7 +29,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     Order order = new Order(0,"example","example",0,"example");
     Account account = new Account("example","example","example","example",0);
     ArrayList<Store> storeList;
-
+    ArrayList<BasketItem> basketList;
     int flag = 0;
     private JSONTask jsonTaskTmp;
 
@@ -66,9 +66,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         this.inCloth = inCloth;
         flag = 2;
     }
-    public void setOrderBasket(Order order,BasketItem basketItem){
+    public void setOrderBasket(Order order,ArrayList<BasketItem> basketList){
         this.order = order;
-        this.basketItem = basketItem;
+        this.basketList = basketList;
         flag = 3;
     }
     public void setAccount(Account account){// accountd의 update와 insert를 위한 매개변수 전달
@@ -128,8 +128,17 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("user_id", order.getUserID());//insert를 위해 서버로 보낼 데이터들 req.on
                 jsonObject.accumulate("admin_id", order.getAdminID());
                 jsonObject.accumulate("accept", order.getAcceptStatus());
-                jsonObject.accumulate("cloth_ID", basketItem.getClothes().getCloth_id());
-                jsonObject.accumulate("count", basketItem.getCnt());
+
+                JSONArray jArray = new JSONArray();// 배열을 위해 선언
+                for(int i=0; i< basketList.size(); i++)
+                {
+                    JSONObject sObject = new JSONObject();
+                    sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
+                    sObject.put("count", basketList.get(i).getCnt());
+                    jArray.put(sObject);
+                }
+                jsonObject.put("basketList", jArray);//배열을 넣음
+
                 flag = 0;
             }
             if(flag == 4) {//insertAccount, updateAccount
@@ -616,12 +625,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void insertOrder(Order order, BasketItem basketItem){ // user_id에 해당하는 매장에 옷 추가(관리자)
+    public void insertOrder(Order order, ArrayList<BasketItem> basketList){ // user_id에 해당하는 매장에 옷 추가(관리자)
         try {////
             JSONTask JT = new JSONTask();
-            JT.setOrderBasket(order,basketItem);
+            JT.setOrderBasket(order, basketList);
             JT.execute("http://192.168.43.77:3443/insertReserve");// URL변경필수
-            Log.e("err","cloth삽입 성공!!");
+            Log.e("err","order삽입 성공!!");
 
         }catch(Exception e){
             e.printStackTrace();
