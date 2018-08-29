@@ -55,13 +55,14 @@
         </provider>
 
         <activity android:name=".BasketActivity" />
-        <activity android:name=".MyPageActivity"
-            android:windowSoftInputMode="adjustResize|adjustPan"/>
+        <activity
+            android:name=".MyPageActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".ReservationInfoActivity" />
-        <activity android:name=".ItemAddActivity"/>
+        <activity android:name=".ItemAddActivity" />
         <activity android:name=".LoginActivity">
-
         </activity>
+        <activity android:name=".UploadImgActivity"></activity>
     </application>
 
 </manifest>

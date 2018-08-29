@@ -24,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 public class DBstoreActivity extends AppCompatActivity {// db실험용
 
     TextView txtView;
@@ -54,8 +55,8 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
         button = (Button)findViewById(R.id.button);
 
         try {
-           Bitmap BM = serverIMG.getStoreImage(1);
-           Bitmap BM2 = serverIMG.getClothImage(1);
+           Bitmap BM = ServerImg.getStoreImage(1);
+           Bitmap BM2 = ServerImg.getClothImage(1);
 
            imageView.setImageBitmap(BM);
            imageView2.setImageBitmap(BM2);
@@ -136,7 +137,9 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
 
             */
             //order, basket 동시삭제 예시
-            orderList = JSONTask.getInstance().getOrderCustomerAll("su123");
+            String userID = JSONTask.getInstance().getLoginID();
+            orderList = JSONTask.getInstance().getOrderAdminAll("jong4876");
+            orderList = JSONTask.getInstance().getOrderAdminAll("jong4876");
 
             StringBuffer sb = new StringBuffer();
             /*
@@ -187,7 +190,8 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             for(int i=0; i<orderList.size(); i++){
 
                 sb.append(// test용 stringbuffer
-                        "주문번호: " + orderList.get(i).getOrderNo()+
+                        "\n\n현재아이디: " + userID+
+                        "\n\n주문번호: " + orderList.get(i).getOrderNo()+
                                 "\n\n주문아이디: " + orderList.get(i).getUserID() +
                                 "\n\n매장아이디: " + orderList.get(i).getAdminID()  +
                                 "\n\n승인여부: " + orderList.get(i).getAcceptStatus()  +

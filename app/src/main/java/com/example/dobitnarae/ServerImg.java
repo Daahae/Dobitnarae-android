@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 
 
-public  class serverIMG  extends AsyncTask<String, Integer,Bitmap>{// 서버에 이미지를 bitmap형식으로 뿌리기
+public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 이미지를 bitmap형식으로 뿌리기
 
     Bitmap bmImg;
 
@@ -43,7 +43,7 @@ public  class serverIMG  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         String str = ""+clothID;
         Bitmap BM = null;
         try {
-            serverIMG SI = new serverIMG();
+            ServerImg SI = new ServerImg();
             BM = SI.execute("http://13.209.89.187:3443/store/" + str+".jpg").get();
 
 
@@ -57,7 +57,7 @@ public  class serverIMG  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         String str = ""+clothID;
         Bitmap BM = null;
         try {
-            serverIMG SI = new serverIMG();
+            ServerImg SI = new ServerImg();
             BM = SI.execute("http://13.209.89.187:3443/cloth/" + str+".jpg").get();
         }catch(Exception E){
             E.printStackTrace();

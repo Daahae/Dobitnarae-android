@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,20 +29,21 @@ public class LoginActivity extends AppCompatActivity {
         PasswordTxt = (EditText) findViewById(R.id.PASSWORD);
         LoginBtn = (Button)findViewById(R.id.Login);
 
+
+
+
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                accountList = JSONTask.getInstance().getAccountAll(IDTxt.getText().toString());
-
+                String ID = IDTxt.getText().toString();
+                accountList = JSONTask.getInstance().getAccountAll(ID);//ID존재 확인
                 if(accountList.size() !=0 ){
-                    String DBPassword = accountList.get(0).getPw();
                     String Password = PasswordTxt.getText().toString();
 
-                    if(DBPassword.equals(Password)) {
+                    if(JSONTask.getInstance().getLoginResult(ID,Password) == 1) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("ID", IDTxt.getText().toString());
-                        Toast.makeText(getApplicationContext(),IDTxt.getText().toString()+"님 두빛나래에 오신걸 환영합니다."+Password,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),IDTxt.getText().toString()+"님 두빛나래에 오신걸 환영합니다.",Toast.LENGTH_LONG).show();
                         startActivityForResult(intent, 1000);
 
                     }
