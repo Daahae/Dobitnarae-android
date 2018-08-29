@@ -139,7 +139,13 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             //order, basket 동시삭제 예시
             String userID = JSONTask.getInstance().changeToAdminID(1);
             orderList = JSONTask.getInstance().getOrderAdminAll("jong4876");
-            orderList = JSONTask.getInstance().getOrderAdminAll("jong4876");
+            Order order = orderList.get(0);
+            clothesList = JSONTask.getInstance().getClothesAll("jong4876");
+            Clothes clothes = clothesList.get(0);
+
+            basketItem = new BasketItem(clothes,1);
+            JSONTask.getInstance().insertOrder(order, basketItem);
+
 
             StringBuffer sb = new StringBuffer();
             /*
