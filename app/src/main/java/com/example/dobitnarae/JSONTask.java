@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 public  class JSONTask extends AsyncTask<String, String, String> {
     String user_id;
@@ -33,7 +34,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     Account account = new Account("example","example","example","example",0);
     Reserve reserve = new Reserve(0, "example", "example", 0, "example");
     ArrayList<Store> storeList;
-
+    ArrayList<BasketItem> basketList;
     int flag = 0;
     private JSONTask jsonTaskTmp;
 
@@ -70,8 +71,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         this.inCloth = inCloth;
         flag = 2;
     }
-    public void setOrder(Order order){
+    public void setOrderBasket(Order order,ArrayList<BasketItem> basketList){
         this.order = order;
+        this.basketList = basketList;
         flag = 3;
     }
     public void setAccount(Account account){// accountd의 update와 insert를 위한 매개변수 전달
@@ -82,9 +84,11 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         this.basketItem = basketItem;
         flag = 5;
     }
-    public void setReserve(Reserve reserve){
+    public void setReserveBasket(Reserve reserve, ArrayList<BasketItem> basketList){
         this.reserve = reserve;
+        this.basketList = basketList;
         flag = 6;
+        Log.e("asdfadsfasdfs","asdfadsfdasfads");
     }
 
 
@@ -93,7 +97,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         StringBuilder jsonHtml = new StringBuilder();
         try {
-
+            Log.e("id: " + reserve.getUser_id(), "");
             // 연결 url 설정
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("user_id", user_id);
@@ -130,9 +134,20 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
 
             if(flag == 3) {//insertOrder, updateOrder
-                jsonObject.accumulate("user_ID", order.getUserID());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("admin_ID", order.getAdminID());
+                jsonObject.accumulate("user_id", order.getUserID());//insert를 위해 서버로 보낼 데이터들 req.on
+                jsonObject.accumulate("admin_id", order.getAdminID());
                 jsonObject.accumulate("accept", order.getAcceptStatus());
+
+                JSONArray jArray = new JSONArray();// 배열을 위해 선언
+                for(int i=0; i< basketList.size(); i++)
+                {
+                    JSONObject sObject = new JSONObject();
+                    sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
+                    sObject.put("count", basketList.get(i).getCnt());
+                    jArray.put(sObject);
+                }
+                jsonObject.put("basketList", jArray);//배열을 넣음
+
                 flag = 0;
             }
             if(flag == 4) {//insertAccount, updateAccount
@@ -149,10 +164,20 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("count", basketItem.getCnt());
                 flag = 0;
             }
-            if(flag == 6) { // insertReserve
-                jsonObject.accumulate("user_ID", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("admin_ID", reserve.getAdmin_id());
+            if(flag == 6) {//insertOrder, updateOrder
+                jsonObject.accumulate("user_id", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
+                jsonObject.accumulate("admin_id", reserve.getAdmin_id());
                 jsonObject.accumulate("accept", reserve.getAcceptStatus());
+
+                JSONArray jArray = new JSONArray();// 배열을 위해 선언
+                for(int i=0; i< basketList.size(); i++)
+                {
+                    JSONObject sObject = new JSONObject();
+                    sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
+                    sObject.put("count", basketList.get(i).getCnt());
+                    jArray.put(sObject);
+                }
+                jsonObject.put("basketList", jArray);//배열을 넣음
                 flag = 0;
             }
 
@@ -205,8 +230,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
     public int changeStoreID(String admin_id){ // "jong4876" 값을 -> 1로
         int id = -1;
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(admin_id);
             String str = JT.execute("http://13.209.89.187:3443/changeID").get();
             Log.e("err",str);
@@ -218,9 +244,38 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+                Log.e("err","JSONTask Disconnect!");
+                JT.cancel(true);
         }
+
+
         return id;
     }
+    public String changeToAdminID(int storeID){ // 1 -> jong4876
+        String adminID = null;
+        JSONTask JT = new JSONTask();
+        try{
+
+            JT.setUser_id(storeID+"");
+            String str = JT.execute("http://13.209.89.187:3443changeToAdminID").get();
+
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                adminID = jo.getString("admin_id");
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
+        }
+        return adminID;
+    }
+
+
 
     /////////검색메서드
 
@@ -611,12 +666,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void insertCloth(Clothes inCloth, String admin_id){ // user_id에 해당하는 매장에 옷 추가(관리자)
+    public void insertCloth(Clothes inCloth, int store_id){ // user_id에 해당하는 매장에 옷 추가(관리자)
         try {
-            int id = JSONTask.getInstance().changeStoreID(admin_id);
+
             JSONTask JT = new JSONTask();
+            JT.setUser_id(store_id+"");
             JT.setCloth(inCloth);
-            JT.setUser_id(id+"");
             JT.execute("http://13.209.89.187:3443/insertCloth");// URL변경필수
             Log.e("err","cloth삽입 성공!!");
 
@@ -625,35 +680,28 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void insertReserve(Reserve reserve) { // user_id에 해당하는 매장에 옷 추가(관리자)
-        try {
+    public void insertReserve(Reserve reserve, ArrayList<BasketItem> basketList){ // user_id에 해당하는 매장에 옷 추가(관리자)
+        try {////
             JSONTask JT = new JSONTask();
-            JT.setReserve(reserve);
+            JT.setReserveBasket(reserve, basketList);
             JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
-            Log.e("err", "cloth삽입 성공!!");
-        } catch (Exception e) {
+            Log.e("err","order삽입 성공!!");
+
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public void insertBasketItems(ArrayList<BasketItem> basketItem, int reserve_ID) { // user_id에 해당하는 매장에 옷 추가(관리자)
-        JSONTask JT = new JSONTask();
+    public void insertOrder(Order order, ArrayList<BasketItem> basketList){ // user_id에 해당하는 매장에 옷 추가(관리자)
+        try {////
+            JSONTask JT = new JSONTask();
+            JT.setOrderBasket(order, basketList);
+            JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
+            Log.e("err","order삽입 성공!!");
 
-        for (BasketItem b : basketItem) {
-            try {
-                JT.setReserve_ID(reserve_ID);
-                JT.setBasketItem(b);
-                JT.execute("http://13.209.89.187:3443/insertBasket");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
-    }
-
-    public void insertReserveAndBasketItems(Reserve reserve, ArrayList<BasketItem> basketItems){// order basket 삽입한번에
-        insertReserve(reserve);
-        Reserve tmpOrder = getReserveBeforeReserveID(reserve.getUser_id(), reserve.getAdmin_id()).get(0);
-        insertBasketItems(basketItems, tmpOrder.getId());
     }
 
     /////////삭제메서드

@@ -188,7 +188,7 @@ public class ItemAddActivity extends AppCompatActivity {
                 price.setText("0 원");
                 selectCnt.setText("1");
 
-                JSONTask.getInstance().insertCloth(item, store.getAdmin_id());
+                JSONTask.getInstance().insertCloth(item, store.getId());
                 Toast.makeText(getApplicationContext(), "추가되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
