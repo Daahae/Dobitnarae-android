@@ -167,7 +167,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             // 연결되었으면.
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
             for (; ; ) {
                 // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.
                 String line = br.readLine();
@@ -177,6 +176,11 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
             br.close();
             conn.disconnect();
+            if (JSONTask.getInstance().getStatus() == AsyncTask.Status.RUNNING)
+            {
+                Log.e("err","JSONTask Disconnect!");
+                JSONTask.getInstance().cancel(true);
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -298,6 +302,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 store = new Store(id, name, admin_id,tel,intro, inform, address, sector, latitude, longitude, "", "");
                 storeList.add(store);//accountList 차례대로 삽입
             }
+
+
         }catch(Exception e){
             e.printStackTrace();
         }
