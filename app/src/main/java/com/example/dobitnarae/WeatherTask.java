@@ -30,7 +30,7 @@ public class WeatherTask extends AsyncTask<Void, Void, JSONObject>{
         Date date = new Date();
         SimpleDateFormat day = new SimpleDateFormat("yyyyMMdd");
         day.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        SimpleDateFormat time = new SimpleDateFormat("hh00");
+        SimpleDateFormat time = new SimpleDateFormat("HH00");
         time.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         todayDate = day.format(date);
         todayTime = time.format(date);
@@ -65,8 +65,6 @@ public class WeatherTask extends AsyncTask<Void, Void, JSONObject>{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Log.e("", receiveMsg);
 
         // 날씨 정보 가져오기
         JSONObject result = new JSONObject();

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveListRecyclerAdapter.ViewHolder> {
     Context context;
     ArrayList<Reserve> reserves;
+    SimpleDateFormat dateFormat;
 
     public ReserveListRecyclerAdapter(Context context, ArrayList<Reserve> reserves) {
         this.context = context;
         this.reserves = reserves;
+
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
     }
 
     @Override
@@ -41,7 +48,10 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
 
         holder.name.setText(store.getName());
-        holder.time.setText(item.getRentalDate());
+
+        String reserveTime = item.getRentalDate();
+        Log.e("" ," " + reserveTime);
+        holder.time.setText(reserveTime);
         holder.storeView.setId(item.getId());
         holder.storeView.setOnClickListener(new View.OnClickListener() {
             @Override
