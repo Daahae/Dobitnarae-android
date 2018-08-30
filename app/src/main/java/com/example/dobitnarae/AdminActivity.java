@@ -1,14 +1,10 @@
 package com.example.dobitnarae;
 
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -17,30 +13,29 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import java.util.List;
 import java.util.Objects;
 
 public class AdminActivity extends AppCompatActivity {
-     private Store store;
-     private ArrayList<Store> storeList = new ArrayList<Store>();
-     private ImageButton imageButton;
+     private ImageButton editButton;
      private Spinner spinner;
      private ImageButton refreshBtn;
      private StoreManagementFragment storeManagementFragment;
-    public AdminActivity() {
+     private ItemManagementFragment itemManagementFragment;
+     private OrderManagementFragment orderManagementFragment;
+     private ArrayList<Store> storeList;
+     private Store store;
 
-    }
-
+     private Context context;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -91,19 +86,22 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    imageButton.setVisibility(View.VISIBLE);
+                    editButton.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.GONE);
                     refreshBtn.setVisibility(View.GONE);
+                    storeManagementFragment.refresh();
                 }
                 else if (position == 1) {
-                    imageButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.GONE);
                     spinner.setVisibility(View.VISIBLE);
                     refreshBtn.setVisibility(View.GONE);
+                    itemManagementFragment.refresh();
                 }
                 else if(position == 2) {
-                    imageButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.GONE);
                     spinner.setVisibility(View.GONE);
                     refreshBtn.setVisibility(View.VISIBLE);
+                    orderManagementFragment.refresh();
                 }
             }
 
@@ -114,23 +112,28 @@ public class AdminActivity extends AppCompatActivity {
         });
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        // 특정 인덴트에서 store 키값을 받아와
-        // 서버로 통신 하여 `가게정보, 판매중인 옷` 데이터 받아옴
-        storeList = JSONTask.getInstance().getAdminStoreAll("jong4876");// JSON형태의 store정보들을 분류하여 arrayList에 저장
-        store = storeList.get(0);
+        this.storeList = JSONTask.getInstance().getAdminStoreAll("jong4876");// JSON형태의 store정보들을 분류하여 arrayList에 저장
+        this.store = storeList.get(0);
 
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(store.getName());
 
-        imageButton = findViewById(R.id.editButton);
+        editButton = findViewById(R.id.editButton);
         spinner = findViewById(R.id.edit_spinner);
         refreshBtn = findViewById(R.id.refreshButton);
     }
 
     @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View view = super.onCreateView(name, context, attrs);
+        this.context = context;
+        return view;
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
+        // 카메라 전환시 변경된 방향을 원래대로 바꿈
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
             newConfig.orientation = Configuration.ORIENTATION_PORTRAIT;
     }
@@ -169,27 +172,17 @@ public class AdminActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-
-            // 액티비티 만들어서 케이스 문에다가 넣어주면 됩니다
-            // 탭 이름은 values/string 에 들어있어요
-            // 아마 클래스 타입은 무조건 PlaceholderFragment 여야 할꺼같아요
             switch(position) {
-
                 case 0:
-                    storeManagementFragment = StoreManagementFragment.newInstance(0, store);
-                    return storeManagementFragment;
+                    return storeManagementFragment = StoreManagementFragment.newInstance(0, store);
                 case 1:
-                    return ItemManagementFragment.newInstance(1, store);
+                    return itemManagementFragment = ItemManagementFragment.newInstance(1, store);
                 case 2:
-                    return OrderManagementFragment.newInstance(2);
+                    return orderManagementFragment = OrderManagementFragment.newInstance(2, store);
                 default:
                     return null;
-
             }
         }
-
         @Override
         public int getCount() {
             // 탭 개수
@@ -203,11 +196,10 @@ public class AdminActivity extends AppCompatActivity {
 
         if (storeManagementFragment != null)
             ((StoreManagementFragment) storeManagementFragment).onActivityResult(requestCode, resultCode, data);
-
     }
 
-    public ImageButton getImageButton(){
-        return imageButton;
+    public ImageButton getEditButton(){
+        return editButton;
     }
 
     public Spinner getSpinner() {

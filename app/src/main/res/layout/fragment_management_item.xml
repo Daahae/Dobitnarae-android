@@ -17,17 +17,22 @@
         android:scrollbars="none"
         android:id="@+id/clothes_category"
         android:padding="5dp"
-        android:elevation="1dp">
-    </android.support.v7.widget.RecyclerView>
+        android:elevation="1dp"/>
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="80dp"
         android:orientation="horizontal"
-        android:id="@+id/recyclerview_clothes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_layout">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_clothes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>

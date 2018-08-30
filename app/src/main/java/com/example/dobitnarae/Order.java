@@ -8,29 +8,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Order implements Comparable<Order>{
-    private static ArrayList<Order> ncinstance = new ArrayList<Order>();
-    private static ArrayList<Order> ocinstance = new ArrayList<Order>();
-    private static Order instance = new Order();
     private int orderNo;
     private String userID;
     private String adminID;
     private int acceptStatus;
     private String orderDate;
-
-    public static synchronized Order getInstance(){
-        return instance;
-    }
-
-    public static synchronized ArrayList<Order> getncInstanceList(){
-        return ncinstance;
-    }
-
-    public static synchronized ArrayList<Order> getocInstanceList(){
-        return ocinstance;
-    }
-
-    public Order(){
-    }
 
     public Order(int orderNo, String userID, String adminID, int acceptStatus, String orderDate) {
         this.orderNo = orderNo;

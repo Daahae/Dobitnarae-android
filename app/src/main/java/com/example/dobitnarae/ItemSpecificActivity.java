@@ -74,7 +74,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
         index = intent.getIntExtra("clothesid", 0);
         store = (Store) intent.getSerializableExtra("store");
 
-        items = Clothes.getAllInstanceList();
+        items = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
         for (Clothes item: items) {
             if(item.getCloth_id() == index)
                 this.item = item;
@@ -185,11 +185,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
                 item.setPrice(Integer.parseInt(tmp2));
                 item.setCount(Integer.parseInt(selectCnt.getText().toString()));
 
-                items.get(items.indexOf(item)).setName(name.getText().toString());
-                items.get(items.indexOf(item)).setIntro(description.getText().toString());
-                items.get(items.indexOf(item)).setPrice(Integer.parseInt(tmp2));
-                items.get(items.indexOf(item)).setCount(Integer.parseInt(selectCnt.getText().toString()));
-                JSONTask.getInstance().updateCloth(items.get(items.indexOf(item)));
+                JSONTask.getInstance().updateCloth(item);
                 Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -199,7 +195,6 @@ public class ItemSpecificActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 여기에 삭제 메소드
-                items.remove(item);
                 JSONTask.getInstance().deleteCloth(item.getCloth_id());
                 Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();

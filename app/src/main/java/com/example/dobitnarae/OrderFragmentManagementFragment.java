@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,24 +21,34 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
-public class OrderFragmentManagementFragment extends Fragment {
-    private ArrayList<Order> items;
+public class OrderFragmentManagementFragment extends Fragment{
+    private ArrayList<Order> originItems, items;
     private ListView mListView = null;
     private ListViewAdapter mAdapter = null;
 
+    private Store store;
     private Basket basket;
 
-    public OrderFragmentManagementFragment() {
-        this.items = Order.getncInstanceList();
+    public OrderFragmentManagementFragment(Store store) {
+        this.store = store;
+        this.originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
+        this.items = new ArrayList<Order>();
+
+        for (Order item:originItems) {
+            if(item.getAcceptStatus()==0)
+                items.add(item);
+        }
+
         this.basket = Basket.getInstance();
     }
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    public static OrderFragmentManagementFragment newInstance(int sectionNumber) {
-        OrderFragmentManagementFragment fragment = new OrderFragmentManagementFragment();
+    public static OrderFragmentManagementFragment newInstance(int sectionNumber, Store store) {
+        OrderFragmentManagementFragment fragment = new OrderFragmentManagementFragment(store);
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -52,8 +65,16 @@ public class OrderFragmentManagementFragment extends Fragment {
         mAdapter = new ListViewAdapter(getContext());
         mListView.setAdapter(mAdapter);
 
-        // 내림차순 정렬된 순서로 데이터 삽입
-        //Collections.sort(items);
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                dataUpdate();
+                refresh();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         for (Order item:items) {
             mAdapter.addItem(item);
@@ -62,11 +83,13 @@ public class OrderFragmentManagementFragment extends Fragment {
     }
 
     private class ViewHolder {
-        public String mNo;
-        public ImageView imageView;
-        public TextView mBasket;
-        public TextView mDate;
         public LinearLayout linearLayout;
+        public String mNo;
+        public ImageView iv_main;
+        public TextView tv_basket;
+        public TextView tv_date;
+        public LinearLayout layout_accept;
+        public TextView tv_accept;
     }
 
     private class ListViewAdapter extends BaseAdapter {
@@ -102,10 +125,12 @@ public class OrderFragmentManagementFragment extends Fragment {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.component_listview_order, null);
 
-                holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
-                holder.mBasket = (TextView) convertView.findViewById(R.id.txt_basket);
-                holder.mDate = (TextView) convertView.findViewById(R.id.txt_date);
-                holder.linearLayout = (LinearLayout) convertView.findViewById(R.id.listView_order);
+                holder.linearLayout = (LinearLayout) convertView.findViewById(R.id.order_list_item);
+                holder.iv_main = (ImageView) convertView.findViewById(R.id.order_list_img);
+                holder.tv_basket = (TextView) convertView.findViewById(R.id.order_basket);
+                holder.tv_date = (TextView) convertView.findViewById(R.id.order_date);
+                holder.layout_accept = (LinearLayout) convertView.findViewById(R.id.order_accept_layout);
+                holder.tv_accept = (TextView) convertView.findViewById(R.id.order_accept_tv);
 
                 convertView.setTag(holder);
             }else{
@@ -117,24 +142,34 @@ public class OrderFragmentManagementFragment extends Fragment {
             // 서버에서 이미지 받아야함
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.gobchang);
 
-            //holder.mNo = mData.getOrderNo();
-            //holder.imageView.setBackground(drawable);
-            //holder.mBasket.setText(basket.getBasket().get(position).getClothes().getName() + " 외 " + basket.getBasket().get(position).getClothes().getCount()+ "벌");
-            //holder.mDate.setText(basket.getRentalDate());
-
             holder.mNo = mData.getOrderNo();
-            holder.imageView.setBackground(drawable);
-            holder.mBasket.setText(mData.getOrderBasket());
-            holder.mDate.setText(mData.getOrderDate());
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, OrderSpecificActivity.class);
                     intent.putExtra("order", position);
                     intent.putExtra("id", 0);
+                    intent.putExtra("store", store);
                     mContext.startActivity(intent);
                 }
             });
+            holder.iv_main.setBackground(drawable);
+            holder.tv_basket.setText(mData.getOrderBasket());
+            holder.tv_date.setText(mData.getOrderDate());
+
+            if(mData.getOrderAccept()==0) {
+                holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_gray);
+                holder.tv_accept.setText("승인 대기");
+                holder.tv_accept.setTextColor(getResources().getColor(R.color.contentColor));
+            } else if(mData.getOrderAccept()==1) {
+                holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_green);
+                holder.tv_accept.setText("승인");
+                holder.tv_accept.setTextColor(getResources().getColor(R.color.storeOpeningColor));
+            } else if(mData.getOrderAccept()==2) {
+                holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_red);
+                holder.tv_accept.setText("거절");
+                holder.tv_accept.setTextColor(getResources().getColor(R.color.storeClosingColor));
+            }
 
             return convertView;
         }
@@ -160,6 +195,8 @@ public class OrderFragmentManagementFragment extends Fragment {
             else
                 addInfo.setOrderBasket("비어있음");
             addInfo.setOrderDate(item.getOrderDate());
+            addInfo.setOrderAccept(item.getAcceptStatus());
+
             mListData.add(addInfo);
         }
 
@@ -180,10 +217,21 @@ public class OrderFragmentManagementFragment extends Fragment {
     }
 
     public void dataUpdate(){
-        items = Order.getncInstanceList();
+        originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
+        this.items = new ArrayList<Order>();
+
+        for (Order item:originItems) {
+             if(item.getAcceptStatus()==0)
+                items.add(item);
+        }
+
         mAdapter.clear();
         for (Order item:items)
             mAdapter.addItem(item);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void refresh(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

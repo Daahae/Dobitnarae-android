@@ -8,7 +8,7 @@ public class OrderInfoData implements Serializable{
     private String orderBasket;
     private String orderDate;
     private int orderPrice;
-
+    private int orderAccept;
 
     public String getOrderNo() {
         return orderNo;
@@ -48,5 +48,13 @@ public class OrderInfoData implements Serializable{
 
     public void setOrderPrice(int orderPrice) {
         this.orderPrice = orderPrice;
+    }
+
+    public int getOrderAccept() {
+        return orderAccept;
+    }
+
+    public void setOrderAccept(int orderAccept) {
+        this.orderAccept = orderAccept;
     }
 }

@@ -29,8 +29,14 @@
             android:label="@string/title_activity_admin"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".OrderSpecificActivity" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:taskAffinity="" />
+        <activity android:name=".OrderSpecificActivity"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""/>
         <activity
             android:name=".StoreActivity"
             android:label="@string/title_activity_store"
@@ -59,7 +65,10 @@
         <activity android:name=".MyPageActivity"
             android:windowSoftInputMode="adjustResize|adjustPan"/>
         <activity android:name=".ReservationInfoActivity" />
-        <activity android:name=".ItemAddActivity"/>
+        <activity android:name=".ItemAddActivity"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:taskAffinity="" />
     </application>
 
 </manifest>

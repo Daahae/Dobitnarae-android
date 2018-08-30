@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -80,6 +81,7 @@ public class StoreManagementFragment extends Fragment {
 
     public StoreManagementFragment(Store store) {
         this.store = store;
+
     }
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -131,7 +133,7 @@ public class StoreManagementFragment extends Fragment {
         }
 
         // 부모액티비티 툴바 요소인 이미지 버튼에 접근
-        btn_edit = ((AdminActivity)getActivity()).getImageButton();
+        btn_edit = ((AdminActivity)getActivity()).getEditButton();
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,13 +413,14 @@ public class StoreManagementFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         updateStoreByText();
                         JSONTask.getInstance().updateStore(store, store.getAdmin_id());
-                        setEditText(store);
+                        //setEditText(store);
                         Toast.makeText(getContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
                         for (EditText item:editTextArrayList) {
                             item.setFocusableInTouchMode(false);
                             item.setFocusable(false);
                             hideKeyboard(item);
                         }
+                        refresh();
                     }
                 });
         builder.setNegativeButton("아니오",
@@ -449,5 +452,9 @@ public class StoreManagementFragment extends Fragment {
         store.setInform(edit_info.getText().toString());
         store.setAddress(edit_address.getText().toString());
         store.setSector(Integer.parseInt(edit_sector.getText().toString()));
+    }
+
+    public void refresh(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

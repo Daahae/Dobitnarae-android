@@ -28,11 +28,10 @@ import java.util.Objects;
 public class OrderSpecificActivity extends AppCompatActivity {
     private Order item;
     private Order item2;
-    private ArrayList<Order> confirm;
-    private ArrayList<Order> nConfirm;
+    private ArrayList<Order> originItems, nConfirm, confirm;
     DecimalFormat dc;
     int index, id;
-    TextView totalPrice;
+    private TextView totalPrice;
 
     private LinearLayout layout;
 
@@ -46,11 +45,8 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
     private Basket basket;
 
-    public OrderSpecificActivity() {
-        this.basket = Basket.getInstance();
-        this.nConfirm = Order.getncInstanceList();
-        this.confirm = Order.getocInstanceList();
-    }
+    private Intent intent;
+    private Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +66,27 @@ public class OrderSpecificActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
+        intent = getIntent();
         index = (int) intent.getIntExtra("order", 0);
         id = (int) intent.getIntExtra("id", 0);
+        store = (Store) intent.getSerializableExtra("store");
+
+        this.originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
+        this.nConfirm = new ArrayList<Order>();
+        this.confirm = new ArrayList<Order>();
+        for (Order item:originItems) {
+            if(item.getAcceptStatus()==0)
+                nConfirm.add(item);
+            else
+                confirm.add(item);
+        }
+
+        this.basket = Basket.getInstance();
 
         layout = (LinearLayout) findViewById(R.id.layout_confirmornot);
 
         if(id==0) {
-            this.item = Order.getncInstanceList().get(index);
+            this.item = nConfirm.get(index);
 
             // 승인 버튼 클릭 시
             btnRegister = (LinearLayout) findViewById(R.id.order_clothes_register);
@@ -91,9 +100,6 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     btnReject.setEnabled(false);
                     btnRegister.setBackgroundResource(R.color.darkergrey);
                     btnReject.setBackgroundResource(R.color.darkergrey);
-
-                    confirm.add(item);
-                    nConfirm.remove(item);
                 }
             });
 
@@ -109,20 +115,11 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     btnReject.setEnabled(false);
                     btnRegister.setBackgroundResource(R.color.darkergrey);
                     btnReject.setBackgroundResource(R.color.darkergrey);
-
-                    confirm.add(item);
-                    nConfirm.remove(item);
                 }
             });
-
-            // 이미 승인된 목록에 대해서 승인, 거절버튼을 안보이게함
-            if(item.getAcceptStatus()!=0){
-                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_confirmornot);
-                linearLayout.setVisibility(View.GONE);
-            }
         }
         else if(id==1){
-            this.item2 = Order.getocInstanceList().get(index);
+            this.item2 = confirm.get(index);
             if(this.item2.getAcceptStatus()!=0)
                 layout.setVisibility(View.GONE);
         }

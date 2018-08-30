@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Clothes implements Serializable{
-    private static ArrayList<Clothes> allList = new ArrayList<Clothes>();
-    private static Clothes instance = new Clothes();
     private int cloth_id;
     private int store_id;
     private int category;
@@ -15,15 +13,8 @@ public class Clothes implements Serializable{
     private int count;
     private int sex;
 
-    public static synchronized Clothes getInstance(){
-        return instance;
+    public Clothes() {
     }
-
-    public static synchronized ArrayList<Clothes> getAllInstanceList(){
-        return allList;
-    }
-
-    public Clothes(){ }
 
     public int getCloth_id() { return this.cloth_id; }
     public int getStore_id() { return this.store_id; }

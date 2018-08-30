@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -21,11 +23,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,22 +66,24 @@ public class ItemAddActivity extends AppCompatActivity {
 
     private Context context;
 
-    private ArrayList<Store> storeList;
-    private ArrayList<Clothes> items;
     private Clothes item;
+
+    private ArrayList<String> categoryList;
+    private int categoryData;
+
+    private ArrayList<String> sexList;
+    private int sexData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-
         context = this;
 
-        items = Clothes.getAllInstanceList();
-        item = new Clothes();
+        Intent intent = getIntent();
+        store = (Store) intent.getSerializableExtra("store");
 
-        storeList = JSONTask.getInstance().getAdminStoreAll("jong4876");// JSON형태의 store정보들을 분류하여 arrayList에 저장
-        store = storeList.get(0);
+        item = new Clothes();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(myToolbar);
@@ -92,7 +101,6 @@ public class ItemAddActivity extends AppCompatActivity {
         titleName.setText(store.getName());
 
         // 이미지
-        // reserve_clothes_img
         imageView_store = findViewById(R.id.reserve_clothes_img);
         iv_width = imageView_store.getMaxWidth();
         iv_height = imageView_store.getMaxHeight();
@@ -138,6 +146,51 @@ public class ItemAddActivity extends AppCompatActivity {
         final EditText description = findViewById(R.id.reserve_clothes_introduction);
         description.setText(item.getIntro());
 
+        // 카테고리 선택
+        categoryList = new ArrayList<String>();
+        categoryList.add("상   의");
+        categoryList.add("하   의");
+        categoryList.add("모   자");
+        categoryList.add("신   발");
+        categoryList.add("장신구");
+        categoryData = 1;
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_clothes_category);
+
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, categoryList){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v =  super.getView(position, convertView, parent);
+                ((TextView) v).setTextSize(16);
+                ((TextView) v).setGravity(Gravity.CENTER);
+                return v;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v =  super.getDropDownView(position, convertView, parent);
+                ((TextView) v).setTextSize(20);
+                ((TextView) v).setGravity(Gravity.CENTER);
+                ((TextView) v).setBackgroundColor(Color.WHITE);
+                return v;
+            }
+        };
+        //adapter.setDropDownViewResource(R.layout.component_spin_dropdown);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                categoryData = position + 1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // 옷 가격
         dc = new DecimalFormat("###,###,###,###");
         final EditText price = findViewById(R.id.reserve_clothes_price);
@@ -169,27 +222,80 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
+        // 카테고리 선택
+        sexList = new ArrayList<String>();
+        sexList.add("남");
+        sexList.add("여");
+
+        final Spinner spinner_sex = (Spinner) findViewById(R.id.spinner_clothes_sex);
+
+        ArrayAdapter adapter_sex = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, sexList){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v =  super.getView(position, convertView, parent);
+                ((TextView) v).setTextSize(16);
+                ((TextView) v).setGravity(Gravity.CENTER);
+                return v;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v =  super.getDropDownView(position, convertView, parent);
+                ((TextView) v).setTextSize(20);
+                ((TextView) v).setGravity(Gravity.CENTER);
+                ((TextView) v).setBackgroundColor(Color.WHITE);
+                return v;
+            }
+        };
+
+        spinner_sex.setAdapter(adapter_sex);
+
+        spinner_sex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sexData = position + 1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         LinearLayout dataUpdate = (LinearLayout)findViewById(R.id.order_clothes_basket);
         dataUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 여기에 Clothes 추가 메소드
                 String tmp = deleteDC(price.getText().toString());
                 String tmp2 = deleteWon(tmp);
 
-                // 카테고리1~5
-                item = new Clothes(0, store.getId(), 1, name.getText().toString(), description.getText().toString(), Integer.parseInt(tmp2), Integer.parseInt(selectCnt.getText().toString()), 0);
+                if(name.getText().toString().getBytes().length <= 0){
+                    Toast.makeText(getApplicationContext(), "에러: 이름을 입력하세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    if(description.getText().toString().getBytes().length <= 0){
+                        Toast.makeText(getApplicationContext(), "에러: 설명을 입력하세요", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if(Integer.parseInt(tmp2) <= 0){
+                            Toast.makeText(getApplicationContext(), "에러: 올바른 가격을 입력하세요", Toast.LENGTH_SHORT).show();
+                        } else {
+                            item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(tmp2), Integer.parseInt(selectCnt.getText().toString()), sexData);
 
-                items.add(item);
+                            // 데이터 초기화
+                            name.setText("");
+                            description.setText("");
+                            price.setText("0 원");
+                            selectCnt.setText("1");
+                            spinner_sex.setSelection(0);
+                            sexData = 1;
+                            spinner.setSelection(0);
+                            categoryData = 1;
 
-                // 데이터 초기화
-                name.setText("");
-                description.setText("");
-                price.setText("0 원");
-                selectCnt.setText("1");
-
-                JSONTask.getInstance().insertCloth(item, store.getAdmin_id());
-                Toast.makeText(getApplicationContext(), "추가되었습니다.", Toast.LENGTH_SHORT).show();
+                            JSONTask.getInstance().insertCloth(item, store.getId());
+                            Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
             }
         });
 

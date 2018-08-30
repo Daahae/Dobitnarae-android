@@ -18,4 +18,5 @@
     <color name="appMainColor">#ff8484</color>
     <color name="storeOpeningColor">#339738</color>
     <color name="lineColor">#dcdcdc</color>
+    <color name="storeClosingColor">#f94c4c</color>
 </resources>

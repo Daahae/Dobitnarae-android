@@ -1,5 +1,6 @@
 package com.example.dobitnarae;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,31 +21,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+@SuppressLint("ValidFragment")
 public class OrderManagementFragment extends Fragment {
     private OrderFragmentManagementFragment fm1;
     private OrderFragmentManagementFragment2 fm2;
 
-    private ArrayList<Order> orderArrayList;
-    private ArrayList<Order> orderArrayList2;
-    private ArrayList<Order> orderArrayList3;
-
+    private Store store;
     private ImageButton refreshBtn;
 
-    public OrderManagementFragment() {
-        orderArrayList = JSONTask.getInstance().getOrderAdminAll("jong4876");
-        orderArrayList2 = Order.getncInstanceList();
-        orderArrayList3 = Order.getocInstanceList();
-
-        int ITEM_SIZE = orderArrayList.size();
-        Order[] item = new Order[ITEM_SIZE];
-        for(int i=0; i<ITEM_SIZE; i++){
-            item[i] = orderArrayList.get(i);
-            if(item[i].getAcceptStatus()==0){
-                orderArrayList2.add(item[i]);
-            } else {
-                orderArrayList3.add(item[i]);
-            }
-        }
+    public OrderManagementFragment(Store store) {
+        this.store = store;
     }
 
     /**
@@ -63,8 +49,8 @@ public class OrderManagementFragment extends Fragment {
     private ViewPager mViewPager;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    public static OrderManagementFragment newInstance(int sectionNumber) {
-        OrderManagementFragment fragment = new OrderManagementFragment();
+    public static OrderManagementFragment newInstance(int sectionNumber, Store store) {
+        OrderManagementFragment fragment = new OrderManagementFragment(store);
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -105,6 +91,10 @@ public class OrderManagementFragment extends Fragment {
             public void onPageSelected(int position) {
                 fm1.dataUpdate();
                 fm2.dataUpdate();
+                if(position == 0)
+                    fm1.refresh();
+                else if(position == 1)
+                    fm2.refresh();
             }
 
             @Override
@@ -134,17 +124,6 @@ public class OrderManagementFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    // 프래그먼트 재활용
-    private void setChildFragment(Fragment child) {
-        FragmentTransaction childFt = getChildFragmentManager().beginTransaction();
-
-        if (!child.isAdded()) {
-            childFt.replace(R.id.container, child);
-            childFt.addToBackStack(null);
-            childFt.commit();
-        }
-    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -160,11 +139,9 @@ public class OrderManagementFragment extends Fragment {
 
             switch(position) {
                 case 0:
-                    fm1 = OrderFragmentManagementFragment.newInstance(0);
-                    return fm1;
+                    return fm1 = OrderFragmentManagementFragment.newInstance(0, store);
                 case 1:
-                    fm2 = OrderFragmentManagementFragment2.newInstance(1);
-                    return fm2;
+                    return fm2 = OrderFragmentManagementFragment2.newInstance(1, store);
                 default:
                     return null;
             }
@@ -175,5 +152,9 @@ public class OrderManagementFragment extends Fragment {
             // 탭 개수
             return 2;
         }
+    }
+
+    public void refresh(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

@@ -1,64 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/order_list_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
-    android:layout_marginHorizontal="20dp"
-    android:background="@android:color/background_light"
-    android:orientation="vertical"
-    android:id="@+id/listView_order">
-
+    android:layout_height="100dp"
+    android:background="@drawable/border_bottom_layout_item"
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/layout_confirm"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/order_list_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:fitsSystemWindows="true" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:paddingLeft="10dp"
+        android:weightSum="1">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="30dp"
+            android:layout_weight="0.4">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="0.8" />
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/order_basket"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txt_basket"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="두빛 상의 외 n벌"
-                        android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txt_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="2018-08-14"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
+                android:gravity="bottom"
+                android:text="장바구니"
+                android:textColor="#000"
+                android:textSize="18dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="5dip"
-            android:background="@drawable/upper_shadow_todo"></View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="0.3">
 
+            <TextView
+                android:id="@+id/order_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="대여날짜"
+                android:textColor="@color/contentColor"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="0.3">
+
+            <LinearLayout
+                android:id="@+id/order_accept_layout"
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:background="@drawable/border_all_layout_item_green"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/order_accept_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="영업중"
+                    android:textColor="@color/storeOpeningColor"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

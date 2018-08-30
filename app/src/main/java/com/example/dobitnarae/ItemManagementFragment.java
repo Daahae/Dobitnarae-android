@@ -7,54 +7,38 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class ItemManagementFragment extends Fragment {
-    ArrayList<Clothes> originItems, originItems2, items;
-    ItemListRecyclerAdapter mAdapter;
-    Store store;
-
+public class ItemManagementFragment extends Fragment{
+    private ArrayList<Clothes> originItems, items;
+    private ItemListRecyclerAdapter mAdapter;
+    private ItemCategoryListRecyclerAdapter cAdapter;
+    private Store store;
     public ArrayList<Clothes> deleteList;
 
     private ArrayAdapter<String> spinnerAdapter;
     private ArrayList<String> dataList;
 
     public ItemManagementFragment(Store store) {
-        this.originItems = JSONTask.getInstance().getClothesAll("jong4876");
-        this.originItems2 = Clothes.getAllInstanceList();
-        originItems2.clear();
-        this.items = new ArrayList<Clothes>();
-        for (Clothes item:originItems) {
-            originItems2.add(item);
-            items.add(item);
-        }
         this.store = store;
-
+        this.originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
+        this.items = getClothesList(0);
         deleteList = new ArrayList<Clothes>();
     }
 
@@ -70,15 +54,14 @@ public class ItemManagementFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_store, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_item, container, false);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_clothes);
         LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        //옷추가
-        mAdapter = new ItemListRecyclerAdapter(getActivity(), items, store, R.layout.fragment_store){
+
+        mAdapter = new ItemListRecyclerAdapter(getActivity(), items, store, R.layout.fragment_store_clothes_list){
             @Override
             public void onBindViewHolder(final ViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
@@ -104,27 +87,24 @@ public class ItemManagementFragment extends Fragment {
         };
         recyclerView.setAdapter(mAdapter);
 
-        // 옷 종류 선택 메뉴
-        LinearLayout clothesCategory = (LinearLayout) rootView.findViewById(R.id.clothes_category);
+        RecyclerView recyclerViewCategory = (RecyclerView) rootView.findViewById(R.id.clothes_category);
+        LinearLayoutManager layoutManagerCategory = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewCategory.setLayoutManager(layoutManagerCategory);
 
-        final String category[] = {"전체", "상의", "하의", "모자", "신발", "장신구"};
-        ImageView[] imageViews = new ImageView[Constant.category_cnt];
+        cAdapter = new ItemCategoryListRecyclerAdapter(getContext(), originItems, mAdapter);
+        recyclerViewCategory.setAdapter(cAdapter);
 
-        for(int i = 0; i< Constant.category_cnt; i++) {
-            imageViews[i] = new ImageView(getContext());
-            imageViews[i].setImageResource(R.drawable.ic_clothes_list);
-            imageViews[i].setId(i);
-            imageViews[i].setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-            imageViews[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int id = v.getId();
-                    items = getClothesList(id);
-                    mAdapter.setClothes(items);
-                }
-            });
-            clothesCategory.addView(imageViews[i]);
-        }
+        // 당겨서 새로고침
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                dataRefresh();
+
+                // 새로고침 완료
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         // 스피너 드롭다운
         dataList = new ArrayList<String>();
@@ -169,33 +149,29 @@ public class ItemManagementFragment extends Fragment {
                 if(spinner.getItemIdAtPosition(position) == 1){
                     // 추가
                     Intent intent = new Intent(getContext(), ItemAddActivity.class);
+                    intent.putExtra("store", store);
                     startActivity(intent);
-
+                    refresh();
                 } else if(spinner.getItemIdAtPosition(position) == 2){
                     // 삭제
                     if(deleteList.size()!=0) {
-                        originItems2 = Clothes.getAllInstanceList();
-                        for (Clothes tmp : deleteList
-                                ) {
-                            originItems2.remove(tmp);
+                        originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
+                        for (Clothes tmp : deleteList) {
+                            originItems.remove(tmp);
                             JSONTask.getInstance().deleteCloth(tmp.getCloth_id());
                         }
                         items = originItems;
                         mAdapter.notifyDataSetChanged();
                         Toast.makeText(getActivity(), deleteList.size() + "개 항목이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                         deleteList.clear();
+                        refresh();
                     } else {
                         Toast.makeText(getActivity(), "삭제할 항목을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     }
                 } else if(spinner.getItemIdAtPosition(position) == 3) {
                     // 새로고침
-                    originItems2 = Clothes.getAllInstanceList();
-                    items = getClothesList(0);
-                    mAdapter.setClothes(items);
-                    mAdapter.notifyDataSetChanged();
-                    Toast.makeText(getActivity(), "새로고침 되었습니다.", Toast.LENGTH_SHORT).show();
+                    dataRefresh();
                 }
-
             }
 
             @Override
@@ -203,21 +179,33 @@ public class ItemManagementFragment extends Fragment {
 
             }
         });
-
         return rootView;
     }
 
     public ArrayList<Clothes> getClothesList(int category){
         ArrayList<Clothes> tmp = new ArrayList<>();
-        // 분류: 전체
         if(category == 0)
-            return originItems2;
+            return originItems;
 
-        for(int i=0; i<originItems2.size(); i++){
-            Clothes item = originItems2.get(i);
+        for(int i=0; i<originItems.size(); i++){
+            Clothes item = originItems.get(i);
             if(item.getCategory() == category)
                 tmp.add(item);
         }
         return tmp;
+    }
+
+    public void refresh(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
+    public void dataRefresh(){
+        // 새로고침
+        originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
+        items = getClothesList(0);
+        mAdapter.setClothes(items);
+        mAdapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), "새로고침 되었습니다.", Toast.LENGTH_SHORT).show();
+        refresh();
     }
 }
