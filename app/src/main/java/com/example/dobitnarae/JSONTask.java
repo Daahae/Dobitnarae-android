@@ -442,7 +442,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         try{
             JSONTask JT = new JSONTask();
             JT.setUser_id(customer_id);
-            String str = JT.execute("http://192.168.219.104:3443/reserveCustomer").get();
+            String str = JT.execute("http://13.209.89.187:3443/reserveCustomer").get();
             JSONArray ja = new JSONArray(str);
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
@@ -640,7 +640,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         try {////
             JSONTask JT = new JSONTask();
             JT.setOrderBasket(order, basketList);
-            JT.execute("http://192.168.219.104:3443/insertReserve");// URL변경필수
+            JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
             Log.e("err","order삽입 성공!!");
 
         }catch(Exception e){
