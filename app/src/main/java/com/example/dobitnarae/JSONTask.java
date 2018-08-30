@@ -494,7 +494,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         try{
             JSONTask JT = new JSONTask();
             JT.setReserve_ID(reserve_ID);
-            String str = JT.execute("http://192.168.100.175:3443/basketCustomer").get();
+            String str = JT.execute("http://13.209.89.187:3443/basketCustomer").get();
 
             JSONArray ja = new JSONArray(str);
             for(int i=0; i<ja.length(); i++){
