@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
+    tools:context=".RegisterActivity"
     android:background="@color/appMainColor"
     android:focusable="true"
     android:focusableInTouchMode="true">
@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/login_form"
-        android:layout_marginBottom="80dp"
-        android:orientation="vertical">
+        android:layout_above="@+id/register_form"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,13 +39,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/login_form"
+        android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="15dp">
+        android:gravity="center">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,16 +52,15 @@
             android:gravity="center"
             android:layout_marginBottom="10dp">
             <EditText
-                android:id="@+id/login_id"
+                android:id="@+id/register_id"
                 android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:paddingLeft="15dp"
                 android:gravity="center_vertical"
                 android:background="#fff"
-                android:hint="ID" />
+                android:hint="아이디" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,26 +68,47 @@
             android:gravity="center"
             android:layout_marginBottom="10dp">
             <EditText
-                android:id="@+id/login_password"
+                android:id="@+id/register_password"
                 android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:paddingLeft="15dp"
                 android:gravity="center_vertical"
-                android:inputType="textPassword"
                 android:background="#fff"
-                android:hint="Password" />
+                android:hint="비밀번호" />
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/login_form"
-        android:layout_centerHorizontal="true"
-        android:weightSum="1">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+            <EditText
+                android:id="@+id/register_password_confirm"
+                android:layout_weight="0.65"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:gravity="center_vertical"
+                android:background="#fff"
+                android:hint="비밀번호 확인" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+            <EditText
+                android:id="@+id/register_phone"
+                android:layout_weight="0.65"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:gravity="center_vertical"
+                android:background="#fff"
+                android:hint="전화번호" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,32 +129,10 @@
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:textColor="#fff"
-                    android:text="로그인" />
+                    android:text="회원가입" />
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/login_signup"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textColor="@color/titleColor"
-                android:text="회원가입" />
-        </LinearLayout>
-
-        <CheckBox
-            android:visibility="invisible"
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginTop="10dp"
-            android:text="Remember login" />
     </LinearLayout>
+
 </RelativeLayout>

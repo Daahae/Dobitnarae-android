@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class MyPageFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -43,6 +46,9 @@ public class MyPageFragment extends Fragment {
         phoneET = (EditText)rootView.findViewById(R.id.myPage_phone);
 
         account = Account.getInstance();
+
+        TextView idTextView = (TextView)rootView.findViewById(R.id.myPage_id);
+        idTextView.setText(account.getId());
 
         password = account.getPw();
         name = account.getName();

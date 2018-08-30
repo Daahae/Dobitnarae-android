@@ -10,6 +10,7 @@ import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText IDTxt;
     private EditText PasswordTxt;
-    private Button LoginBtn;
+    private LinearLayout LoginBtn, signUp;
     private CheckBox checkBox;
     private ArrayList<Account> accountList = new ArrayList<>();
     private SharedPreferences appData;
@@ -36,10 +37,19 @@ public class LoginActivity extends AppCompatActivity {
         appData = getSharedPreferences("appData", MODE_PRIVATE);
         load();
 
-        IDTxt = (EditText) findViewById(R.id.IDTxt);
-        PasswordTxt = (EditText) findViewById(R.id.PASSWORD);
-        LoginBtn = (Button) findViewById(R.id.Login);
+        IDTxt = (EditText) findViewById(R.id.login_id);
+        PasswordTxt = (EditText) findViewById(R.id.login_password);
+        LoginBtn = (LinearLayout) findViewById(R.id.login_btn);
         checkBox = (CheckBox) findViewById(R.id.checkBox);
+        signUp = (LinearLayout)findViewById(R.id.login_signup);
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //로그인정보가 있을시
         if (saveLoginData) {
