@@ -1,6 +1,7 @@
 package com.example.dobitnarae;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -147,11 +148,19 @@ public class BasketActivity extends AppCompatActivity {
                 // TODO
                 // 서버로 선택한 옷, 사용자 정보, 예약 날짜 및 시간 전송
                 date += " " + hourOfDay + ":" + minute + ":" + second;
+            }
+        });
+
+        tpd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
                 JSONTask jt = JSONTask.getInstance();
                 Basket basket = Basket.getInstance();
                 Account account = Account.getInstance();
+                String adminID = jt.changeToAdminID(basket.getBasket().get(0).getClothes().getStore_id());
 
-                Reserve reserve = new Reserve(0, account.getId(), "jong4876", 0, date);
+                Reserve reserve = new Reserve(basket.getSelectedStoreID(), account.getId(),
+                        adminID, 0, date);
                 jt.insertReserve(reserve, basket.getBasket());
 
                 basket.clearBasket();
