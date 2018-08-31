@@ -16,13 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".AdminActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -62,13 +56,23 @@
         </provider>
 
         <activity android:name=".BasketActivity" />
-        <activity android:name=".MyPageActivity"
-            android:windowSoftInputMode="adjustResize|adjustPan"/>
+        <activity
+            android:name=".MyPageActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".ReservationInfoActivity" />
         <activity android:name=".ItemAddActivity"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:taskAffinity="" />
+        <activity android:name=".ItemAddActivity" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UploadImgActivity"></activity>
     </application>
 
 </manifest>

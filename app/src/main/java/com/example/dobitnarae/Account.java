@@ -3,6 +3,7 @@ package com.example.dobitnarae;
 public class Account {
     private String id;
     private String name;
+    private String pw;  // 삭제
     private String phone;
     private int privilege;
 
@@ -25,9 +26,10 @@ public class Account {
         this.privilege = Constant.CLIENT;
     }
 
-    public Account(String id, String name, String tel, int privilege) {
+    public Account(String id,String pw, String name, String tel, int privilege) {
         this.id = id;
         this.name = name;
+        this.pw = pw;
         this.phone = tel;
         this.privilege = privilege;
     }
@@ -44,6 +46,10 @@ public class Account {
         return name;
     }
 
+    public String getPw() {
+        return pw;
+    }
+
     public int getPrivilege() {
         return privilege;
     }
@@ -58,6 +64,10 @@ public class Account {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setPw(String pw){
+        this.pw = pw;
     }
 
     public void setName(String name) {
