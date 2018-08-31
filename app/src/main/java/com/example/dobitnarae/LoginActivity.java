@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout LoginBtn, signUp;
     private CheckBox checkBox;
     private ArrayList<Account> accountList = new ArrayList<>();
-    private SharedPreferences appData;
+    public static SharedPreferences appData;
 
 
     @Override
@@ -56,6 +56,14 @@ public class LoginActivity extends AppCompatActivity {
             IDTxt.setText(id);
             PasswordTxt.setText(pwd);
             checkBox.setChecked(saveLoginData);
+
+            String ID = IDTxt.getText().toString();
+            String Password = PasswordTxt.getText().toString();
+            JSONTask.getInstance().getLoginResult(ID, Password);
+            save();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
+            startActivityForResult(intent, 1000);
         }
 
         LoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,9 +77,10 @@ public class LoginActivity extends AppCompatActivity {
                     String Password = PasswordTxt.getText().toString();
 
                     if (JSONTask.getInstance().getLoginResult(ID, Password) == 1) {
+                        checkBox.setChecked(true);
                         save();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra("ID", IDTxt.getText().toString());
+                        //intent.putExtra("ID", IDTxt.getText().toString());
                         Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
                         startActivityForResult(intent, 1000);
 
@@ -106,5 +115,14 @@ public class LoginActivity extends AppCompatActivity {
             id = appData.getString("ID", "");
             pwd = appData.getString("PWD", "");
 
-    }
+         }
+
+         public static void setLogOut(){
+            SharedPreferences.Editor editor = appData.edit();
+            editor.clear();
+            editor.commit();
+         }
+
+
+
 }

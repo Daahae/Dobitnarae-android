@@ -121,6 +121,8 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             String userID = JSONTask.getInstance().getLoginID();
             orderList = JSONTask.getInstance().getOrderCustomerAll("su123");
             Order order = orderList.get(0);
+            LoginActivity.setLogOut();
+
             /*
             clothesList = JSONTask.getInstance().getClothesAll("jong4876");
             Clothes clothes = clothesList.get(0);
@@ -134,8 +136,8 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             basketList.add(basketItem2);
 
             JSONTask.getInstance().insertOrder(order, basketList);
-            */
 
+*/
 
 
 
