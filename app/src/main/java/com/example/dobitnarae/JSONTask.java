@@ -283,8 +283,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Store> storeList = new ArrayList<Store>();
         Store store;
 
+        JSONTask JT = new JSONTask();
         try {
-            JSONTask JT = new JSONTask();
             JT.setUser_id(user_id);
             String str = JT.execute("http://13.209.89.187:3443/store").get();
             JSONArray ja = new JSONArray(str);
@@ -308,6 +308,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
         return storeList;
     }
@@ -353,10 +356,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
         Clothes clothes;
 
+        JSONTask JT = new JSONTask();
         try{
             int id = JSONTask.getInstance().changeStoreID(admin_id);// store클래스의 id값으로 변환 1,2,3,4~~
 
-            JSONTask JT = new JSONTask();
             JT.setUser_id(id+"");
             String str = JT.execute("http://13.209.89.187:3443/clothes").get();
 
@@ -376,6 +379,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
         return clothesList;
     }
@@ -464,8 +470,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Order> orderList = new ArrayList<Order>();
         Order order;
 
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
             JT.setUser_id(admin_id);
             String str = JT.execute("http://13.209.89.187:3443/reserveAdmin").get();
             JSONArray ja = new JSONArray(str);
@@ -482,6 +488,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
         return orderList;
     }
@@ -566,8 +575,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     }
 
     public void updateStore(Store upStore, String admin_id){ //바꿀 값이 들어 있는 store 클래스와, 바꿀 store의 아이디 전달
+        JSONTask JT = new JSONTask();
         try {
-            JSONTask JT = new JSONTask();
             JT.setUpStore(upStore);
             JT.setUser_id(admin_id);
             JT.execute("http://13.209.89.187:3443/updateStore");
@@ -575,6 +584,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
     }
     public void updateCloth(Clothes upClothes){
@@ -623,9 +635,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     }
 
     public void insertCloth(Clothes inCloth, int store_id){ // user_id에 해당하는 매장에 옷 추가(관리자)
+        JSONTask JT = new JSONTask();
         try {
 
-            JSONTask JT = new JSONTask();
             JT.setUser_id(store_id+"");
             JT.setCloth(inCloth);
             JT.execute("http://13.209.89.187:3443/insertCloth");// URL변경필수
@@ -633,6 +645,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
     }
 
@@ -669,15 +684,18 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
     /////////삭제메서드
     public void deleteCloth(int clothID){ // user_id에 해당하는 매장에 옷 삭제(관리자)
+        JSONTask JT = new JSONTask();
         try {
 
-            JSONTask JT = new JSONTask();
 
             JT.setUser_id(""+clothID);
             JT.execute("http://13.209.89.187:3443/deleteCloth");// URL변경필수
             Log.e("err","cloth삭제 성공");
         }catch(Exception e) {
             e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
     }
     public void deleteOrder(int orderNo){ // user_id에 해당하는 매장에 옷 삭제(관리자)

@@ -150,6 +150,8 @@ public class StoreManagementFragment extends Fragment {
             }
         });
 
+        Bitmap bm = ServerImg.getStoreImage(store.getId());
+        imageView_store.setImageBitmap(bm);
 
         iv_width = imageView_store.getMaxWidth();
         iv_height = imageView_store.getMaxHeight();
