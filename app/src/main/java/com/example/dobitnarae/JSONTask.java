@@ -97,6 +97,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         StringBuilder jsonHtml = new StringBuilder();
         try {
             // 연결 url 설정
+
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("user_id", user_id);
             jsonObject.accumulate("admin_id", admin_id);
@@ -104,103 +106,112 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             jsonObject.accumulate("reserve_ID", reserve_ID);
             jsonObject.accumulate("acceptStatus", acceptStatus);
 
-            if(flag == 1) {//updateStore를 위한 서버에 데이터 전송
 
-                jsonObject.accumulate("name", upStore.getName());//update를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("admin_id", upStore.getAdmin_id());
-                jsonObject.accumulate("tel", upStore.getTel());
-                jsonObject.accumulate("intro", upStore.getIntro());
-                jsonObject.accumulate("inform", upStore.getInform());
-                jsonObject.accumulate("address", upStore.getAddress());
-                jsonObject.accumulate("sector", upStore.getSector());
-                jsonObject.accumulate("longitude", upStore.getLongitude());
-                jsonObject.accumulate("latitude", upStore.getLatitude());
-                flag = 0;
-            }
+                if (flag == 1) {//updateStore를 위한 서버에 데이터 전송
 
-            if(flag == 2) {//insertCloth
-                Log.e("err",inCloth.getName());
-                jsonObject.accumulate("cloth_ID", inCloth.getCloth_id());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("store_ID", inCloth.getStore_id());
-                jsonObject.accumulate("category", inCloth.getCategory());
-                jsonObject.accumulate("name", inCloth.getName());
-                jsonObject.accumulate("intro", inCloth.getIntro());
-                jsonObject.accumulate("price", inCloth.getPrice());
-                jsonObject.accumulate("count", inCloth.getCount());
-                jsonObject.accumulate("sex", inCloth.getSex());
-                flag = 0;
-            }
+                    jsonObject.accumulate("name", upStore.getName());//update를 위해 서버로 보낼 데이터들 req.on
+                    jsonObject.accumulate("admin_id", upStore.getAdmin_id());
+                    jsonObject.accumulate("tel", upStore.getTel());
+                    jsonObject.accumulate("intro", upStore.getIntro());
+                    jsonObject.accumulate("inform", upStore.getInform());
+                    jsonObject.accumulate("address", upStore.getAddress());
+                    jsonObject.accumulate("sector", upStore.getSector());
+                    jsonObject.accumulate("longitude", upStore.getLongitude());
+                    jsonObject.accumulate("latitude", upStore.getLatitude());
 
-            if(flag == 3) {//insertOrder, updateOrder
-                jsonObject.accumulate("user_id", order.getUserID());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("admin_id", order.getAdminID());
-                jsonObject.accumulate("accept", order.getAcceptStatus());
-
-                JSONArray jArray = new JSONArray();// 배열을 위해 선언
-                for(int i=0; i< basketList.size(); i++)
-                {
-                    JSONObject sObject = new JSONObject();
-                    sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
-                    sObject.put("count", basketList.get(i).getCnt());
-                    jArray.put(sObject);
                 }
-                jsonObject.put("basketList", jArray);//배열을 넣음
 
-                flag = 0;
-            }
-            if(flag == 4) {//insertAccount, updateAccount
-                jsonObject.accumulate("ID", account.getId());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("PW", account.getPw());
-                jsonObject.accumulate("name", account.getName());
-                jsonObject.accumulate("HP", account.getPhone());
-                jsonObject.accumulate("priv", account.getPrivilege());
-                flag = 0;
-                return null;
-            }
-
-            if(flag == 5) {//insertBasket, deleteBasket
-                jsonObject.accumulate("cloth_ID", basketItem.getClothes().getCloth_id());
-                jsonObject.accumulate("count", basketItem.getCnt());
-                flag = 0;
-            }
-            if(flag == 6) {//insertOrder, updateOrder
-                jsonObject.accumulate("user_id", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("admin_id", reserve.getAdmin_id());
-                jsonObject.accumulate("accept", reserve.getAcceptStatus());
-                jsonObject.accumulate("time",reserve.getRentalDate());
-
-                JSONArray jArray = new JSONArray();// 배열을 위해 선언
-                for(int i=0; i< basketList.size(); i++)
-                {
-                    JSONObject sObject = new JSONObject();
-                    sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
-                    sObject.put("count", basketList.get(i).getCnt());
-                    jArray.put(sObject);
+                if (flag == 2) {//insertCloth
+                    Log.e("err", inCloth.getName());
+                    jsonObject.accumulate("cloth_ID", inCloth.getCloth_id());//insert를 위해 서버로 보낼 데이터들 req.on
+                    jsonObject.accumulate("store_ID", inCloth.getStore_id());
+                    jsonObject.accumulate("category", inCloth.getCategory());
+                    jsonObject.accumulate("name", inCloth.getName());
+                    jsonObject.accumulate("intro", inCloth.getIntro());
+                    jsonObject.accumulate("price", inCloth.getPrice());
+                    jsonObject.accumulate("count", inCloth.getCount());
+                    jsonObject.accumulate("sex", inCloth.getSex());
                 }
-                jsonObject.put("basketList", jArray);//배열을 넣음
+
+                if (flag == 3) {//insertOrder, updateOrder
+                    jsonObject.accumulate("user_id", order.getUserID());//insert를 위해 서버로 보낼 데이터들 req.on
+                    jsonObject.accumulate("admin_id", order.getAdminID());
+                    jsonObject.accumulate("accept", order.getAcceptStatus());
+
+                    JSONArray jArray = new JSONArray();// 배열을 위해 선언
+                    for (int i = 0; i < basketList.size(); i++) {
+                        JSONObject sObject = new JSONObject();
+                        sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
+                        sObject.put("count", basketList.get(i).getCnt());
+                        jArray.put(sObject);
+                    }
+                    jsonObject.put("basketList", jArray);//배열을 넣음
+
+
+                }
+                if (flag == 4) {//insertAccount, updateAccount
+                    jsonObject.accumulate("ID", account.getId());//insert를 위해 서버로 보낼 데이터들 req.on
+                    jsonObject.accumulate("PW", account.getPw());
+                    jsonObject.accumulate("name", account.getName());
+                    jsonObject.accumulate("HP", account.getPhone());
+                    jsonObject.accumulate("priv", account.getPrivilege());
+
+                }
+
+                if (flag == 5) {//insertBasket, deleteBasket
+                    jsonObject.accumulate("cloth_ID", basketItem.getClothes().getCloth_id());
+                    jsonObject.accumulate("count", basketItem.getCnt());
+
+                }
+                if (flag == 6) {//insertOrder, updateOrder
+                    jsonObject.accumulate("user_id", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
+                    jsonObject.accumulate("admin_id", reserve.getAdmin_id());
+                    jsonObject.accumulate("accept", reserve.getAcceptStatus());
+                    jsonObject.accumulate("time", reserve.getRentalDate());
+
+                    JSONArray jArray = new JSONArray();// 배열을 위해 선언
+                    for (int i = 0; i < basketList.size(); i++) {
+                        JSONObject sObject = new JSONObject();
+                        sObject.put("cloth_id", basketList.get(i).getClothes().getCloth_id());
+                        sObject.put("count", basketList.get(i).getCnt());
+                        jArray.put(sObject);
+                    }
+                    jsonObject.put("basketList", jArray);//배열을 넣음
+                }
+
+
+
+                URL url = new URL(urls[0]);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();//이거문제
+
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
+                conn.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
+                conn.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
+                conn.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
+                conn.connect();
+
+                //서버로 보내기위해서 스트림 만듬
+                OutputStream outStream = conn.getOutputStream();
+                //버퍼를 생성하고 넣음
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
+                writer.write(jsonObject.toString());
+                writer.flush();
+                writer.close();//버퍼를 받아줌
+                //////////서버로 데이터 전송
+
+
+
+
+/*
+            if(flag !=0){// insert update delete는 받아올 필요없음 고로 건너뜀
                 flag = 0;
-
+                conn.getInputStream();
+                conn.disconnect();
+                return jsonHtml.toString();
             }
+*/
 
-
-            URL url = new URL(urls[0]);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();//이거문제
-
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
-            conn.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
-            conn.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
-            conn.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
-            conn.connect();
-
-            //서버로 보내기위해서 스트림 만듬
-            OutputStream outStream = conn.getOutputStream();
-            //버퍼를 생성하고 넣음
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-            writer.write(jsonObject.toString());
-            writer.flush();
-            writer.close();//버퍼를 받아줌
-            //////////서버로 데이터 전송
 
             // 연결되었으면.
 
@@ -208,18 +219,16 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             for (; ; ) {
                 // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.
                 String line = br.readLine();
-                if (line == null) break;
+                if (line == null)
+                    break;
                 // 저장된 텍스트 라인을 jsonHtml에 붙여넣음
                 jsonHtml.append(line + "\n");
             }
             br.close();
             conn.disconnect();
 
-            if (JSONTask.getInstance().getStatus() == AsyncTask.Status.RUNNING)
-            {
-                Log.e("err","JSONTask Disconnect!");
-                JSONTask.getInstance().cancel(true);
-            }
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -259,7 +268,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         try{
 
             JT.setUser_id(storeID+"");
-            String str = JT.execute("http://13.209.89.187:3443changeToAdminID").get();
+            String str = JT.execute("http://13.209.89.187:3443/changeToAdminID").get();
 
             JSONArray ja = new JSONArray(str);
             for(int i=0; i<ja.length(); i++){
@@ -437,9 +446,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
         return clothesList;
     }
@@ -467,9 +473,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
         return clothesList;
     }
@@ -576,9 +579,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
         return orderList;
     }
@@ -708,7 +708,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         JSONTask JT = new JSONTask();
         try {
             JT.setAccount(newAccount);
-            JT.execute("http://13.209.89.187:3443/insertAccount");// URL변경필수
+            String str = JT.execute("http://13.209.89.187:3443/insertAccount").get();// URL변경필수
+
+            if(str != null){
+                Log.e("err","JSONTask Disconnect!");
+                JT.cancel(true);
+            }
+
             Log.e("err","account삽입 성공!!");
 
         }catch(Exception e){
@@ -727,9 +733,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
     }
 
@@ -742,8 +745,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
-        } finally {
-            JT.cancel(true);
         }
     }
 

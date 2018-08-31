@@ -37,15 +37,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerBtn.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v) {
-                    if(privBox.isChecked())
-                        flag = 0;
+            if(privBox.isChecked())
+                flag = 0;
 
-                    Toast.makeText(getApplicationContext(),idTxt.getText().toString(), Toast.LENGTH_LONG).show();
-                    Account account = new Account(idTxt.getText().toString(), passwordTxt.getText().toString(), nameTxt.getText().toString(), hpTxt.getText().toString(), flag);
-                    JSONTask.getInstance().insertAccount(account);
-                    LoginActivity.setLogOut();
+            Toast.makeText(getApplicationContext(),idTxt.getText().toString(), Toast.LENGTH_LONG).show();
+            Account account = new Account(idTxt.getText().toString(), passwordTxt.getText().toString(), nameTxt.getText().toString(), hpTxt.getText().toString(), flag);
+            JSONTask.getInstance().insertAccount(account);
+            LoginActivity.setLogOut();
 
-                    finish();
+            finish();
 
                 }
         });
