@@ -131,7 +131,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             // 연결되었으면.
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            Log.e("","eqgqg2");
             for (; ; ) {
                 // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.
                 String line = br.readLine();

@@ -3,6 +3,7 @@ package com.example.dobitnarae;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -42,9 +44,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,9 +87,10 @@ public class StoreManagementFragment extends Fragment {
 
     private InputMethodManager imm; //전역변수
 
+    private UploadFile uploadFile;
+
     public StoreManagementFragment(Store store) {
         this.store = store;
-
     }
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -306,6 +315,8 @@ public class StoreManagementFragment extends Fragment {
                 if(resultCode == Activity.RESULT_OK) {
                     galleryAddPic();
                     imageView_store.setImageURI(photoURI);
+                    this.uploadFile = new UploadFile(getContext());
+                    this.uploadFile.setPath(mCurrentPhotoPath);
                 }
                 break;
         }
@@ -395,6 +406,8 @@ public class StoreManagementFragment extends Fragment {
 
     // sendBroadCast() 함수는 폰의 앨범에 크롭된 사진을 갱신하는 함수이다.
     // 이 함수를 쓰지 않는다면 크롭된 사진을 저장해도 앨범에 안보이며, 직접 파일 관리자 앱을 통해 폴더를 들어가야만 사진을 볼 수 있다.
+
+
 
     private void showKeyboard(EditText editText) {
         imm.showSoftInput(editText, 0);
