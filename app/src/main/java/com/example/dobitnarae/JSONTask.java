@@ -166,6 +166,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("user_id", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
                 jsonObject.accumulate("admin_id", reserve.getAdmin_id());
                 jsonObject.accumulate("accept", reserve.getAcceptStatus());
+                jsonObject.accumulate("time",reserve.getRentalDate());
 
                 JSONArray jArray = new JSONArray();// 배열을 위해 선언
                 for(int i=0; i< basketList.size(); i++)
@@ -440,6 +441,36 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
         return clothesList;
     }
+    public ArrayList<Clothes> getRandomClothesAll(int cnt){ // 옷 랜덤뽑기***
+        ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
+        Clothes clothes;
+
+        JSONTask JT = new JSONTask();
+        try{
+            JT.setUser_id(cnt+"");
+            String str = JT.execute("http://13.209.89.187:3443/RandomClothes").get();
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                int cloth_ids = jo.getInt("cloth_id");
+                int store_ids = jo.getInt("store_id");
+                int category = jo.getInt("category");
+                String name= jo.getString("name");
+                String intro = jo.getString("intro");
+                int price = jo.getInt("price");
+                int count = jo.getInt("count");
+                int sex = jo.getInt("sex");
+                clothes = new Clothes(cloth_ids,store_ids,category, name,intro, price, count, sex);
+                clothesList.add(clothes);//accountList 차례대로 삽입
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        } finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
+        }
+        return clothesList;
+    }
 
     // client의 예약 목록 가져오는 메소드
     public ArrayList<Reserve> getCustomerReservationList(String customerID){ // user_id가 주문한 옷 전체 검색
@@ -674,16 +705,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public void insertAccount(Account newAccount){ // user_id에 해당하는 매장에 옷 추가(관리자)
         JSONTask JT = new JSONTask();
         try {
-
             JT.setAccount(newAccount);
             JT.execute("http://13.209.89.187:3443/insertAccount");// URL변경필수
             Log.e("err","account삽입 성공!!");
 
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
     }
 

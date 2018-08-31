@@ -41,95 +41,146 @@
     <LinearLayout
         android:id="@+id/register_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:gravity="center">
+        android:layout_height="466dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_marginBottom="10dp">
+            android:weightSum="1">
+
             <EditText
                 android:id="@+id/register_id"
-                android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:paddingLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_weight="0.65"
                 android:background="#fff"
-                android:hint="아이디" />
+                android:gravity="center_vertical"
+                android:hint="아이디"
+                android:paddingLeft="15dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_marginBottom="10dp">
+            android:weightSum="1">
+
             <EditText
                 android:id="@+id/register_password"
-                android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:paddingLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_weight="0.65"
                 android:background="#fff"
-                android:hint="비밀번호" />
+                android:gravity="center_vertical"
+                android:hint="비밀번호"
+                android:paddingLeft="15dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_marginBottom="10dp">
+            android:weightSum="1">
+
             <EditText
                 android:id="@+id/register_password_confirm"
-                android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:paddingLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_weight="0.65"
                 android:background="#fff"
-                android:hint="비밀번호 확인" />
+                android:gravity="center_vertical"
+                android:hint="비밀번호 확인"
+                android:paddingLeft="15dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_marginBottom="10dp">
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/register_name"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.65"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:hint="이름"
+                android:paddingLeft="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:weightSum="1">
+
             <EditText
                 android:id="@+id/register_phone"
-                android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:paddingLeft="15dp"
-                android:gravity="center_vertical"
+                android:layout_weight="0.65"
                 android:background="#fff"
-                android:hint="전화번호" />
+                android:gravity="center_vertical"
+                android:hint="전화번호"
+                android:paddingLeft="15dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_marginBottom="40dp">
+            android:weightSum="1">
+
+            <CheckBox
+                android:id="@+id/register_check"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/appMainColor"
+                android:gravity="center_vertical"
+                android:text="매장관리자"
+                android:paddingLeft="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:weightSum="1">
+
+
             <LinearLayout
                 android:id="@+id/login_btn"
-                android:layout_weight="0.65"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_weight="0.65"
                 android:background="@color/titleColor"
                 android:gravity="center">
+
                 <TextView
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
+                    android:text="회원가입"
                     android:textColor="#fff"
-                    android:text="회원가입" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
