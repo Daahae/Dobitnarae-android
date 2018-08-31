@@ -166,6 +166,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("user_id", reserve.getUser_id());//insert를 위해 서버로 보낼 데이터들 req.on
                 jsonObject.accumulate("admin_id", reserve.getAdmin_id());
                 jsonObject.accumulate("accept", reserve.getAcceptStatus());
+                jsonObject.accumulate("time",reserve.getRentalDate());
 
                 JSONArray jArray = new JSONArray();// 배열을 위해 선언
                 for(int i=0; i< basketList.size(); i++)
@@ -256,13 +257,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         try{
 
             JT.setUser_id(storeID+"");
-            String str = JT.execute("http://13.209.89.187:3443changeToAdminID").get();
+            String str = JT.execute("http://13.209.89.187:3443/changeToAdminID").get();
 
             JSONArray ja = new JSONArray(str);
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 adminID = jo.getString("admin_id");
-
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -446,8 +446,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Reserve> reserves = new ArrayList<Reserve>();
         Reserve reserve;
 
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
             JT.setUser_id(customerID);
             String str = JT.execute("http://13.209.89.187:3443/reserveCustomer").get();
             JSONArray ja = new JSONArray(str);
@@ -710,10 +710,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             JT.setReserveBasket(reserve, basketList);
             JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
             Log.e("err","order삽입 성공!!");
-
         }catch(Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             JT.cancel(true);
         }
     }
@@ -734,8 +733,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public void deleteCloth(int clothID){ // user_id에 해당하는 매장에 옷 삭제(관리자)
         JSONTask JT = new JSONTask();
         try {
-
-
             JT.setUser_id(""+clothID);
             JT.execute("http://13.209.89.187:3443/deleteCloth");// URL변경필수
             Log.e("err","cloth삭제 성공");
@@ -802,8 +799,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
     public String getLoginID(){// 현재 로그인 중인 아이디 가져오기(세션에 있는 아이디)
         String userID = null;
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
             String str = JT.execute("http://13.209.89.187:3443/getLoginID").get();
             JSONArray ja = new JSONArray(str);
             for(int i=0; i<ja.length(); i++){
@@ -813,6 +810,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        } finally {
+            JT.cancel(true);
         }
 
         return userID;

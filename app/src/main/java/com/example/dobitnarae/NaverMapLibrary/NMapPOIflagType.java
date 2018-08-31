@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.dobitnarae;
+package com.example.dobitnarae.NaverMapLibrary;
 
 /**
  * Wrapper class representing POI flag types on map view.

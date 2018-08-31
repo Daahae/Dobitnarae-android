@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dobitnarae.NMapPOIflagType;
 import com.example.dobitnarae.R;
 import com.example.dobitnarae.Store;
 import com.nhn.android.maps.NMapContext;

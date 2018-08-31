@@ -29,7 +29,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.example.dobitnarae.NMapPOIflagType;
 import com.example.dobitnarae.R;
 import com.nhn.android.maps.NMapOverlayItem;
 import com.nhn.android.maps.overlay.NMapPOIitem;

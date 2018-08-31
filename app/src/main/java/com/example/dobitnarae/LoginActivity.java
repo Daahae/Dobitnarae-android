@@ -63,7 +63,10 @@ public class LoginActivity extends AppCompatActivity {
             save();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
-            startActivityForResult(intent, 1000);
+            //startActivityForResult(intent, 1000);
+            // 현재 창 닫고 메인으로 이동
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
 
         LoginBtn.setOnClickListener(new View.OnClickListener() {

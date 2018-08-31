@@ -37,6 +37,10 @@ public class MainActivityTmp extends AppCompatActivity {
     private final String[] skyStatus = {"맑음", "구름조금", "구름많음", "흐림"};
     private final String[] precipitationType = {"", "비", "비/눈", "눈"};
 
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +106,8 @@ public class MainActivityTmp extends AppCompatActivity {
             TextView weatherContext = (TextView)findViewById(R.id.weather_context);
 
             JSONObject weatherInfo = new WeatherTask().execute().get();
-            temperature.setText(weatherInfo.getString("기온"));
 
+            temperature.setText(weatherInfo.getString("기온"));
             int sky = weatherInfo.getInt("하늘상태");
             int pty = weatherInfo.getInt("강수상태");
 
@@ -127,9 +131,35 @@ public class MainActivityTmp extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        LinearLayout logout = (LinearLayout)findViewById(R.id.main_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.setLogOut();
+                Intent intent = new Intent(MainActivityTmp.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 현재 액티비티 닫기
+                startActivity(intent);
+            }
+        });
+
         // 지울것
         account = Account.getInstance();
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        long tempTime = System.currentTimeMillis();
+//        long intervalTime = tempTime - backPressedTime;
+//
+//        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+//            super.onBackPressed();
+//            finish();
+//        }
+//        else {
+//            backPressedTime = tempTime;
+//            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void setPalaceRedirection(){
         // 경복궁
