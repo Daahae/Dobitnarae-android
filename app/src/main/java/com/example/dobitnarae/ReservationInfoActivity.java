@@ -49,7 +49,6 @@ public class ReservationInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         reserve = (Reserve) intent.getSerializableExtra("reserveInfo");
 
-        // TODO reservationID 값으로 서버에서 해당 예약된 한복 목록 가져오기
         clothes = JSONTask.getInstance().getBascketCustomerAll(reserve.getId());
 
         // 예약 목록 레이아웃 설정
@@ -122,9 +121,7 @@ public class ReservationInfoActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO 예약 취소 서버에 요청
-//                        ((MyReserveFragment)getSupportFragmentManager().
-//                                findFragmentByTag(MyPageActivity.myReservationListFragmentTag))
-//                                .testM();
+                        finish();
                     }
                 });
         builder.setNegativeButton("아니요",

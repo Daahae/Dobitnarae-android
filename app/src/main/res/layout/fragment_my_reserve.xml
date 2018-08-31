@@ -7,12 +7,17 @@
     android:scrollbars="none"
     android:background="#fff">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_reserve_list"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/reserve_swipe_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_reserve_list"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

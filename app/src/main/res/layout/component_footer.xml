@@ -32,18 +32,19 @@
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="end"
+                android:gravity="end|center_vertical"
                 android:paddingRight="10dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="개발자"/>
+                    android:text="오픈소스"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/main_logout"
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:paddingLeft="10dp">
                 <TextView
                     android:layout_width="wrap_content"

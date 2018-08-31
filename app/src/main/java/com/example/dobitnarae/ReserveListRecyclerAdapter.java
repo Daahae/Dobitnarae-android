@@ -110,4 +110,9 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
             reserveSuccessBorder = (LinearLayout)itemView.findViewById(R.id.reserve_success_layout);
         }
     }
+
+    public void setReserves(ArrayList<Reserve> reserves) {
+        this.reserves = reserves;
+        this.notifyDataSetChanged();
+    }
 }

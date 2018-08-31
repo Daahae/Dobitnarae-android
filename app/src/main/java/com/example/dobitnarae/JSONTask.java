@@ -708,7 +708,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         JSONTask JT = new JSONTask();
         try {
             JT.setReserveBasket(reserve, basketList);
-            JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
+            String str = JT.execute("http://13.209.89.187:3443/insertReserve").get();// URL변경필수
             Log.e("err","order삽입 성공!!");
         }catch(Exception e){
             e.printStackTrace();

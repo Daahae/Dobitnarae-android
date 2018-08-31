@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,12 +41,27 @@ public class MyReserveFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        reserves = JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
+        reserves = getReserves();
 
         mAdapter = new ReserveListRecyclerAdapter(getContext(), reserves);
         recyclerView.setAdapter(mAdapter);
 
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.reserve_swipe_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reserves = getReserves();
+                swipeRefreshLayout.setRefreshing(false);
+                refresh();
+            }
+        });
+
         return rootView;
+    }
+
+    private ArrayList<Reserve> getReserves(){
+        return JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
     }
 
     // 옷
@@ -58,5 +74,9 @@ public class MyReserveFragment extends Fragment {
         }
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
+    }
+
+    private void refresh(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

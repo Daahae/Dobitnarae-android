@@ -1,5 +1,6 @@
 package com.example.dobitnarae;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,5 +42,14 @@ public class StoreListActivity extends AppCompatActivity {
 
         mAdapter = new StoreListRecyclerAdapter(this, stores);
         recyclerView.setAdapter(mAdapter);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh_layout_store_list);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.setStores(JSONTask.getInstance().getCustomerStoreAll());
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 }
