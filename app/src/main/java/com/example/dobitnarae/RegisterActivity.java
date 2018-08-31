@@ -39,13 +39,14 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(privBox.isChecked())
                         flag = 0;
-                    Toast.makeText(getApplicationContext(),idTxt.getText().toString()+ "?????", Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(getApplicationContext(),idTxt.getText().toString(), Toast.LENGTH_LONG).show();
                     Account account = new Account(idTxt.getText().toString(), passwordTxt.getText().toString(), nameTxt.getText().toString(), hpTxt.getText().toString(), flag);
                     JSONTask.getInstance().insertAccount(account);
                     LoginActivity.setLogOut();
 
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivityForResult(intent, 1000);
+                    finish();
+
                 }
         });
     }

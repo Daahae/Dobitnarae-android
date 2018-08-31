@@ -80,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                         checkBox.setChecked(true);
                         save();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        //intent.putExtra("ID", IDTxt.getText().toString());
                         Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
                         startActivityForResult(intent, 1000);
 

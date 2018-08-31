@@ -155,6 +155,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("HP", account.getPhone());
                 jsonObject.accumulate("priv", account.getPrivilege());
                 flag = 0;
+                return null;
             }
 
             if(flag == 5) {//insertBasket, deleteBasket
@@ -178,6 +179,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 }
                 jsonObject.put("basketList", jArray);//배열을 넣음
                 flag = 0;
+
             }
 
 
@@ -804,9 +806,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     //로그인 메서드
     public int getLoginResult(String user_id, String password){ // user_id가 주문한 옷 전체 검색
         int result = -999;
-
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(user_id);
             JT.setPassword(password);
             String str = JT.execute("http://13.209.89.187:3443/login").get();
@@ -823,7 +825,11 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             return 1;
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            Log.e("err","JSONTask Disconnect!");
+            JT.cancel(true);
         }
+
         return 1;
     }
 
