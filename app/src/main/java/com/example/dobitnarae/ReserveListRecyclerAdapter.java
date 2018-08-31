@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveListRecyclerAdapter.ViewHolder> {
     Context context;
     ArrayList<Reserve> reserves;
+    SimpleDateFormat dateFormat;
 
     public ReserveListRecyclerAdapter(Context context, ArrayList<Reserve> reserves) {
         this.context = context;
         this.reserves = reserves;
+
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
     }
 
     @Override
@@ -38,8 +45,13 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sejong);
         holder.image.setBackground(drawable);
 
-        holder.name.setText("세종대학교");
-        holder.time.setText(item.getRentalDate());
+        Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
+
+        holder.name.setText(store.getName());
+
+        String reserveTime = item.getRentalDate();
+        Log.e("" ," " + reserveTime);
+        holder.time.setText(reserveTime);
         holder.storeView.setId(item.getId());
         holder.storeView.setOnClickListener(new View.OnClickListener() {
             @Override

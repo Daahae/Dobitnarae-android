@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -48,15 +50,7 @@ public class ReservationInfoActivity extends AppCompatActivity {
         reserve = (Reserve) intent.getSerializableExtra("reserveInfo");
 
         // TODO reservationID 값으로 서버에서 해당 예약된 한복 목록 가져오기
-        clothes = new ArrayList<>();
-        for(int i=0; i<7; i++){
-            int store_id = JSONTask.getInstance().changeStoreID(reserve.getAdmin_id());
-            Clothes tmp = new Clothes(i, store_id, i % Constant.category_cnt + 1,
-                    "불곱창" + (i + 1), "이 곱창은 왕십리에서 시작하여...",
-                    1000 * (i + 1), i,  0);
-            BasketItem bTmp = new BasketItem(tmp, i + 1);
-            clothes.add(bTmp);
-        }
+        clothes = JSONTask.getInstance().getBascketCustomerAll(reserve.getId());
 
         // 예약 목록 레이아웃 설정
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.reservation_list);

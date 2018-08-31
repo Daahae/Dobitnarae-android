@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class MyPageFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -44,8 +47,15 @@ public class MyPageFragment extends Fragment {
 
         account = Account.getInstance();
 
-        nameET.setText(account.getName());
-        phoneET.setText(account.getPhone());
+        TextView idTextView = (TextView)rootView.findViewById(R.id.myPage_id);
+        idTextView.setText(account.getId());
+
+        password = account.getPw();
+        name = account.getName();
+        phone = account.getPhone();
+
+        nameET.setText(name);
+        phoneET.setText(phone);
 
         CardView editBtn = (CardView)rootView.findViewById(R.id.myPage_edit_btn);
         editBtn.setOnClickListener(new CardView.OnClickListener() {
@@ -70,7 +80,13 @@ public class MyPageFragment extends Fragment {
                             password = tmp;
                         name = nameET.getText().toString();
                         phone = phoneET.getText().toString();
-                        // TODO 서버로 전송
+
+                        account.setName(name);
+                        account.setPhone(phone);
+                        account.setPw(password);
+
+                        // 서버에 계정 정보 갱신
+                        JSONTask.getInstance().updateAccount(account);
 
                         Toast.makeText(context, "수정 완료", Toast.LENGTH_SHORT).show();
                         refresh();

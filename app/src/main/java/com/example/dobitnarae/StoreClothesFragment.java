@@ -36,17 +36,18 @@ public class StoreClothesFragment extends Fragment {
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    public StoreClothesFragment(ArrayList<Clothes> items, Store store) {
-        this.originItems = items;
+    public StoreClothesFragment(Store store) {
         this.store = store;
+        //판매중인 옷 목록 가져옴
+        this.originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
     }
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static StoreClothesFragment newInstance(int sectionNumber, ArrayList<Clothes> items, Store store) {
-        StoreClothesFragment fragment = new StoreClothesFragment(items, store);
+    public static StoreClothesFragment newInstance(int sectionNumber, Store store) {
+        StoreClothesFragment fragment = new StoreClothesFragment(store);
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -68,7 +69,7 @@ public class StoreClothesFragment extends Fragment {
 
         // 성별로 분류
         ArrayList<Clothes> tmp = new ArrayList<>();
-        int sex = ((StoreActivity)getContext()).getSex();
+        int sex = ((StoreActivity)getContext()).getSelectedSex();
         for(Clothes item : originItems){
             if(item.getSex() == sex)
                 tmp.add(item);

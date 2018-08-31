@@ -12,17 +12,20 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollY="0dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/cardviewbg">
+            android:background="@color/cardviewbg"
+            android:descendantFocusability="blocksDescendants">
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:focusable="true">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -41,7 +44,7 @@
                             android:textSize="50dp"
                             android:text="경복궁"
                             android:textColor="#fff"
-                            android:textStyle="bold"/>
+                            android:fontFamily="@font/jejuhallasan"/>
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/store_sector_2"
@@ -57,85 +60,129 @@
                             android:textSize="50dp"
                             android:text="창경궁"
                             android:textColor="#fff"
-                            android:textStyle="bold"/>
+                            android:fontFamily="@font/jejuhallasan" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <RelativeLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <android.support.v7.widget.CardView
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:background="#fff"
+                    android:padding="10dp"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="#fff"
-                        android:padding="10dp"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textColor="#000"
-                                android:textSize="15dp"
-                                android:text="한복 추천"/>
-                        </LinearLayout>
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:textSize="15dp"
+                            android:text="한복 추천"/>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_centerVertical="true">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/clothes_recommendation_recycler_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-                </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
-
-            <RelativeLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <android.support.v7.widget.CardView
+                android:layout_height="250dp"
+                android:layout_marginBottom="15dp">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:background="#fff"
+                    android:padding="10dp"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="#fff"
-                        android:padding="10dp"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textColor="#000"
-                                android:textSize="15dp"
-                                android:text="고궁 알아보기"/>
-                        </LinearLayout>
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:textSize="15dp"
+                            android:text="고궁 알아보기"/>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.RecyclerView
+                </LinearLayout>
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_centerVertical="true">
+                    android:layout_height="220dp"
+                    android:layout_marginTop="40dp"
+                    android:scrollbars="none">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/gyeongbokgung"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/gyeongbokgung"/>
+                        <ImageView
+                            android:id="@+id/changgyeonggung"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/changgyeonggung"/>
+                        <ImageView
+                            android:id="@+id/changdeokgung"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/changdeokgung"/>
+                        <ImageView
+                            android:id="@+id/jongmyo"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/jongmyo"/>
+                        <ImageView
+                            android:id="@+id/deoksugung"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/deoksugung"/>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </android.support.v7.widget.CardView>
 
-                </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
+            <!-- 날씨 -->
+            <include
+                layout="@layout/component_weather_info"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_top_layout_item">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@string/app_name"
+                        android:textColor="#000"
+                        android:textSize="15dp"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

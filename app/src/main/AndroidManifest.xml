@@ -71,7 +71,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UploadImgActivity"></activity>
+        <activity android:name=".UploadImgActivity" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

@@ -1,21 +1,15 @@
 package com.example.dobitnarae;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.graphics.Rect;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,12 +18,8 @@ import android.widget.Toast;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 public class BasketActivity extends AppCompatActivity {
@@ -40,6 +30,8 @@ public class BasketActivity extends AppCompatActivity {
     DatePickerDialog dpd;
     TimePickerDialog tpd;
     Context context;
+
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +122,7 @@ public class BasketActivity extends AppCompatActivity {
         dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                date = "" + year + "-" + monthOfYear + "-" + dayOfMonth;
                 tpd.show(getFragmentManager(), "TimePickerdialog");
             }
         });
@@ -152,7 +145,19 @@ public class BasketActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
                 // TODO
-                // 서버로 선택한 옷, 사용자 정보, 예약 날짜및 시간 전송
+                // 서버로 선택한 옷, 사용자 정보, 예약 날짜 및 시간 전송
+                date += " " + hourOfDay + ":" + minute + ":" + second;
+                JSONTask jt = JSONTask.getInstance();
+                Basket basket = Basket.getInstance();
+                Account account = Account.getInstance();
+
+                Reserve reserve = new Reserve(0, account.getId(), "jong4876", 0, date);
+                jt.insertReserve(reserve, basket.getBasket());
+
+                basket.clearBasket();
+                Toast.makeText(getApplicationContext(), "대여 신청 완료", Toast.LENGTH_SHORT).show();
+
+                finish();
             }
         });
     }

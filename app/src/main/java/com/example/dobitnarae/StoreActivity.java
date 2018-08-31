@@ -21,13 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+
 public class StoreActivity extends AppCompatActivity {
-    Store store;
-    ArrayList<Clothes> items;
+    private Store store;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -52,30 +56,8 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container_clothes);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.store_tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-        LinearLayout gotoBasket = (LinearLayout) findViewById(R.id.store_basket);
-        gotoBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "장바구니", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(StoreActivity.this, BasketActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // 옷 성별 선택 메뉴
+        final LinearLayout sexMenu = (LinearLayout)findViewById(R.id.store_select_sex_menu);
         LinearLayout man = toolbar.findViewById(R.id.store_clothes_sex_man);
         manTextView = toolbar.findViewById(R.id.store_clothes_sex_man_text);
 
@@ -108,6 +90,50 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container_clothes);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        // 탭 페이지 전환 설정
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.store_tabs);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int tabPosition = tab.getPosition();
+                mViewPager.setCurrentItem(tabPosition);
+                if(tabPosition == 0){
+                    sexMenu.setVisibility(View.INVISIBLE);
+                }
+                else if(tabPosition == 1){
+                    sexMenu.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        LinearLayout gotoBasket = (LinearLayout) findViewById(R.id.store_basket);
+        gotoBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreActivity.this, BasketActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // 상점정보 가져옴
         Intent intent = getIntent();
         store = (Store) intent.getSerializableExtra("store");
@@ -115,9 +141,6 @@ public class StoreActivity extends AppCompatActivity {
         // 툴바 타이틀 이름 상점이름으로 변경
         TextView titleName = (TextView) findViewById(R.id.toolbar_title);
         titleName.setText(store.getName());
-
-        // 판매중인 옷 가져옴
-        items = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
     }
 
     @Override
@@ -161,25 +184,26 @@ public class StoreActivity extends AppCompatActivity {
                 case 0:
                     return StoreInfoFragment.newInstance(0, store);
                 case 1:
-                    return storeClothesFragment = StoreClothesFragment.newInstance(1, items, store);
+                    return storeClothesFragment = StoreClothesFragment.newInstance(1, store);
             }
-                return null;
+            return null;
         }
 
 
         public int getCount () {
-            // Show 3 total pages.
             return 2;
         }
     }
 
-    public int getSex() {
+    public int getSelectedSex() {
         return sex;
     }
 
     private void refresh(){
         storeClothesFragment.refresh();
     }
+
+
 }
 
 
