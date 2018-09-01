@@ -29,6 +29,7 @@
             android:weightSum="1"
             android:padding="10dp">
             <LinearLayout
+                android:id="@+id/footer_opensource"
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -40,7 +41,7 @@
                     android:text="오픈소스"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/main_logout"
+                android:id="@+id/footer_logout"
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

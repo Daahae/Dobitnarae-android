@@ -1,7 +1,6 @@
 package com.example.dobitnarae;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -11,9 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.dobitnarae.RecyclerViewAdapter.ClothesRecommendationListRecyclerAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -124,35 +120,41 @@ public class MainActivityTmp extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        LinearLayout logout = (LinearLayout)findViewById(R.id.main_logout);
+        LinearLayout logout = (LinearLayout)findViewById(R.id.footer_logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LoginActivity.setLogOut();
                 Intent intent = new Intent(MainActivityTmp.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 현재 액티비티 닫기
                 startActivity(intent);
+                finish();
             }
         });
 
-        // 지울것
-        account = Account.getInstance();
+        LinearLayout openSourceInfo = (LinearLayout)findViewById(R.id.footer_opensource);
+        openSourceInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityTmp.this, OpenSourceInfoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        long tempTime = System.currentTimeMillis();
-//        long intervalTime = tempTime - backPressedTime;
-//
-//        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
-//            super.onBackPressed();
-//            finish();
-//        }
-//        else {
-//            backPressedTime = tempTime;
-//            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+            finish();
+        }
+        else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void setPalaceRedirection(){
         // 경복궁

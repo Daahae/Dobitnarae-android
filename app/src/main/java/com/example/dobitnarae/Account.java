@@ -27,7 +27,7 @@ public class Account {
         this.privilege = Constant.CLIENT;
     }
 
-    private Account(String id,String pw, String name, String tel, int privilege) {
+    public Account(String id,String pw, String name, String tel, int privilege) {
         this.id = id;
         this.name = name;
         this.pw = pw;

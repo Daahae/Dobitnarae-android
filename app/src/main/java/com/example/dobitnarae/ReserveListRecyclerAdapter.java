@@ -43,7 +43,8 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Reserve item = reserves.get(position);
         // TODO  서버에서 이미지 받아야함
-        Bitmap bm = ServerImg.getStoreImage(item.getId());
+        int storeID = JSONTask.getInstance().changeStoreID(item.getAdmin_id());
+        Bitmap bm = ServerImg.getStoreImage(storeID);
         holder.image.setImageBitmap(bm);
 
         Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);

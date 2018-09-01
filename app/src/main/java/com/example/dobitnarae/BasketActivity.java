@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -166,6 +167,9 @@ public class BasketActivity extends AppCompatActivity {
                 adminID, 0, date);
         JSONTask.getInstance().insertReserve(reserve, basket.getBasket());
         basket.clearBasket();
-        Toast.makeText(getApplicationContext(), "대여 신청 완료", Toast.LENGTH_SHORT).show();
+
+        Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }

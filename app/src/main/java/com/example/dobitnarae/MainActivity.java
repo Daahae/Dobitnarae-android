@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton backButton = (ImageButton)findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, StoreActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         //고객
@@ -33,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         gotoStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivityTmp.class);
+                Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                finish();
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
         //관리자

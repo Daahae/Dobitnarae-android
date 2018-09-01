@@ -19,4 +19,5 @@
     <color name="storeOpeningColor">#339738</color>
     <color name="lineColor">#dcdcdc</color>
     <color name="storeClosingColor">#f94c4c</color>
+    <color name="baseBackgroundColor">#EEEEEE</color>
 </resources>
