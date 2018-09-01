@@ -118,10 +118,8 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             //JSONTask.getInstance().insertAccount(newAccount);
             //account 삽입 예시
 
-            String userID = JSONTask.getInstance().getLoginID();
-            orderList = JSONTask.getInstance().getOrderCustomerAll("su123");
-            Order order = orderList.get(0);
-            LoginActivity.setLogOut();
+
+            // LoginActivity.setLogOut(); // 로그아웃!!
 
             /*
             clothesList = JSONTask.getInstance().getClothesAll("jong4876");
@@ -151,10 +149,7 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
 
 
 
-
-
-
-
+            clothesList = JSONTask.getInstance().getRandomClothesAll(3);
 
 
             StringBuffer sb = new StringBuffer();
@@ -203,7 +198,17 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             }
 
 */
+            for(int i=0; i<clothesList.size(); i++){
+                sb.append(// test용 stringbuffer
+                        "한복id: " + clothesList.get(i).getCloth_id()+
+                                "\n\n매장명: " +clothesList.get(i).getStore_id() +
+                                "\n\n옷이름: " + clothesList.get(i).getName() +
+                                "\n\n옷 가격: " + clothesList.get(i).getPrice() +
+                                "\n\n\n"
+                );
+            }
 
+/*
             for(int i=0; i<orderList.size(); i++){
 
                 sb.append(// test용 stringbuffer
@@ -216,13 +221,11 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
                                 "\n\n\n"
                 );
             }
-
+*/
 
             txtView.setText(sb);
         } catch (Exception E) {
             E.printStackTrace();
         }
-
-
     }
 }
