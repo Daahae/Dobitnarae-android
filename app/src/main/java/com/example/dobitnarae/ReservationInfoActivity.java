@@ -1,6 +1,7 @@
 package com.example.dobitnarae;
 
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
@@ -120,8 +122,9 @@ public class ReservationInfoActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO 예약 취소 서버에 요청
+                        JSONTask.getInstance().deleteOrder(reserve.getId());
                         finish();
+                        MyReserveFragment.changeFlg = true;
                     }
                 });
         builder.setNegativeButton("아니요",
@@ -133,5 +136,4 @@ public class ReservationInfoActivity extends AppCompatActivity {
                 });
         builder.show();
     }
-
 }

@@ -171,5 +171,6 @@ public class BasketActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+        finish();
     }
 }

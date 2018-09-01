@@ -19,6 +19,7 @@ public class MyReserveFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private ArrayList<Reserve> reserves;
     private ReserveListRecyclerAdapter mAdapter;
+    public static boolean changeFlg = false;
 
     public MyReserveFragment() {
     }
@@ -64,16 +65,13 @@ public class MyReserveFragment extends Fragment {
         return JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
     }
 
-    // 옷
-    public void cancelReservation(int reservationID){
-        for(Reserve item : reserves){
-            if(item.getId() == reservationID) {
-                reserves.remove(item);
-                break;
-            }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(changeFlg) {
+            refresh();
+            changeFlg = false;
         }
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
     }
 
     private void refresh(){
