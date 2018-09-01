@@ -315,13 +315,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         return accountList;
     }
 
-    public  ArrayList<Store> getAdminStoreAll(String user_id){ // JSON.HTML넣어서 사용, 전송되는 user_id jong4876~~
+    public  ArrayList<Store> getAdminStoreAll(String adminID){ // JSON.HTML넣어서 사용, 전송되는 user_id jong4876~~
         ArrayList<Store> storeList = new ArrayList<Store>();
         Store store;
 
         JSONTask JT = new JSONTask();
         try {
-            JT.setUser_id(user_id);
+            JT.setUser_id(adminID);
             String str = JT.execute("http://13.209.89.187:3443/store").get();
             JSONArray ja = new JSONArray(str);
             // txtView.setText(str);

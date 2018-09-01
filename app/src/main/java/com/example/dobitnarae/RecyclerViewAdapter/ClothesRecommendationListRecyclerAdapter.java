@@ -2,6 +2,7 @@ package com.example.dobitnarae.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 
 import com.example.dobitnarae.Clothes;
 import com.example.dobitnarae.ClothesReservationActivity;
+import com.example.dobitnarae.JSONTask;
 import com.example.dobitnarae.R;
+import com.example.dobitnarae.ServerImg;
 import com.example.dobitnarae.Store;
 
 import java.text.DecimalFormat;
@@ -38,22 +41,30 @@ public class ClothesRecommendationListRecyclerAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         final Clothes item = clothes.get(position);
 
         // 상점 정보 가져오기
-       final Store store = new Store(item.getStore_id(), "세종대학교" + item.getStore_id(), "신구", "02-3408-3114",
-                "세종대학교는 대한민국 서울특별시 광진구 군자동에 위치한 사립 종합대학이다." +
-                        " 세종대나 SJU의 약칭으로 불리기도 한다. 10개의 단과 대학, 1개의 교양 대학," +
-                        " 1개의 독립학부, 1개의 일반대학원, 1개의 전문대학원, 5개의 특수대학원과 57개의 연구소," +
-                        " 8개의 BK21사업팀으로 구성되어 있다. 학교법인 대양학원에 의해 운영된다. 현재 총장은 화학 박사 신구이다. ",
-                "24시간 영업", "서울특별시 광진구 군자동 능동로 209", 0,
-                37.550278, 127.073114, "09:00", "21:00");
+        String adminID = JSONTask.getInstance().changeToAdminID(item.getStore_id());
+        final Store store = JSONTask.getInstance().getAdminStoreAll(adminID).get(0);
 
         // TODO  서버에서 이미지 받아야함
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.gobchang);
-        holder.image.setBackground(drawable);
+        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
+        holder.image.setImageBitmap(bm);
 
-        holder.storeName.setText("운선제");
+        int clothesCnt = item.getCount();
+        Drawable itemForegroundColor;
+        if(clothesCnt == 0) {
+            int color = 0x7f000000;
+            itemForegroundColor = new ColorDrawable(color);
+        }
+        else{
+            int color = 0x00000000;
+            itemForegroundColor = new ColorDrawable(color);
+        }
+        holder.cardview.setForeground(itemForegroundColor);
+
+        holder.storeName.setText(store.getName());
         holder.clothesName.setText(item.getName());
 
         holder.cardview.setId(item.getCloth_id());

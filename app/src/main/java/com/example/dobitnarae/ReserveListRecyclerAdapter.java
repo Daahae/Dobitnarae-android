@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -42,8 +43,8 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Reserve item = reserves.get(position);
         // TODO  서버에서 이미지 받아야함
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sejong);
-        holder.image.setBackground(drawable);
+        Bitmap bm = ServerImg.getStoreImage(item.getId());
+        holder.image.setImageBitmap(bm);
 
         Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
 

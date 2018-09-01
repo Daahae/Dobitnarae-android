@@ -61,6 +61,10 @@ public class LoginActivity extends AppCompatActivity {
             String Password = PasswordTxt.getText().toString();
             JSONTask.getInstance().getLoginResult(ID, Password);
             save();
+
+            // 아이디 설정
+            Account.getInstance().setAccount(JSONTask.getInstance().getAccountAll(id).get(0));
+
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
             //startActivityForResult(intent, 1000);

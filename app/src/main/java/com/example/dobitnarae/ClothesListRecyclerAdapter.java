@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -40,8 +41,8 @@ public class ClothesListRecyclerAdapter extends RecyclerView.Adapter<ClothesList
         final Clothes item = clothes.get(position);
 
         // TODO  서버에서 이미지 받아야함
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.gobchang);
-        holder.image.setBackground(drawable);
+        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
+        holder.image.setImageBitmap(bm);
         holder.name.setText(item.getName());
         DecimalFormat dc = new DecimalFormat("###,###,###,###");
         holder.price.setText(dc.format(item.getPrice()) + " 원");

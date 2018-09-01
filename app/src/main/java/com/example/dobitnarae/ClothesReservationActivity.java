@@ -1,12 +1,14 @@
 package com.example.dobitnarae;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +49,9 @@ public class ClothesReservationActivity extends AppCompatActivity {
         titleName.setText(store.getName());
 
         // 이미지
-        // reserve_clothes_img
+        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
+        ImageView clotheImg = (ImageView)findViewById(R.id.reserve_clothes_img);
+        clotheImg.setImageBitmap(bm);
 
         // 옷 이름
         TextView name = findViewById(R.id.reserve_clothes_name);
@@ -64,8 +68,7 @@ public class ClothesReservationActivity extends AppCompatActivity {
         price.setText(str);
 
         // 총 가격
-        setTotalPrice(1);
-
+        setTotalPrice(0);
         btnReduce = findViewById(R.id.counting_btn_reduce);
         btnAdd = findViewById(R.id.counting_btn_add);
         selectCnt = findViewById(R.id.reserve_clothes_cnt);
@@ -74,27 +77,29 @@ public class ClothesReservationActivity extends AppCompatActivity {
         btnReduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int cnt = Integer.parseInt((String) selectCnt.getText()) - 1;
-                if (cnt == 0)
-                    btnReduce.setClickable(false);
-                selectCnt.setText( "" + cnt);
-                setTotalPrice(cnt);
+                int cnt = getSelectClothesCnt();
+                if(0 < cnt && cnt <= item.getCount()){
+                    --cnt;
+                    selectCnt.setText( "" + cnt);
+                    setTotalPrice(cnt);
+                }
             }
         });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int cnt = Integer.parseInt((String) selectCnt.getText()) + 1;
-                if (cnt == 1)
-                    btnReduce.setClickable(true);
-                selectCnt.setText("" + cnt);
-                setTotalPrice(cnt);
+                int cnt = getSelectClothesCnt();
+                if(0 <= cnt && cnt < item.getCount()){
+                    ++cnt;
+                    selectCnt.setText("" + cnt);
+                    setTotalPrice(cnt);
+                }
             }
         });
 
         // 옷 재고 여부에 따른 하단 메뉴바 설정
-        int clothesCnt = this.item.getCount();
+        final int clothesCnt = this.item.getCount();
         LinearLayout soldoutMenu = findViewById(R.id.reserve_soldout);
         LinearLayout reserveMenu = findViewById(R.id.reserve_bottom_menu);
         if(clothesCnt == 0){
@@ -109,8 +114,13 @@ public class ClothesReservationActivity extends AppCompatActivity {
             gotoBasket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Basket basket = Basket.getInstance();
-                    basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 0);
+                    if(getSelectClothesCnt() > 0) {
+                        Basket basket = Basket.getInstance();
+                        basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 0);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "한벌 이상 고르셔야 합니다", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
@@ -118,11 +128,20 @@ public class ClothesReservationActivity extends AppCompatActivity {
             gotoReserve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Basket basket = Basket.getInstance();
-                    basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 1);
+                    if(getSelectClothesCnt() > 0) {
+                        Basket basket = Basket.getInstance();
+                        basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 1);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "한벌 이상 고르셔야 합니다", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
+    }
+
+    public int getSelectClothesCnt(){
+        return Integer.parseInt((String)selectCnt.getText());
     }
 
     public void setTotalPrice(int cnt){

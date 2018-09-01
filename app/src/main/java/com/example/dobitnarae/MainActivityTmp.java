@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.dobitnarae.RecyclerViewAdapter.ClothesRecommendationListRecyclerAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +33,7 @@ public class MainActivityTmp extends AppCompatActivity {
     private Account account;
     private ClothesRecommendationListRecyclerAdapter cAdapter;
     private ArrayList<Clothes> clothes;
+    private final int RANDOM_CLOTHES_CNT = 5;
 
     // 날씨
     private final String[] skyStatus = {"맑음", "구름조금", "구름많음", "흐림"};
@@ -82,16 +84,7 @@ public class MainActivityTmp extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
 
         // 랜덤으로 옷 추출
-        // 더미
-        int ITEM_SIZE = 8;
-        clothes = new ArrayList<>();
-        for(int i=0; i<ITEM_SIZE; i++){
-            Clothes item = new Clothes(i, i, i % Constant.category_cnt + 1,
-                    "불곱창" + (i + 1), "이 곱창은 왕십리에서 시작하여...",
-                    1000 * (i + 1), (i + 1) % ITEM_SIZE,  0);
-            clothes.add(item);
-        }
-
+        clothes = JSONTask.getInstance().getRandomClothesAll(RANDOM_CLOTHES_CNT);
         cAdapter = new ClothesRecommendationListRecyclerAdapter(this, clothes);
         recyclerView.setAdapter(cAdapter);
 
