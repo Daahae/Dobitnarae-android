@@ -40,9 +40,9 @@ public class ClothesListRecyclerAdapter extends RecyclerView.Adapter<ClothesList
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Clothes item = clothes.get(position);
 
-        // TODO  서버에서 이미지 받아야함
-        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
-        holder.image.setImageBitmap(bm);
+        // 옷 이미지 가져옴
+        ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
+
         holder.name.setText(item.getName());
         DecimalFormat dc = new DecimalFormat("###,###,###,###");
         holder.price.setText(dc.format(item.getPrice()) + " 원");

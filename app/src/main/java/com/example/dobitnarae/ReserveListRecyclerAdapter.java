@@ -44,8 +44,7 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         final Reserve item = reserves.get(position);
 
         int storeID = JSONTask.getInstance().changeStoreID(item.getAdmin_id());
-        Bitmap bm = ServerImg.getStoreImage(storeID);
-        holder.image.setImageBitmap(bm);
+        ServerImg.getStoreImageGlide(context, storeID, holder.image);
 
         Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
 

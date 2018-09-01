@@ -48,9 +48,7 @@ public class ClothesRecommendationListRecyclerAdapter extends RecyclerView.Adapt
         String adminID = JSONTask.getInstance().changeToAdminID(item.getStore_id());
         final Store store = JSONTask.getInstance().getAdminStoreAll(adminID).get(0);
 
-        // TODO  서버에서 이미지 받아야함
-        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
-        holder.image.setImageBitmap(bm);
+        ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
 
         int clothesCnt = item.getCount();
         Drawable itemForegroundColor;

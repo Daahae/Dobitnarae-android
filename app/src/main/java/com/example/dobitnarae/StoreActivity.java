@@ -145,9 +145,8 @@ public class StoreActivity extends AppCompatActivity {
         titleName.setText(store.getName());
 
         // 상점 메인 사진 변경
-        Bitmap bm = ServerImg.getStoreImage(store.getId());
         ImageView storeImg = (ImageView)findViewById(R.id.store_img);
-        storeImg.setImageBitmap(bm);
+        ServerImg.getStoreImageGlide(getApplicationContext(), store.getId(), storeImg);
     }
 
     @Override

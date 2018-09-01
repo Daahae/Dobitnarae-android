@@ -42,8 +42,7 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
         // TODO 뷰 형태 바꿔야함
         final Store item = stores.get(position);
 
-        Bitmap bm = ServerImg.getStoreImage(item.getId());
-        holder.image.setImageBitmap(bm);
+        ServerImg.getStoreImageGlide(context, item.getId(), holder.image);
         holder.name.setText(item.getName());
         holder.address.setText(item.getAddress());
         holder.storeView.setId(item.getId());

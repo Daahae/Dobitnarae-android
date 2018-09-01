@@ -36,9 +36,8 @@ public class ReservationInfoRecyclerAdapter extends RecyclerView.Adapter<Reserva
     public void onBindViewHolder(ViewHolder holder, final int position) {
         BasketItem basketItem = this.clothes.get(position);
         Clothes clothes = basketItem.getClothes();
-        // TODO  서버에서 이미지 받아야함
-        Bitmap bm = ServerImg.getClothImage(clothes.getCloth_id());
-        holder.image.setImageBitmap(bm);
+        // 옷 이미지 가져옴
+        ServerImg.getClothesImageGlide(context, clothes.getCloth_id(), holder.image);
 
         holder.delBtn.setVisibility(View.INVISIBLE);
 

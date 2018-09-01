@@ -49,9 +49,8 @@ public class ClothesReservationActivity extends AppCompatActivity {
         titleName.setText(store.getName());
 
         // 이미지
-        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
         ImageView clotheImg = (ImageView)findViewById(R.id.reserve_clothes_img);
-        clotheImg.setImageBitmap(bm);
+        ServerImg.getClothesImageGlide(getApplicationContext(), item.getCloth_id(), clotheImg);
 
         // 옷 이름
         TextView name = findViewById(R.id.reserve_clothes_name);
