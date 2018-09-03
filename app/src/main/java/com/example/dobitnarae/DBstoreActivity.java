@@ -121,9 +121,13 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
 
             // LoginActivity.setLogOut(); // 로그아웃!!
 
-            /*
+
             clothesList = JSONTask.getInstance().getClothesAll("jong4876");
             Clothes clothes = clothesList.get(0);
+            orderList = JSONTask.getInstance().getOrderCustomerAll("myoung123");
+            Order order = orderList.get(0);
+
+
 
             BasketItem basketItem1 = new BasketItem(clothes,1);
             clothes.setCloth_id(2);
@@ -135,7 +139,7 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
 
             JSONTask.getInstance().insertOrder(order, basketList);
 
-*/
+
 
 
 
@@ -181,7 +185,7 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
             }
 */
 
-/*
+
             for(int i=0; i<basketList.size(); i++){
                 sb.append(// test용 stringbuffer
                         "한복id: " + basketList.get(i).getClothes().getCloth_id()+
@@ -197,7 +201,8 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
                 );
             }
 
-*/
+
+/*
             for(int i=0; i<clothesList.size(); i++){
                 sb.append(// test용 stringbuffer
                         "한복id: " + clothesList.get(i).getCloth_id()+
@@ -207,7 +212,7 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
                                 "\n\n\n"
                 );
             }
-
+*/
 /*
             for(int i=0; i<orderList.size(); i++){
 

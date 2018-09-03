@@ -24,6 +24,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     String admin_id;
     int reserve_ID = 0;
     int acceptStatus = 0;
+    int subCount = 0;
     String password = "0";
     Store upStore = new Store(0,"example","example","example",
             "example","example","example",0,
@@ -62,6 +63,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     }
     public void setAcceptStatus(int acceptStatus){// 삭제를 위한 셋함수(매개변수 옷이름)
         this.acceptStatus = acceptStatus;
+    }
+    public void setSubCount(int subCount){// 삭제를 위한 셋함수(매개변수 옷이름)
+        this.subCount = subCount;
     }
     public void setUpStore(Store upStore){
         this.upStore = upStore;
@@ -105,7 +109,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             jsonObject.accumulate("password", password);
             jsonObject.accumulate("reserve_ID", reserve_ID);
             jsonObject.accumulate("acceptStatus", acceptStatus);
-
+            jsonObject.accumulate("subCount", subCount);
 
                 if (flag == 1) {//updateStore를 위한 서버에 데이터 전송
 
@@ -618,8 +622,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
 
 
-    public ArrayList<Clothes> getBascketAdminAll(String admin_id){ // user_id가 장바구니에 담은 옷 전체 검색
-        ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
+    public ArrayList<BasketItem> getBascketAdminAll(String admin_id){ // user_id가 장바구니에 담은 옷 전체 검색
+        ArrayList<BasketItem> basketList = new ArrayList<BasketItem>();
         Clothes clothes;
 
         try{
@@ -638,13 +642,15 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int price = jo.getInt("price");
                 int count = jo.getInt("count");
                 int sex = jo.getInt("sex");
+                int basket_count = jo.getInt("basket_count");
                 clothes = new Clothes(cloth_ids,store_ids,category, name,intro, price, count, sex);
-                clothesList.add(clothes);//accountList 차례대로 삽입
+                BasketItem basketItem = new BasketItem(clothes,basket_count);
+                basketList.add(basketItem);//accountList 차례대로 삽입
             }
         }catch(Exception e){
             e.printStackTrace();
         }
-        return clothesList;
+        return basketList;
     }
 
     //////////수정메서드
@@ -735,12 +741,33 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
     }
+    public void subClothesCount(int clothesID, int subCount){// 주문한 옷들의 카운트 조정을위한 메서드
+        try {
+            JSONTask JT = new JSONTask();
+            JT.setUser_id(clothesID+"");// user_id가 필요없으므로 적당히 전달
+            JT.setSubCount(subCount);
+
+            JT.execute("http://192.168.0.7:3443/subClothesCount");
+            Log.e("err","sub 성공!!");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void insertReserve(Reserve reserve, ArrayList<BasketItem> basketList){ // user_id에 해당하는 매장에 옷 추가(관리자)
+        Clothes  clothes;
         JSONTask JT = new JSONTask();
         try {
+
             JT.setReserveBasket(reserve, basketList);
             JT.execute("http://13.209.89.187:3443/insertReserve");// URL변경필수
+
+          //  for (int i = 0; i < basketList.size(); i++) {
+          //      clothes = basketList.get(i).getClothes();
+          //      subClothesCount(clothes.getCloth_id(),clothes.getCount());
+          //  }
             Log.e("err","order삽입 성공!!");
 
         }catch(Exception e){
