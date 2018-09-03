@@ -17,7 +17,7 @@
     <color name="white">#fff</color>
     <color name="appMainColor">#ff8484</color>
     <color name="storeOpeningColor">#339738</color>
-    <color name="lineColor">#dcdcdc</color>
+    <color name="lineColor">#EEEEEE</color>
     <color name="storeClosingColor">#f94c4c</color>
     <color name="baseBackgroundColor">#EEEEEE</color>
 </resources>

@@ -21,4 +21,10 @@
     <string name="tmp">한복입고 돌아다니기 좋은 날씨네요</string>
     <string name="login">로그인</string>
     <string name="signup">회원가입</string>
+    <string name="license">Icons made by Robin Kylander from www.flaticon.com is licensed by CC 3.0 BY</string>
+
+    <string name="companyInfo">두빛나래는 통신판매중개자이며 통신판매의 당사자가 아닙니다.\n
+        따라서 두빛나래는 한복 예약, 대여, 취소 등과 관련한 의무와 책임이 없으며,\n
+        거래에 따른 법적 책임은 각 판매자에게 있습니다.
+    </string>
 </resources>

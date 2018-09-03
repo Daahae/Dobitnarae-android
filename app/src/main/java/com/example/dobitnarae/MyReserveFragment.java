@@ -47,7 +47,7 @@ public class MyReserveFragment extends Fragment {
         mAdapter = new ReserveListRecyclerAdapter(getContext(), reserves);
         recyclerView.setAdapter(mAdapter);
 
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.reserve_swipe_layout);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout_reserve_list);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
