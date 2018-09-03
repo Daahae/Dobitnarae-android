@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -40,9 +41,8 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
     public void onBindViewHolder(ViewHolder holder, int position) {
         // TODO 뷰 형태 바꿔야함
         final Store item = stores.get(position);
-        // TODO  서버에서 이미지 받아야함
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sejong);
-        holder.image.setBackground(drawable);
+
+        ServerImg.getStoreImageGlide(context, item.getId(), holder.image);
         holder.name.setText(item.getName());
         holder.address.setText(item.getAddress());
         holder.storeView.setId(item.getId());

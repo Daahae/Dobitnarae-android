@@ -21,11 +21,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/store_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:adjustViewBounds="true"
-                android:background="@drawable/sejong"
                 app:layout_collapseMode="parallax" />
 
             <include layout="@layout/tool_bar_store" />

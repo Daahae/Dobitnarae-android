@@ -1,7 +1,6 @@
 package com.example.dobitnarae;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -11,9 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,10 +29,15 @@ public class MainActivityTmp extends AppCompatActivity {
     private Account account;
     private ClothesRecommendationListRecyclerAdapter cAdapter;
     private ArrayList<Clothes> clothes;
+    private final int RANDOM_CLOTHES_CNT = 5;
 
     // 날씨
     private final String[] skyStatus = {"맑음", "구름조금", "구름많음", "흐림"};
     private final String[] precipitationType = {"", "비", "비/눈", "눈"};
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,16 +80,7 @@ public class MainActivityTmp extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
 
         // 랜덤으로 옷 추출
-        // 더미
-        int ITEM_SIZE = 8;
-        clothes = new ArrayList<>();
-        for(int i=0; i<ITEM_SIZE; i++){
-            Clothes item = new Clothes(i, i, i % Constant.category_cnt + 1,
-                    "불곱창" + (i + 1), "이 곱창은 왕십리에서 시작하여...",
-                    1000 * (i + 1), (i + 1) % ITEM_SIZE,  0);
-            clothes.add(item);
-        }
-
+        clothes = JSONTask.getInstance().getRandomClothesAll(RANDOM_CLOTHES_CNT);
         cAdapter = new ClothesRecommendationListRecyclerAdapter(this, clothes);
         recyclerView.setAdapter(cAdapter);
 
@@ -102,8 +95,8 @@ public class MainActivityTmp extends AppCompatActivity {
             TextView weatherContext = (TextView)findViewById(R.id.weather_context);
 
             JSONObject weatherInfo = new WeatherTask().execute().get();
-            temperature.setText(weatherInfo.getString("기온"));
 
+            temperature.setText(weatherInfo.getString("기온"));
             int sky = weatherInfo.getInt("하늘상태");
             int pty = weatherInfo.getInt("강수상태");
 
@@ -127,8 +120,40 @@ public class MainActivityTmp extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // 지울것
-        account = Account.getInstance();
+        LinearLayout logout = (LinearLayout)findViewById(R.id.footer_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.setLogOut();
+                Intent intent = new Intent(MainActivityTmp.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        LinearLayout openSourceInfo = (LinearLayout)findViewById(R.id.footer_opensource);
+        openSourceInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityTmp.this, OpenSourceInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+            finish();
+        }
+        else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setPalaceRedirection(){

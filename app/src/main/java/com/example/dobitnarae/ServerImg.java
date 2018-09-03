@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 
 public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 이미지를 bitmap형식으로 뿌리기
@@ -38,6 +41,24 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         return bmImg;
     }
 
+    // 상점 이미지 가져오기
+    public static void getStoreImageGlide(Context context, int storeID, ImageView imageView){
+        Glide.with(context).load("http://13.209.89.187:3443/store/" + storeID +".jpg")
+                .apply(new RequestOptions()
+                        .fitCenter()
+                        .error(R.mipmap.ic_launcher))
+                .into(imageView);
+    }
+
+    // 옷 이미지 가져오기
+    public static void getClothesImageGlide(Context context, int clothesID, ImageView imageView){
+        Glide.with(context).load("http://13.209.89.187:3443/cloth/" + clothesID +".jpg")
+                .apply(new RequestOptions()
+                        .fitCenter()
+                        .error(R.mipmap.ic_launcher))
+                .into(imageView);
+    }
+
     public static Bitmap getStoreImage(int storeID){
 
         String str = ""+storeID;
@@ -45,7 +66,6 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         try {
             ServerImg SI = new ServerImg();
             BM = SI.execute("http://13.209.89.187:3443/store/" + str+".jpg").get();
-
 
         }catch(Exception E){
             E.printStackTrace();

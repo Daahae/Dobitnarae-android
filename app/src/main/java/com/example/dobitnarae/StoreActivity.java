@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -141,6 +143,10 @@ public class StoreActivity extends AppCompatActivity {
         // 툴바 타이틀 이름 상점이름으로 변경
         TextView titleName = (TextView) findViewById(R.id.toolbar_title);
         titleName.setText(store.getName());
+
+        // 상점 메인 사진 변경
+        ImageView storeImg = (ImageView)findViewById(R.id.store_img);
+        ServerImg.getStoreImageGlide(getApplicationContext(), store.getId(), storeImg);
     }
 
     @Override

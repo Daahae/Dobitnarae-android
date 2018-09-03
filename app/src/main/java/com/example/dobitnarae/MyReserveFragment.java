@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ public class MyReserveFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private ArrayList<Reserve> reserves;
     private ReserveListRecyclerAdapter mAdapter;
+    public static boolean changeFlg = false;
 
     public MyReserveFragment() {
     }
@@ -40,23 +42,39 @@ public class MyReserveFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        reserves = JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
+        reserves = getReserves();
 
         mAdapter = new ReserveListRecyclerAdapter(getContext(), reserves);
         recyclerView.setAdapter(mAdapter);
 
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.reserve_swipe_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reserves = getReserves();
+                swipeRefreshLayout.setRefreshing(false);
+                refresh();
+            }
+        });
+
         return rootView;
     }
 
-    // 옷
-    public void cancelReservation(int reservationID){
-        for(Reserve item : reserves){
-            if(item.getId() == reservationID) {
-                reserves.remove(item);
-                break;
-            }
+    private ArrayList<Reserve> getReserves(){
+        return JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(changeFlg) {
+            refresh();
+            changeFlg = false;
         }
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
+    }
+
+    private void refresh(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

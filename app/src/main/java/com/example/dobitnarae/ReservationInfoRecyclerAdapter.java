@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -35,9 +36,8 @@ public class ReservationInfoRecyclerAdapter extends RecyclerView.Adapter<Reserva
     public void onBindViewHolder(ViewHolder holder, final int position) {
         BasketItem basketItem = this.clothes.get(position);
         Clothes clothes = basketItem.getClothes();
-        // TODO  서버에서 이미지 받아야함
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sejong);
-        holder.image.setBackground(drawable);
+        // 옷 이미지 가져옴
+        ServerImg.getClothesImageGlide(context, clothes.getCloth_id(), holder.image);
 
         holder.delBtn.setVisibility(View.INVISIBLE);
 

@@ -1,6 +1,7 @@
 package com.example.dobitnarae;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -19,6 +22,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -122,7 +126,7 @@ public class BasketActivity extends AppCompatActivity {
         dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                date = "" + year + "-" + monthOfYear + "-" + dayOfMonth;
+                date = "" + year + "-" + String.format("%02d", monthOfYear + 1) + "-" + String.format("%02d", dayOfMonth);
                 tpd.show(getFragmentManager(), "TimePickerdialog");
             }
         });
@@ -144,22 +148,29 @@ public class BasketActivity extends AppCompatActivity {
         tpd.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-                // TODO
-                // 서버로 선택한 옷, 사용자 정보, 예약 날짜 및 시간 전송
-                date += " " + hourOfDay + ":" + minute + ":" + second;
-                JSONTask jt = JSONTask.getInstance();
-                Basket basket = Basket.getInstance();
-                Account account = Account.getInstance();
-
-                Reserve reserve = new Reserve(0, account.getId(), "jong4876", 0, date);
-                jt.insertReserve(reserve, basket.getBasket());
-
-                basket.clearBasket();
-                Toast.makeText(getApplicationContext(), "대여 신청 완료", Toast.LENGTH_SHORT).show();
-
-                finish();
+                date += " " + String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second);
+                reservation();
             }
         });
+        tpd.dismissOnPause(true);
     }
 
+    private void reservation()
+    {
+        Basket basket = Basket.getInstance();
+        Account account = Account.getInstance();
+        String adminID = JSONTask.getInstance().changeToAdminID(basket.getSelectedStoreID());
+
+        Log.e("" + adminID, " " + basket.getSelectedStoreID());
+
+        Reserve reserve = new Reserve(1, account.getId(),
+                adminID, 0, date);
+        JSONTask.getInstance().insertReserve(reserve, basket.getBasket());
+        basket.clearBasket();
+
+        Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+        finish();
+    }
 }

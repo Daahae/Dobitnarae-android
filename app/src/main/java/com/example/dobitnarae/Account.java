@@ -7,7 +7,7 @@ public class Account {
     private String phone;
     private int privilege;
 
-    public Account() {
+    private Account() {
         setClientAccount();
     }
     // 임시 계정 정보 설정
@@ -41,6 +41,14 @@ public class Account {
 
     private static class Singleton{
         private static final Account instance = new Account();
+    }
+
+    public void setAccount(Account account){
+        this.id = account.id;
+        this.pw = account.pw;
+        this.name = account.name;
+        this.phone = account.phone;
+        this.privilege = account.privilege;
     }
 
     public String getName() {

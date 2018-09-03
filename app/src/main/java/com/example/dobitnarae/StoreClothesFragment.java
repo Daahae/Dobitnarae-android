@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -85,6 +86,17 @@ public class StoreClothesFragment extends Fragment {
 
         cAdapter = new ClothesCategoryListRecyclerAdapter(getContext(), originItems, mAdapter);
         recyclerViewCategory.setAdapter(cAdapter);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout_clothes_list);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //mAdapter.setClothes(JSONTask.getInstance().getClothesAll(store.getAdmin_id()));
+                originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
+                swipeRefreshLayout.setRefreshing(false);
+                refresh();
+            }
+        });
 
         return rootView;
     }

@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -41,9 +42,9 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Reserve item = reserves.get(position);
-        // TODO  서버에서 이미지 받아야함
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sejong);
-        holder.image.setBackground(drawable);
+
+        int storeID = JSONTask.getInstance().changeStoreID(item.getAdmin_id());
+        ServerImg.getStoreImageGlide(context, storeID, holder.image);
 
         Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
 
@@ -109,5 +110,10 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
             successText = (TextView) itemView.findViewById(R.id.reserve_success_text);
             reserveSuccessBorder = (LinearLayout)itemView.findViewById(R.id.reserve_success_layout);
         }
+    }
+
+    public void setReserves(ArrayList<Reserve> reserves) {
+        this.reserves = reserves;
+        this.notifyDataSetChanged();
     }
 }

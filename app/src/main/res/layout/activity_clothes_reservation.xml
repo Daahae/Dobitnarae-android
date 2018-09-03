@@ -38,8 +38,7 @@
                                 android:id="@+id/reserve_clothes_img"
                                 android:layout_width="250dp"
                                 android:layout_height="300dp"
-                                android:layout_marginBottom="10dp"
-                                android:src="@drawable/gobchang"/>
+                                android:layout_marginBottom="10dp" />
                             <TextView
                                 android:id="@+id/reserve_clothes_name"
                                 android:layout_width="wrap_content"
