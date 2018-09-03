@@ -1,5 +1,7 @@
 package com.example.dobitnarae;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class OrderInfoData implements Serializable{
@@ -9,6 +11,7 @@ public class OrderInfoData implements Serializable{
     private String orderDate;
     private int orderPrice;
     private int orderAccept;
+    private Bitmap bm;
 
     public String getOrderNo() {
         return orderNo;
@@ -56,5 +59,13 @@ public class OrderInfoData implements Serializable{
 
     public void setOrderAccept(int orderAccept) {
         this.orderAccept = orderAccept;
+    }
+
+    public Bitmap getBm() {
+        return bm;
+    }
+
+    public void setBm(Bitmap bm) {
+        this.bm = bm;
     }
 }

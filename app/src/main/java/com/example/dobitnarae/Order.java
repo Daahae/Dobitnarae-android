@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Order implements Comparable<Order>{
+    private ArrayList<BasketItem> basket;
     private int orderNo;
     private String userID;
     private String adminID;
@@ -20,6 +21,13 @@ public class Order implements Comparable<Order>{
         this.adminID = adminID;
         this.acceptStatus = acceptStatus;
         this.orderDate = orderDate;
+    }
+    public ArrayList<BasketItem> getBasket() {
+        return basket;
+    }
+
+    public void setBasket(ArrayList<BasketItem> basket) {
+        this.basket = basket;
     }
 
     public int getOrderNo() {

@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -38,8 +39,10 @@ public class ItemListRecyclerAdapter extends RecyclerView.Adapter<ItemListRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Clothes item = clothes.get(position);
         // TODO  서버에서 이미지 받아야함
-        final Drawable drawable = ContextCompat.getDrawable(context, R.drawable.gobchang);
-        holder.image.setBackground(drawable);
+        //Drawable drawable = ContextCompat.getDrawable(context, R.drawable.gobchang);
+        //holder.image.setBackground(drawable);
+        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
+        holder.image.setImageBitmap(bm);
         holder.name.setText(item.getName());
         holder.price.setText("" + item.getPrice());
         holder.cardview.setId(item.getCloth_id());

@@ -53,7 +53,6 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         return BM;
     }
     public static Bitmap getClothImage(int clothID){
-
         String str = ""+clothID;
         Bitmap BM = null;
         try {

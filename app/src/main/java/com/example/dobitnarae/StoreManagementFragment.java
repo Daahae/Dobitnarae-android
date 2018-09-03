@@ -3,31 +3,23 @@ package com.example.dobitnarae;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.media.Image;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -36,23 +28,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,20 +60,24 @@ public class StoreManagementFragment extends Fragment {
     private int iv_height;
 
     private Store store;
-    private ImageButton btn_edit;
     private EditText edit_name;
     private TextView edit_admin_id;
     private EditText edit_tel;
     private EditText edit_intro;
     private EditText edit_info;
     private EditText edit_address;
-    private EditText edit_sector;
+    private Spinner spinnerSector;
 
+    private int sectorData;
+
+    private ArrayList<String> sectorList;
     private ArrayList<EditText> editTextArrayList;
 
     private InputMethodManager imm; //전역변수
 
     private UploadFile uploadFile;
+
+    private FloatingActionButton btnEdit;
 
     public StoreManagementFragment(Store store) {
         this.store = store;
@@ -119,7 +109,41 @@ public class StoreManagementFragment extends Fragment {
         edit_intro = (EditText)rootView.findViewById(R.id.edit_intro);
         edit_info = (EditText)rootView.findViewById(R.id.edit_info);
         edit_address = (EditText)rootView.findViewById(R.id.edit_address);
-        edit_sector = (EditText)rootView.findViewById(R.id.edit_sector);
+        //edit_sector = (EditText)rootView.findViewById(R.id.edit_sector);
+        spinnerSector = (Spinner)rootView.findViewById(R.id.spinner_sector);
+
+        btnEdit = (FloatingActionButton) rootView.findViewById(R.id.fab1);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlert(getActivity(), store);
+            }
+        });
+
+        // 카테고리 선택
+        sectorList = new ArrayList<String>();
+        sectorList.add("1");
+        sectorList.add("2");
+
+        ArrayAdapter adapterSector = new ArrayAdapter(getContext(), R.layout.component_spin, sectorList);
+
+        spinnerSector.setAdapter(adapterSector);
+
+        if(store.getSector()!=1 && store.getSector()!=2)
+            store.setSector(1);
+        spinnerSector.setSelection(store.getSector()-1);
+
+        spinnerSector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sectorData = position + 1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         setEditText(store);
 
@@ -128,7 +152,6 @@ public class StoreManagementFragment extends Fragment {
         editTextArrayList.add(edit_intro);
         editTextArrayList.add(edit_info);
         editTextArrayList.add(edit_address);
-        editTextArrayList.add(edit_sector);
 
         for (final EditText item:editTextArrayList) {
             item.setOnClickListener(new View.OnClickListener() {
@@ -140,15 +163,6 @@ public class StoreManagementFragment extends Fragment {
                 }
             });
         }
-
-        // 부모액티비티 툴바 요소인 이미지 버튼에 접근
-        btn_edit = ((AdminActivity)getActivity()).getEditButton();
-        btn_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlert(getActivity(), store);
-            }
-        });
 
         Bitmap bm = ServerImg.getStoreImage(store.getId());
         imageView_store.setImageBitmap(bm);
@@ -457,7 +471,6 @@ public class StoreManagementFragment extends Fragment {
         edit_intro.setText(store.getIntro());
         edit_info.setText(store.getInform());
         edit_address.setText(store.getAddress());
-        edit_sector.setText(""+store.getSector());
     }
 
     private void updateStoreByText(){
@@ -466,7 +479,7 @@ public class StoreManagementFragment extends Fragment {
         store.setIntro(edit_intro.getText().toString());
         store.setInform(edit_info.getText().toString());
         store.setAddress(edit_address.getText().toString());
-        store.setSector(Integer.parseInt(edit_sector.getText().toString()));
+        store.setSector(sectorData);
     }
 
     public void refresh(){

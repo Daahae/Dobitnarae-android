@@ -26,13 +26,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class AdminActivity extends AppCompatActivity {
-     private ImageButton editButton;
-     private Spinner spinner;
-     private ImageButton refreshBtn;
      private StoreManagementFragment storeManagementFragment;
      private ItemManagementFragment itemManagementFragment;
      private OrderManagementFragment orderManagementFragment;
-     private ArrayList<Store> storeList;
      private Store store;
 
      private Context context;
@@ -58,7 +54,7 @@ public class AdminActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_admin);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_edit);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
@@ -86,22 +82,13 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    editButton.setVisibility(View.VISIBLE);
-                    spinner.setVisibility(View.GONE);
-                    refreshBtn.setVisibility(View.GONE);
-                    storeManagementFragment.refresh();
+                    //storeManagementFragment.refresh();
                 }
                 else if (position == 1) {
-                    editButton.setVisibility(View.GONE);
-                    spinner.setVisibility(View.VISIBLE);
-                    refreshBtn.setVisibility(View.GONE);
-                    itemManagementFragment.refresh();
+                    //itemManagementFragment.refresh();
                 }
                 else if(position == 2) {
-                    editButton.setVisibility(View.GONE);
-                    spinner.setVisibility(View.GONE);
-                    refreshBtn.setVisibility(View.VISIBLE);
-                    orderManagementFragment.refresh();
+                    //orderManagementFragment.refresh();
                 }
             }
 
@@ -112,15 +99,11 @@ public class AdminActivity extends AppCompatActivity {
         });
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        this.storeList = JSONTask.getInstance().getAdminStoreAll("jong4876");// JSON형태의 store정보들을 분류하여 arrayList에 저장
-        this.store = storeList.get(0);
+        // 로그인된 매장 주인의 매장정보를 가져옴
+        this.store = JSONTask.getInstance().getAdminStoreAll(JSONTask.getInstance().getLoginID()).get(0);
 
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(store.getName());
-
-        editButton = findViewById(R.id.editButton);
-        spinner = findViewById(R.id.edit_spinner);
-        refreshBtn = findViewById(R.id.refreshButton);
     }
 
     @Override
@@ -196,17 +179,5 @@ public class AdminActivity extends AppCompatActivity {
 
         if (storeManagementFragment != null)
             ((StoreManagementFragment) storeManagementFragment).onActivityResult(requestCode, resultCode, data);
-    }
-
-    public ImageButton getEditButton(){
-        return editButton;
-    }
-
-    public Spinner getSpinner() {
-        return spinner;
-    }
-
-    public ImageButton getRefreshBtn(){
-        return refreshBtn;
     }
 }

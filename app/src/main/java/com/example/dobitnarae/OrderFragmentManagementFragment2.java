@@ -3,6 +3,7 @@ package com.example.dobitnarae;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,7 +30,6 @@ public class OrderFragmentManagementFragment2 extends Fragment{
     private ListViewAdapter mAdapter = null;
 
     private Store store;
-    private Basket basket;
 
     public OrderFragmentManagementFragment2(Store store) {
         this.store = store;
@@ -40,8 +40,8 @@ public class OrderFragmentManagementFragment2 extends Fragment{
             if(item.getAcceptStatus()==1 || item.getAcceptStatus()==2)
                 items.add(item);
         }
-
-        this.basket = Basket.getInstance();
+        for (Order item:items)
+            item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getOrderNo()));
     }
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -138,9 +138,6 @@ public class OrderFragmentManagementFragment2 extends Fragment{
 
             final OrderInfoData mData = mListData.get(position);
 
-            // 서버에서 이미지 받아야함
-            Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.gobchang);
-
             holder.mNo = mData.getOrderNo();
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,7 +149,8 @@ public class OrderFragmentManagementFragment2 extends Fragment{
                     mContext.startActivity(intent);
                 }
             });
-            holder.iv_main.setBackground(drawable);
+
+            holder.iv_main.setImageBitmap(mData.getBm());
             holder.tv_basket.setText(mData.getOrderBasket());
             holder.tv_date.setText(mData.getOrderDate());
 
@@ -177,20 +175,27 @@ public class OrderFragmentManagementFragment2 extends Fragment{
             OrderInfoData addInfo = null;
 
             int sum = 0;
-            for(int i = 0; i < basket.getBasket().size(); i++){
-                sum += basket.getBasket().get(i).getCnt() ;
+            for(int i = 0; i < item.getBasket().size(); i++){
+                sum += item.getBasket().get(i).getCnt() ;
             }
             sum -= 1;
 
             addInfo = new OrderInfoData();
+            // 각 주문의 데이터가 있을경우 첫번째 옷 사진을 미리보기로 띄움
+            if(item.getBasket().size()>0) {
+                Bitmap bm = ServerImg.getClothImage(item.getBasket().get(0).getClothes().getCloth_id());
+                addInfo.setBm(bm);
+            } else
+                addInfo.setBm(null);
+
             addInfo.setOrderNo(String.valueOf(item.getOrderNo()));
             // 고객 아이디가 아닌 고객 이름을 보여지게 해야함
             addInfo.setOrderName(item.getUserID());
             // 고객 주문데이터로 수정필요
-            if(basket.getBasket().size()!=0 && sum != 0)
-                addInfo.setOrderBasket(basket.getBasket().get(0).getClothes().getName() + " 외 " + sum + "벌");
+            if(item.getBasket().size()!=0 && sum != 0)
+                addInfo.setOrderBasket(item.getBasket().get(0).getClothes().getName() + " 외 " + sum + "벌");
             else if(sum==0)
-                addInfo.setOrderBasket(basket.getBasket().get(0).getClothes().getName() + " 1벌");
+                addInfo.setOrderBasket(item.getBasket().get(0).getClothes().getName() + " 1벌");
             else
                 addInfo.setOrderBasket("비어있음");
             addInfo.setOrderDate(item.getOrderDate());
@@ -222,7 +227,8 @@ public class OrderFragmentManagementFragment2 extends Fragment{
             if(item.getAcceptStatus()==1 || item.getAcceptStatus()==2)
                 items.add(item);
         }
-
+        for (Order item:items)
+            item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getOrderNo()));
         mAdapter.clear();
         for (Order item:items)
             mAdapter.addItem(item);

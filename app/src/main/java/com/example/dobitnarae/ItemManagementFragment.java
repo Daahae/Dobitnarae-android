@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +17,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -32,8 +35,9 @@ public class ItemManagementFragment extends Fragment{
     private Store store;
     public ArrayList<Clothes> deleteList;
 
-    private ArrayAdapter<String> spinnerAdapter;
-    private ArrayList<String> dataList;
+    private Animation fabOpen, fabClose;
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab, fab1, fab2;
 
     public ItemManagementFragment(Store store) {
         this.store = store;
@@ -106,80 +110,67 @@ public class ItemManagementFragment extends Fragment{
             }
         });
 
-        // 스피너 드롭다운
-        dataList = new ArrayList<String>();
-        dataList.add("메       뉴");
-        dataList.add("추       가");
-        dataList.add("삭       제");
-        dataList.add("새로고침");
+        fabOpen = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
 
-        spinnerAdapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, dataList){
-            @NonNull
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v =  super.getView(position, convertView, parent);
-
-                Typeface externalFont = Typeface.createFromAsset(getActivity().getAssets(), "font/NanumSquareR.ttf");
-                ((TextView) v).setTypeface(externalFont);
-                ((TextView) v).setTextSize(18);
-
-                return v;
-            }
-
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v =  super.getDropDownView(position, convertView, parent);
-
-                Typeface externalFont = Typeface.createFromAsset(getActivity().getAssets(), "font/NanumSquareR.ttf");
-                ((TextView) v).setTypeface(externalFont);
-                v.setBackgroundColor(Color.WHITE);
-                ((TextView) v).setTextColor(Color.BLACK);
-                ((TextView) v).setGravity(Gravity.CENTER);
-
-                return v;
-            }
-        };
-        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
-        final Spinner spinner = ((AdminActivity)getActivity()).getSpinner();
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(spinner.getItemIdAtPosition(position) == 1){
-                    // 추가
-                    Intent intent = new Intent(getContext(), ItemAddActivity.class);
-                    intent.putExtra("store", store);
-                    startActivity(intent);
-                    refresh();
-                } else if(spinner.getItemIdAtPosition(position) == 2){
-                    // 삭제
-                    if(deleteList.size()!=0) {
-                        originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
-                        for (Clothes tmp : deleteList) {
-                            originItems.remove(tmp);
-                            JSONTask.getInstance().deleteCloth(tmp.getCloth_id());
-                        }
-                        items = originItems;
-                        mAdapter.notifyDataSetChanged();
-                        Toast.makeText(getActivity(), deleteList.size() + "개 항목이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                        deleteList.clear();
-                        refresh();
-                    } else {
-                        Toast.makeText(getActivity(), "삭제할 항목을 선택해주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                } else if(spinner.getItemIdAtPosition(position) == 3) {
-                    // 새로고침
-                    dataRefresh();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                anim();
             }
         });
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+                if(deleteList.size()!=0) {
+                    for (Clothes tmp : deleteList)
+                        JSONTask.getInstance().deleteCloth(tmp.getCloth_id());
+                    originItems = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
+                    items = getClothesList(0);
+                    mAdapter.notifyDataSetChanged();
+                    Toast.makeText(getActivity(), deleteList.size() + "개 항목이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    deleteList.clear();
+                    refresh();
+                } else {
+                    Toast.makeText(getActivity(), "삭제할 항목을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim();
+                Intent intent = new Intent(getContext(), ItemAddActivity.class);
+                intent.putExtra("store", store);
+                startActivity(intent);
+                refresh();
+            }
+        });
+
         return rootView;
+    }
+
+    public void anim() {
+        if (isFabOpen) {
+            fab1.startAnimation(fabClose);
+            fab2.startAnimation(fabClose);
+            fab1.setClickable(false);
+            fab2.setClickable(false);
+            isFabOpen = false;
+        } else {
+            fab1.startAnimation(fabOpen);
+            fab2.startAnimation(fabOpen);
+            fab1.setClickable(true);
+            fab2.setClickable(true);
+            isFabOpen = true;
+        }
     }
 
     public ArrayList<Clothes> getClothesList(int category){

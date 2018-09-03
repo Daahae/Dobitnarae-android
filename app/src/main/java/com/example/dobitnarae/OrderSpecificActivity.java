@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,30 +31,27 @@ public class OrderSpecificActivity extends AppCompatActivity {
     private Order item;
     private Order item2;
     private ArrayList<Order> originItems, nConfirm, confirm;
-    DecimalFormat dc;
     int index, id;
-    private TextView totalPrice;
 
     private LinearLayout layout;
 
     private NestedScrollView mScrollView;
 
-    private ListView mListView = null;
-    private ListViewAdapter mAdapter = null;
-
     private LinearLayout btnRegister;
     private LinearLayout btnReject;
 
-    private Basket basket;
+    private ArrayList<BasketItem> basket;
 
     private Intent intent;
     private Store store;
 
+    private OrderSpecificRecyclerAdapter mAdapter;
+    private TextView totalClothesCnt, reservationCost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specific_order);
-
+        setContentView(R.layout.activity_specific_order2);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(myToolbar);
@@ -81,12 +80,11 @@ public class OrderSpecificActivity extends AppCompatActivity {
                 confirm.add(item);
         }
 
-        this.basket = Basket.getInstance();
-
         layout = (LinearLayout) findViewById(R.id.layout_confirmornot);
 
         if(id==0) {
             this.item = nConfirm.get(index);
+            this.basket = JSONTask.getInstance().getBascketCustomerAll(nConfirm.get(index).getOrderNo());
 
             // 승인 버튼 클릭 시
             btnRegister = (LinearLayout) findViewById(R.id.order_clothes_register);
@@ -120,26 +118,29 @@ public class OrderSpecificActivity extends AppCompatActivity {
         }
         else if(id==1){
             this.item2 = confirm.get(index);
+            this.basket = JSONTask.getInstance().getBascketCustomerAll(confirm.get(index).getOrderNo());
             if(this.item2.getAcceptStatus()!=0)
                 layout.setVisibility(View.GONE);
         }
 
-        mListView = (ListView) findViewById(R.id.listview_specific);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.reservation_list);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListViewAdapter(this);
-        mListView.setAdapter(mAdapter);
+        mAdapter = new OrderSpecificRecyclerAdapter(this, basket);
+        recyclerView.setAdapter(mAdapter);
 
-        if(basket.getBasket().size()==0){
+        if(basket.size()==0){
             Toast.makeText(getApplicationContext(), "장바구니가 비었습니다.", Toast.LENGTH_SHORT).show();
         }
 
-        for (BasketItem citem:basket.getBasket()) {
-            mAdapter.addItem(citem);
-        }
+        reservationCost = findViewById(R.id.reservation_cost);
+        setTotalCost();
 
-        // 총 가격 설정
-        setTotalPrice(basket.getBasket());
+        totalClothesCnt = findViewById(R.id.reservation_clothes_total_cnt);
+        setTotalClothesCnt();
 
+        /*
         // 스크롤뷰, 리스트뷰 중복 스크롤 허용
         mScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView_order);
         mListView.setOnTouchListener(new View.OnTouchListener() {
@@ -149,115 +150,23 @@ public class OrderSpecificActivity extends AppCompatActivity {
                 return false;
             }
         });
+        */
+    }
+    public void setTotalClothesCnt()
+    {
+        int cnt = 0;
+        for(BasketItem item : basket)
+            cnt += item.getCnt();
+        totalClothesCnt.setText("" + cnt);
     }
 
-    public void setTotalPrice(List<BasketItem> citems){
-        totalPrice = findViewById(R.id.reserve_clothes_total_price);
-        String total;
-        int sum = 0;
-
-        for (BasketItem citem: citems) {
-            sum += citem.getClothes().getPrice() * citem.getCnt();
-        }
-
-        dc = new DecimalFormat("###,###,###,###");
-        total = dc.format(sum) + " 원";
-        totalPrice.setText(total);
-    }
-
-    private class ViewHolder {
-        public ImageView imageView;
-        public TextView mName;
-        public TextView mIntro;
-        public TextView mPrice;
-        public TextView mCnt;
-    }
-
-    private class ListViewAdapter extends BaseAdapter {
-        private Context mContext = null;
-        private ArrayList<Clothes> mListData = new ArrayList<Clothes>();
-
-        public ListViewAdapter(Context mContext) {
-            super();
-            this.mContext = mContext;
-        }
-
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.component_listview_order_specific, null);
-
-                holder.imageView = (ImageView) convertView.findViewById(R.id.order_clothes_img);
-                holder.mName = (TextView) convertView.findViewById(R.id.order_clothes_name);
-                holder.mIntro = (TextView) convertView.findViewById(R.id.order_clothes_introduction);
-                holder.mPrice = (TextView) convertView.findViewById(R.id.order_clothes_price);
-                holder.mCnt = (TextView) convertView.findViewById(R.id.order_clothes_cnt);
-
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            Clothes mData = mListData.get(position);
-
-            // 서버에서 이미지 받아야함
-            Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.gobchang);
-
-            holder.imageView.setBackground(drawable);
-            holder.mName.setText(mData.getName());
-            holder.mIntro.setText(mData.getIntro());
-            // 옷 가격
-            dc = new DecimalFormat("###,###,###,###");
-            String str = dc.format(mData.getPrice()) + " 원";
-            holder.mPrice.setText(str);
-
-            holder.mCnt.setText(""+mData.getCount());
-
-            return convertView;
-        }
-
-        public void addItem(BasketItem item){
-            Clothes addInfo = null;
-            addInfo = new Clothes();
-            // 이미지는 디렉토리에서 불러올예정
-            addInfo.setName(item.getClothes().getName());
-            addInfo.setIntro(item.getClothes().getIntro());
-            addInfo.setPrice(item.getClothes().getPrice());
-            addInfo.setCount(item.getCnt());
-            mListData.add(addInfo);
-        }
-
-        public void remove(int position){
-            mListData.remove(position);
-            dataChange();
-        }
-
-        public void clear(){
-            mListData.clear();
-            dataChange();
-        }
-
-        public void dataChange(){
-            mAdapter.notifyDataSetChanged();
-        }
+    public void setTotalCost()
+    {
+        int price = 0;
+        for(BasketItem item : basket)
+            price += item.getCnt() * item.getClothes().getPrice();
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###");
+        String str = decimalFormat.format(price) + " 원";
+        reservationCost.setText(str);
     }
 }

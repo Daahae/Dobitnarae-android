@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">두빛나래</string>
+    <string name="store_tab_text_1">StoreInfo</string>
+    <string name="store_tab_text_2">HanBok</string>
+    <string name="tab_text_1">StoreManagement</string>
+    <string name="tab_text_2">ItemManagement</string>
+    <string name="tab_text_3">Order</string>
+    <string name="tab_text_3.1">NotComfirm</string>
+    <string name="tab_text_3.2">Confirm</string>
+    <string name="str_done">Complete</string>
+    <string name="reserve_text">Rent</string>
+    <string name="tmp">It\'s a nice day to go around in HanBok.</string>
+    <string name="login">Login</string>
+    <string name="signup">SignUp</string>
+</resources>

@@ -35,4 +35,10 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
     // 당겨서 새로고침
     implementation 'com.android.support:design:27.1.1'
+    // FCM 푸시알림
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.0.0'
 }
+
+// FCM 푸시알림
+apply plugin: 'com.google.gms.google-services'

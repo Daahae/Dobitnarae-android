@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                 String ID = IDTxt.getText().toString();
                 accountList = JSONTask.getInstance().getAccountAll(ID);//ID존재 확인
 
-
                 if (accountList.size() != 0) {
                     String Password = PasswordTxt.getText().toString();
 

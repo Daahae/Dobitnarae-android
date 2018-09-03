@@ -27,7 +27,6 @@ public class OrderManagementFragment extends Fragment {
     private OrderFragmentManagementFragment2 fm2;
 
     private Store store;
-    private ImageButton refreshBtn;
 
     public OrderManagementFragment(Store store) {
         this.store = store;
@@ -70,16 +69,6 @@ public class OrderManagementFragment extends Fragment {
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
 
-        refreshBtn = ((AdminActivity)getActivity()).getRefreshBtn();
-        refreshBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fm1.dataUpdate();
-                fm2.dataUpdate();
-                Toast.makeText(getContext(), "새로고침 완료", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -89,12 +78,14 @@ public class OrderManagementFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                fm1.dataUpdate();
-                fm2.dataUpdate();
-                if(position == 0)
+                if(position == 0) {
+                    fm1.dataUpdate();
                     fm1.refresh();
-                else if(position == 1)
+                }
+                else if(position == 1) {
+                    fm2.dataUpdate();
                     fm2.refresh();
+                }
             }
 
             @Override

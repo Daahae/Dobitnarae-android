@@ -156,25 +156,7 @@ public class ItemAddActivity extends AppCompatActivity {
         categoryData = 1;
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_clothes_category);
 
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, categoryList){
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v =  super.getView(position, convertView, parent);
-                ((TextView) v).setTextSize(16);
-                ((TextView) v).setGravity(Gravity.CENTER);
-                return v;
-            }
-
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v =  super.getDropDownView(position, convertView, parent);
-                ((TextView) v).setTextSize(20);
-                ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setBackgroundColor(Color.WHITE);
-                return v;
-            }
-        };
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, categoryList);
         //adapter.setDropDownViewResource(R.layout.component_spin_dropdown);
 
         spinner.setAdapter(adapter);
@@ -194,7 +176,7 @@ public class ItemAddActivity extends AppCompatActivity {
         // 옷 가격
         dc = new DecimalFormat("###,###,###,###");
         final EditText price = findViewById(R.id.reserve_clothes_price);
-        String str = dc.format(item.getPrice()) + " 원";
+        String str = dc.format(item.getPrice());
         price.setText(str);
 
         btnReduce = findViewById(R.id.counting_btn_reduce);
@@ -229,25 +211,7 @@ public class ItemAddActivity extends AppCompatActivity {
 
         final Spinner spinner_sex = (Spinner) findViewById(R.id.spinner_clothes_sex);
 
-        ArrayAdapter adapter_sex = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, sexList){
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v =  super.getView(position, convertView, parent);
-                ((TextView) v).setTextSize(16);
-                ((TextView) v).setGravity(Gravity.CENTER);
-                return v;
-            }
-
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v =  super.getDropDownView(position, convertView, parent);
-                ((TextView) v).setTextSize(20);
-                ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setBackgroundColor(Color.WHITE);
-                return v;
-            }
-        };
+        ArrayAdapter adapter_sex = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, sexList);
 
         spinner_sex.setAdapter(adapter_sex);
 
@@ -267,34 +231,39 @@ public class ItemAddActivity extends AppCompatActivity {
         dataUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tmp = deleteDC(price.getText().toString());
-                String tmp2 = deleteWon(tmp);
+                int value;
+                try{
+                    value = Integer.parseInt(price.getText().toString());
 
-                if(name.getText().toString().getBytes().length <= 0){
-                    Toast.makeText(getApplicationContext(), "에러: 이름을 입력하세요", Toast.LENGTH_SHORT).show();
-                } else {
-                    if(description.getText().toString().getBytes().length <= 0){
-                        Toast.makeText(getApplicationContext(), "에러: 설명을 입력하세요", Toast.LENGTH_SHORT).show();
+                    if(name.getText().toString().getBytes().length <= 0){
+                        Toast.makeText(getApplicationContext(), "에러: 이름을 입력하세요", Toast.LENGTH_SHORT).show();
                     } else {
-                        if(Integer.parseInt(tmp2) <= 0){
-                            Toast.makeText(getApplicationContext(), "에러: 올바른 가격을 입력하세요", Toast.LENGTH_SHORT).show();
+                        if(description.getText().toString().getBytes().length <= 0){
+                            Toast.makeText(getApplicationContext(), "에러: 설명을 입력하세요", Toast.LENGTH_SHORT).show();
                         } else {
-                            item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(tmp2), Integer.parseInt(selectCnt.getText().toString()), sexData);
+                            if(value <= 0){
+                                Toast.makeText(getApplicationContext(), "에러: 올바른 가격을 입력하세요", Toast.LENGTH_SHORT).show();
+                            } else {
+                                item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(price.getText().toString()), Integer.parseInt(selectCnt.getText().toString()), sexData);
 
-                            // 데이터 초기화
-                            name.setText("");
-                            description.setText("");
-                            price.setText("0 원");
-                            selectCnt.setText("1");
-                            spinner_sex.setSelection(0);
-                            sexData = 1;
-                            spinner.setSelection(0);
-                            categoryData = 1;
+                                // 데이터 초기화
+                                name.setText("");
+                                description.setText("");
+                                price.setText("0 원");
+                                selectCnt.setText("1");
+                                spinner_sex.setSelection(0);
+                                sexData = 1;
+                                spinner.setSelection(0);
+                                categoryData = 1;
 
-                            JSONTask.getInstance().insertCloth(item, store.getId());
-                            Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
+                                JSONTask.getInstance().insertCloth(item, store.getId());
+                                Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
+                } catch(Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "에러: 올바른 가격을 입력하세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
