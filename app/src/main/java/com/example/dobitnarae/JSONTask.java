@@ -26,6 +26,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     int acceptStatus = 0;
     int subCount = 0;
     String password = "0";
+    String token = null;
+    String msg = null;
     Store upStore = new Store(0,"example","example","example",
             "example","example","example",0,
             0.0,0.0,"09:00", "22:00");
@@ -66,6 +68,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     }
     public void setSubCount(int subCount){// 삭제를 위한 셋함수(매개변수 옷이름)
         this.subCount = subCount;
+    }
+    public void setToken(String toekn){// 삭제를 위한 셋함수(매개변수 옷이름)
+        this.token = token;
+    }
+    public void setMsg(String msg){// 삭제를 위한 셋함수(매개변수 옷이름)
+        this.msg = msg;
     }
     public void setUpStore(Store upStore){
         this.upStore = upStore;
@@ -110,6 +118,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             jsonObject.accumulate("reserve_ID", reserve_ID);
             jsonObject.accumulate("acceptStatus", acceptStatus);
             jsonObject.accumulate("subCount", subCount);
+            jsonObject.accumulate("token", token);////////////////////미완성
 
                 if (flag == 1) {//updateStore를 위한 서버에 데이터 전송
 
@@ -878,5 +887,36 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         return userID;
 
+    }
+
+    public void updateFCM(Account upAccount, String token){ //바꿀 값이 들어 있는 account 클래스와, 바꿀 account의 아이디 전달
+        try {
+            JSONTask JT = new JSONTask();
+            JT.setAccount(upAccount);
+            JT.setToken(token);
+            JT.execute("http://13.209.89.187:3443/updateAccount");
+            Log.e("err","update Success");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public String FCM(String token, String msg){//
+        String userID = null;
+        try{
+            JSONTask JT = new JSONTask();
+            String str = JT.execute("http://13.209.89.187:3443/FCM").get();
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+
+                JT.setToken(token);
+                Log.e("err",""+userID);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return userID;
     }
 }
