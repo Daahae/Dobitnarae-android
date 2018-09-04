@@ -1,30 +1,19 @@
 package com.example.dobitnarae;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class OrderSpecificActivity extends AppCompatActivity {
@@ -34,9 +23,6 @@ public class OrderSpecificActivity extends AppCompatActivity {
     int index, id;
 
     private LinearLayout layout;
-
-    private NestedScrollView mScrollView;
-
     private LinearLayout btnRegister;
     private LinearLayout btnReject;
 
@@ -51,7 +37,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specific_order2);
+        setContentView(R.layout.activity_specific_order);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(myToolbar);
@@ -98,6 +84,8 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     btnReject.setEnabled(false);
                     btnRegister.setBackgroundResource(R.color.darkergrey);
                     btnReject.setBackgroundResource(R.color.darkergrey);
+                    OrderFragmentManagementFragment.changeFlg = true;
+                    JSONTask.getInstance().sendMsgByFCM(item.getUserID(), item.getUserID() + "님의 주문이 승인되었습니다.");
                 }
             });
 
@@ -113,6 +101,15 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     btnReject.setEnabled(false);
                     btnRegister.setBackgroundResource(R.color.darkergrey);
                     btnReject.setBackgroundResource(R.color.darkergrey);
+                    OrderFragmentManagementFragment.changeFlg = true;
+
+                    for (BasketItem item : basket) {
+                        Clothes temp = item.getClothes();
+                        int tmpCnt = item.getClothes().getCount();
+                        temp.setCount(tmpCnt + item.getCnt());
+                        JSONTask.getInstance().updateCloth(temp);
+                    }
+                    JSONTask.getInstance().sendMsgByFCM(item.getUserID(), item.getUserID() + "님의 주문이 거절되었습니다.");
                 }
             });
         }
@@ -139,18 +136,6 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
         totalClothesCnt = findViewById(R.id.reservation_clothes_total_cnt);
         setTotalClothesCnt();
-
-        /*
-        // 스크롤뷰, 리스트뷰 중복 스크롤 허용
-        mScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView_order);
-        mListView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mScrollView.requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
-        */
     }
     public void setTotalClothesCnt()
     {

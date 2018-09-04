@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.dobitnarae.fcm.MyFirebaseInstanceIDService;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private String token;
+    private String token, loginID;
+    private MyFirebaseInstanceIDService ac;
+    private Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         // 앱이 실행될때 토큰정보
         token = (FirebaseInstanceId.getInstance().getToken()).toString();
         Log.e("token", token);
+        loginID = JSONTask.getInstance().getLoginID();
+        account = JSONTask.getInstance().getAccountAll(loginID).get(0);
+        //ac = new MyFirebaseInstanceIDService();
+        //ac.onTokenRefresh();
+        //ac.updateToken(account, token);
+        JSONTask.getInstance().updateFcmToken(account, token);
 
         ImageButton backButton = (ImageButton)findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener(){

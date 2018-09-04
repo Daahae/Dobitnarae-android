@@ -29,12 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
+
             <TextView
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:text="나래가 되어줄 한복의 이야기"/>
+                android:gravity="center"
+                android:text="날개가 되어줄 한복의 이야기"
+                android:textColor="#fff" />
         </LinearLayout>
     </LinearLayout>
 

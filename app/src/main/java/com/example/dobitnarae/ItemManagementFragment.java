@@ -38,6 +38,7 @@ public class ItemManagementFragment extends Fragment{
     private Animation fabOpen, fabClose;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2;
+    public static boolean changeFlg = false;
 
     public ItemManagementFragment(Store store) {
         this.store = store;
@@ -155,6 +156,15 @@ public class ItemManagementFragment extends Fragment{
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(changeFlg) {
+            dataRefresh();
+            changeFlg = false;
+        }
     }
 
     public void anim() {

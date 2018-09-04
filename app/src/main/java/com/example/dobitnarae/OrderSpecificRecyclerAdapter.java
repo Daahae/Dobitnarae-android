@@ -33,8 +33,9 @@ public class OrderSpecificRecyclerAdapter extends RecyclerView.Adapter<OrderSpec
     public void onBindViewHolder(ViewHolder holder, final int position) {
         BasketItem basketItem = this.clothes.get(position);
         Clothes clothes = basketItem.getClothes();
-        Bitmap bm = ServerImg.getClothImage(clothes.getCloth_id());
-        holder.image.setImageBitmap(bm);
+        //Bitmap bm = ServerImg.getClothImage(clothes.getCloth_id());
+        //holder.image.setImageBitmap(bm);
+        ServerImg.getClothesImageGlide(context, clothes.getCloth_id(), holder.image);
         holder.name.setText(clothes.getName());
         holder.count.setText("" + basketItem.getCnt());
         holder.layout.setId(clothes.getCloth_id());

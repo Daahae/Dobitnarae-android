@@ -258,6 +258,7 @@ public class ItemAddActivity extends AppCompatActivity {
 
                                 JSONTask.getInstance().insertCloth(item, store.getId());
                                 Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
+                                ItemManagementFragment.changeFlg = true;
                             }
                         }
                     }

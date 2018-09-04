@@ -39,10 +39,9 @@ public class ItemListRecyclerAdapter extends RecyclerView.Adapter<ItemListRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Clothes item = clothes.get(position);
         // TODO  서버에서 이미지 받아야함
-        //Drawable drawable = ContextCompat.getDrawable(context, R.drawable.gobchang);
-        //holder.image.setBackground(drawable);
-        Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
-        holder.image.setImageBitmap(bm);
+        //Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
+        //holder.image.setImageBitmap(bm);
+        ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
         holder.name.setText(item.getName());
         holder.price.setText("" + item.getPrice());
         holder.cardview.setId(item.getCloth_id());

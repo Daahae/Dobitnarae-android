@@ -111,6 +111,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
 
         // 이미지
         imageView_store = findViewById(R.id.reserve_clothes_img);
+        ServerImg.getClothesImageGlide(getApplicationContext(), item.getCloth_id(), imageView_store);
         iv_width = imageView_store.getMaxWidth();
         iv_height = imageView_store.getMaxHeight();
 
@@ -269,7 +270,8 @@ public class ItemSpecificActivity extends AppCompatActivity {
                                 categoryData = 1;
 
                                 JSONTask.getInstance().insertCloth(item, store.getId());
-                                Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                ItemManagementFragment.changeFlg = true;
                             }
                         }
                     }

@@ -13,6 +13,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +30,8 @@ import java.util.ArrayList;
 @SuppressLint("ValidFragment")
 public class OrderFragmentManagementFragment extends Fragment{
     private ArrayList<Order> originItems, items;
-    private ListView mListView = null;
-    private ListViewAdapter mAdapter = null;
-
+    private OrderListRecyclerAdapter mAdapter = null;
+    public static boolean changeFlg = false;
     private Store store;
 
     public OrderFragmentManagementFragment(Store store) {
@@ -60,10 +61,12 @@ public class OrderFragmentManagementFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_fragment_order, container, false);
 
-        mListView = (ListView) rootView.findViewById(R.id.listView);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_order_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListViewAdapter(getContext());
-        mListView.setAdapter(mAdapter);
+        mAdapter = new OrderListRecyclerAdapter(getContext(), items, store);
+        recyclerView.setAdapter(mAdapter);
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);
 
@@ -75,153 +78,8 @@ public class OrderFragmentManagementFragment extends Fragment{
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        for (Order item:items) {
-            mAdapter.addItem(item);
-        }
         return rootView;
     }
-
-    private class ViewHolder {
-        public LinearLayout linearLayout;
-        public String mNo;
-        public ImageView iv_main;
-        public TextView tv_basket;
-        public TextView tv_date;
-        public LinearLayout layout_accept;
-        public TextView tv_accept;
-    }
-
-    private class ListViewAdapter extends BaseAdapter {
-        private Context mContext = null;
-        public ArrayList<OrderInfoData> mListData = new ArrayList<OrderInfoData>();
-
-        public ListViewAdapter(Context mContext) {
-            super();
-            this.mContext = mContext;
-        }
-
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.component_listview_order, null);
-
-                holder.linearLayout = (LinearLayout) convertView.findViewById(R.id.order_list_item);
-                holder.iv_main = (ImageView) convertView.findViewById(R.id.order_list_img);
-                holder.tv_basket = (TextView) convertView.findViewById(R.id.order_basket);
-                holder.tv_date = (TextView) convertView.findViewById(R.id.order_date);
-                holder.layout_accept = (LinearLayout) convertView.findViewById(R.id.order_accept_layout);
-                holder.tv_accept = (TextView) convertView.findViewById(R.id.order_accept_tv);
-
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            final OrderInfoData mData = mListData.get(position);
-
-            holder.mNo = mData.getOrderNo();
-            holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, OrderSpecificActivity.class);
-                    intent.putExtra("order", position);
-                    intent.putExtra("id", 0);
-                    intent.putExtra("store", store);
-                    mContext.startActivity(intent);
-                }
-            });
-
-            holder.iv_main.setImageBitmap(mData.getBm());
-            holder.tv_basket.setText(mData.getOrderBasket());
-            holder.tv_date.setText(mData.getOrderDate());
-
-            if(mData.getOrderAccept()==0) {
-                holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_gray);
-                holder.tv_accept.setText("승인 대기");
-                holder.tv_accept.setTextColor(getResources().getColor(R.color.contentColor));
-            } else if(mData.getOrderAccept()==1) {
-                holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_green);
-                holder.tv_accept.setText("승인");
-                holder.tv_accept.setTextColor(getResources().getColor(R.color.storeOpeningColor));
-            } else if(mData.getOrderAccept()==2) {
-                holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_red);
-                holder.tv_accept.setText("거절");
-                holder.tv_accept.setTextColor(getResources().getColor(R.color.storeClosingColor));
-            }
-
-            return convertView;
-        }
-
-        public void addItem(Order item){
-            OrderInfoData addInfo = null;
-
-            int sum = 0;
-            for(int i = 0; i < item.getBasket().size(); i++){
-                sum += item.getBasket().get(i).getCnt() ;
-            }
-            sum -= 1;
-
-            addInfo = new OrderInfoData();
-
-            // 각 주문의 데이터가 있을경우 첫번째 옷 사진을 미리보기로 띄움
-            if(item.getBasket().size()>0) {
-                Bitmap bm = ServerImg.getClothImage(item.getBasket().get(0).getClothes().getCloth_id());
-                addInfo.setBm(bm);
-            } else
-                addInfo.setBm(null);
-
-            addInfo.setOrderNo(String.valueOf(item.getOrderNo()));
-            // 고객 아이디가 아닌 고객 이름을 보여지게 해야함
-            addInfo.setOrderName(item.getUserID());
-            // 고객 주문데이터로 수정필요
-            if(item.getBasket().size()!=0 && sum != 0)
-                addInfo.setOrderBasket(item.getBasket().get(0).getClothes().getName() + " 외 " + sum + "벌");
-            else if(sum==0)
-                addInfo.setOrderBasket(item.getBasket().get(0).getClothes().getName() + " 1벌");
-            else
-                addInfo.setOrderBasket("비어있음");
-            addInfo.setOrderDate(item.getOrderDate());
-            addInfo.setOrderAccept(item.getAcceptStatus());
-
-            mListData.add(addInfo);
-        }
-
-        public void remove(int position){
-            mListData.remove(position);
-            dataChange();
-        }
-
-
-        public void clear(){
-            mListData.clear();
-            dataChange();
-        }
-
-        public void dataChange(){
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
     public void dataUpdate(){
         originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
         this.items = new ArrayList<Order>();
@@ -233,10 +91,7 @@ public class OrderFragmentManagementFragment extends Fragment{
         for (Order item:items)
             item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getOrderNo()));
 
-        mAdapter.clear();
-        for (Order item:items)
-            mAdapter.addItem(item);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.setOrders(items);
     }
 
     public void refresh(){

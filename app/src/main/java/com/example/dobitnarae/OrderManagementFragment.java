@@ -80,11 +80,11 @@ public class OrderManagementFragment extends Fragment {
             public void onPageSelected(int position) {
                 if(position == 0) {
                     fm1.dataUpdate();
-                    fm1.refresh();
+                    //fm1.refresh();
                 }
                 else if(position == 1) {
                     fm2.dataUpdate();
-                    fm2.refresh();
+                    //fm2.refresh();
                 }
             }
 

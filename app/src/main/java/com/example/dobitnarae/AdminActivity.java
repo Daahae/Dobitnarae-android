@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -58,10 +59,19 @@ public class AdminActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
+        /*
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
+            }
+        });
+*/
+        LinearLayout myPageBtn = (LinearLayout)findViewById(R.id.myPage);
+        myPageBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(AdminActivity.this, MyPageActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -104,6 +114,28 @@ public class AdminActivity extends AppCompatActivity {
 
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(store.getName());
+
+        /*
+        LinearLayout logout = (LinearLayout)findViewById(R.id.footer_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.setLogOut();
+                Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        LinearLayout openSourceInfo = (LinearLayout)findViewById(R.id.footer_opensource);
+        openSourceInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, OpenSourceInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+        */
     }
 
     @Override

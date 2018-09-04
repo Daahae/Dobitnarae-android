@@ -4,23 +4,18 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Menu;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
-
 public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 이미지를 bitmap형식으로 뿌리기
-
     Bitmap bmImg;
-
 
     @Override
     protected Bitmap doInBackground(String... urls) {
@@ -33,8 +28,6 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
 
             InputStream is = conn.getInputStream();
             bmImg = BitmapFactory.decodeStream(is);
-
-
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -43,8 +36,10 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
 
     // 상점 이미지 가져오기
     public static void getStoreImageGlide(Context context, int storeID, ImageView imageView){
-        Glide.with(context).load("http://13.209.89.187:3443/store/" + storeID +".jpg")
+        Glide.with(context)
+                .load("http://13.125.232.225/store/" + storeID +".jpg")
                 .apply(new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .fitCenter()
                         .error(R.mipmap.ic_launcher))
                 .into(imageView);
@@ -52,8 +47,9 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
 
     // 옷 이미지 가져오기
     public static void getClothesImageGlide(Context context, int clothesID, ImageView imageView){
-        Glide.with(context).load("http://13.209.89.187:3443/cloth/" + clothesID +".jpg")
+        Glide.with(context).load("http://13.125.232.225/cloth/" + clothesID +".jpg")
                 .apply(new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .fitCenter()
                         .error(R.mipmap.ic_launcher))
                 .into(imageView);
@@ -65,7 +61,7 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         Bitmap BM = null;
         try {
             ServerImg SI = new ServerImg();
-            BM = SI.execute("http://13.209.89.187:3443/store/" + str+".jpg").get();
+            BM = SI.execute("http://13.125.232.225/store/" + str+".jpg").get();
 
         }catch(Exception E){
             E.printStackTrace();
@@ -77,7 +73,7 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
         Bitmap BM = null;
         try {
             ServerImg SI = new ServerImg();
-            BM = SI.execute("http://13.209.89.187:3443/cloth/" + str+".jpg").get();
+            BM = SI.execute("http://13.125.232.225/cloth/" + str+".jpg").get();
         }catch(Exception E){
             E.printStackTrace();
         }

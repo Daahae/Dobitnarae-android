@@ -1,13 +1,8 @@
 package com.example.dobitnarae;
 
-import android.support.annotation.NonNull;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
-public class Order implements Comparable<Order>{
+public class Order{
     private ArrayList<BasketItem> basket;
     private int orderNo;
     private String userID;
@@ -68,17 +63,5 @@ public class Order implements Comparable<Order>{
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
-    }
-
-    // 내림차순정렬
-    @Override
-    public int compareTo(@NonNull Order o) {
-        if(this.orderNo > o.orderNo) {
-            return -1;
-        } else if(this.orderNo == o.orderNo) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 }
