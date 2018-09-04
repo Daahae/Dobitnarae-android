@@ -19,9 +19,7 @@ public class SplashActivity extends Activity {
         // 앱이 실행될때 토큰정보
         token = (FirebaseInstanceId.getInstance().getToken()).toString();
         Log.e("token", token);
-        loginID = JSONTask.getInstance().getLoginID();
-        account = JSONTask.getInstance().getAccountAll(loginID).get(0);
-        JSONTask.getInstance().updateFcmToken(account, token);
+        JSONTask.getInstance().updateFcmToken(Account.getInstance(), token);
 
         int priv = Account.getInstance().getPrivilege();
         Intent intent = null;
