@@ -28,7 +28,7 @@ import java.util.ArrayList;
 @SuppressLint("ValidFragment")
 public class OrderFragmentManagementFragment2 extends Fragment{
     private ArrayList<Order> originItems, items;
-    private OrderListRecyclerAdapter mAdapter = null;
+    private OrderListRecyclerAdapter2 mAdapter = null;
 
     private Store store;
 
@@ -63,7 +63,7 @@ public class OrderFragmentManagementFragment2 extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new OrderListRecyclerAdapter(getContext(), items, store);
+        mAdapter = new OrderListRecyclerAdapter2(getContext(), items, store);
         recyclerView.setAdapter(mAdapter);
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);

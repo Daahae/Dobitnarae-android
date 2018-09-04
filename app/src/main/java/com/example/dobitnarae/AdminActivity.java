@@ -70,8 +70,12 @@ public class AdminActivity extends AppCompatActivity {
         LinearLayout myPageBtn = (LinearLayout)findViewById(R.id.myPage);
         myPageBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(AdminActivity.this, MyPageActivity.class);
+                //Intent intent = new Intent(AdminActivity.this, MyPageActivity.class);
+                //startActivity(intent);
+                LoginActivity.setLogOut();
+                Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

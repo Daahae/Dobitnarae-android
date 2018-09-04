@@ -64,7 +64,6 @@ public class OrderFragmentManagementFragment extends Fragment{
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_order_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
         mAdapter = new OrderListRecyclerAdapter(getContext(), items, store);
         recyclerView.setAdapter(mAdapter);
 
