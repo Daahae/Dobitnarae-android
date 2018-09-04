@@ -39,19 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // news라는 토픽에 등록
-        // 앱이 실행되면 자동으로 news 토픽을 구독
-        // 토픽에 등록되면 나중에 관리자가 메세지를 보낼때 주제별고 선택해서 알림을
-        // 보낼수 있게 해주는 것이다.
-        //FirebaseMessaging.getInstance().subscribeToTopic("news");
         // 앱이 실행될때 토큰정보
         token = (FirebaseInstanceId.getInstance().getToken()).toString();
         Log.e("token", token);
         loginID = JSONTask.getInstance().getLoginID();
         account = JSONTask.getInstance().getAccountAll(loginID).get(0);
-        //ac = new MyFirebaseInstanceIDService();
-        //ac.onTokenRefresh();
-        //ac.updateToken(account, token);
         JSONTask.getInstance().updateFcmToken(account, token);
 
         //설정값 불러오기
