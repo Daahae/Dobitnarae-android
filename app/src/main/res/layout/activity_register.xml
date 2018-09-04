@@ -80,6 +80,7 @@
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
+                android:inputType="textPassword"
                 android:hint="비밀번호"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -98,6 +99,7 @@
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
+                android:inputType="textPassword"
                 android:hint="비밀번호 확인"
                 android:paddingLeft="15dp" />
         </LinearLayout>
