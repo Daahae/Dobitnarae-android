@@ -62,10 +62,10 @@ public class LoginActivity extends AppCompatActivity {
             JSONTask.getInstance().getLoginResult(ID, Password);
             save();
 
-            // 아이디 설정
+            // 계정 설정
             Account.getInstance().setAccount(JSONTask.getInstance().getAccountAll(id).get(0));
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
             Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
             finish();
             startActivity(intent);
@@ -84,7 +84,11 @@ public class LoginActivity extends AppCompatActivity {
                     if (JSONTask.getInstance().getLoginResult(ID, Password) == 1) {
                         checkBox.setChecked(true);
                         save();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                        // 계정 설정
+                        Account.getInstance().setAccount(accountList.get(0));
+
+                        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
                         Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
                         finish();
                         startActivity(intent);

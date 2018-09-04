@@ -1,5 +1,6 @@
 package com.example.dobitnarae;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +38,10 @@ public class StoreListActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        // store 목록 가져오기
+        // 구역에 따른 store 목록 가져오기
+        Intent intent = getIntent();
+        int sector = (int)intent.getIntExtra("sector", 1);
+
         stores = JSONTask.getInstance().getCustomerStoreAll();
 
         mAdapter = new StoreListRecyclerAdapter(this, stores);

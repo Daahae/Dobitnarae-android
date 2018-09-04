@@ -35,8 +35,8 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
-        acceptFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_gray);
-        pendingFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
+        acceptFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
+        pendingFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_gray);
         rejectFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_red);
 
         stores = new ArrayList<>();

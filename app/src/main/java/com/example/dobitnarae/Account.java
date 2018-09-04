@@ -1,5 +1,7 @@
 package com.example.dobitnarae;
 
+import java.io.Serializable;
+
 public class Account {
     private String id;
     private String name;
@@ -8,23 +10,6 @@ public class Account {
     private int privilege;
 
     private Account() {
-        setClientAccount();
-    }
-    // 임시 계정 정보 설정
-    // 지울것임 setAdminAccount, setClientAccount
-    public void setAdminAccount(){
-        this.id = "jong4876";
-        this.name = "원할머니";
-        this.phone = "01022223333";
-        this.privilege = Constant.ADMIN;
-    }
-
-    public void setClientAccount(){
-        this.id = "myoung123";
-        this.name = "김명길";
-        this.pw = "1111";
-        this.phone = "010-1111-2222";
-        this.privilege = Constant.CLIENT;
     }
 
     public Account(String id,String pw, String name, String tel, int privilege) {
