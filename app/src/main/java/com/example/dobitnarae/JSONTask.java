@@ -68,7 +68,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public void setSubCount(int subCount){// 삭제를 위한 셋함수(매개변수 옷이름)
         this.subCount = subCount;
     }
-    public void setToken(String toekn){// 삭제를 위한 셋함수(매개변수 옷이름)
+    public void setToken(String token){// 삭제를 위한 셋함수(매개변수 옷이름)
         this.token = token;
     }
     public void setMsg(String msg){// 삭제를 위한 셋함수(매개변수 옷이름)
@@ -869,8 +869,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public void updateFcmToken(Account upAccount, String token){ //바꿀 값이 들어 있는 account 클래스와, 바꿀 account의 아이디 전달
         try {
             JSONTask JT = new JSONTask();
-            JT.setAccount(upAccount);
             JT.setToken(token);
+            JT.setAccount(upAccount);
             JT.execute("http://13.125.232.225/updateAccount");
             Log.e("err","update Success");
 
