@@ -24,6 +24,9 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
     Context context;
     ArrayList<Reserve> reserves;
     SimpleDateFormat dateFormat;
+    Drawable acceptFlg, pendingFlg, rejectFlg;
+    ArrayList<Store> stores;
+    int[] storeID;
 
     public ReserveListRecyclerAdapter(Context context, ArrayList<Reserve> reserves) {
         this.context = context;
@@ -31,6 +34,21 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
 
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+        acceptFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_gray);
+        pendingFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
+        rejectFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_red);
+
+        stores = new ArrayList<>();
+        for(Reserve reserve : reserves){
+            Store tmp = JSONTask.getInstance().getAdminStoreAll(reserve.getAdmin_id()).get(0);
+            stores.add(tmp);
+        }
+
+        storeID = new int[reserves.size()];
+        for(int i=0; i<storeID.length; i++){
+            storeID[i] = JSONTask.getInstance().changeStoreID(reserves.get(i).getAdmin_id());
+        }
     }
 
     @Override
@@ -42,24 +60,15 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Reserve item = reserves.get(position);
+        Store store = stores.get(position);
 
-        int storeID = JSONTask.getInstance().changeStoreID(item.getAdmin_id());
-        ServerImg.getStoreImageGlide(context, storeID, holder.image);
-
-        Store store = JSONTask.getInstance().getAdminStoreAll(item.getAdmin_id()).get(0);
+        ServerImg.getStoreImageGlide(context, storeID[position], holder.image);
 
         holder.name.setText(store.getName());
 
         String reserveTime = item.getRentalDate();
-        Log.e("" ," " + reserveTime);
         holder.time.setText(reserveTime);
         holder.storeView.setId(item.getId());
-        holder.storeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "" + holder.storeView.getId(), Toast.LENGTH_SHORT);
-            }
-        });
 
         Drawable successLayoutDrawable;
         int successStatus = item.getAcceptStatus();
@@ -67,17 +76,17 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         if(successStatus == 0){
             holder.successText.setText("대기");
             holder.successText.setTextColor(Color.parseColor("#8f8f8f"));
-            successLayoutDrawable = context.getResources().getDrawable(R.drawable.border_all_layout_item_gray);
+            successLayoutDrawable = pendingFlg;
         }
         else if(successStatus == 1){
             holder.successText.setText("승인");
             holder.successText.setTextColor(Color.parseColor("#339738"));
-            successLayoutDrawable = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
+            successLayoutDrawable = acceptFlg;
         }
         else {
             holder.successText.setText("거절");
             holder.successText.setTextColor(Color.parseColor("#f94c4c"));
-            successLayoutDrawable = context.getResources().getDrawable(R.drawable.border_all_layout_item_red);
+            successLayoutDrawable = rejectFlg;
         }
         holder.reserveSuccessBorder.setBackground(successLayoutDrawable);
 
