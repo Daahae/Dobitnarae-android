@@ -198,19 +198,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             writer.close();//버퍼를 받아줌
             //////////서버로 데이터 전송
 
-
-
-
-/*
-            if(flag !=0){// insert update delete는 받아올 필요없음 고로 건너뜀
-                flag = 0;
-                conn.getInputStream();
-                conn.disconnect();
-                return jsonHtml.toString();
-            }
-*/
-
-
             // 연결되었으면.
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
