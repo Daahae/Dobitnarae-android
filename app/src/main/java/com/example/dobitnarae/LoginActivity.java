@@ -20,8 +20,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
-    private String token, loginID;
-    private Account account;
     private boolean saveLoginData;
     private String id;
     private String pwd;
@@ -38,13 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // 앱이 실행될때 토큰정보
-        token = (FirebaseInstanceId.getInstance().getToken()).toString();
-        Log.e("token", token);
-        loginID = JSONTask.getInstance().getLoginID();
-        account = JSONTask.getInstance().getAccountAll(loginID).get(0);
-        JSONTask.getInstance().updateFcmToken(account, token);
 
         //설정값 불러오기
         appData = getSharedPreferences("appData", MODE_PRIVATE);
