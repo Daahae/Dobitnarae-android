@@ -338,9 +338,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int sector = jo.getInt("sector");
                 double latitude = jo.getDouble("latitude");
                 double longitude = jo.getDouble("longitude");
+                String startTime = jo.getString("start_time");
+                String endTime = jo.getString("end_time");
 
                 // TODO 영업 시작시간 종료시간 가져와서 넣어야됨
                 store = new Store(id, name, admin_id,tel,intro, inform, address, sector, latitude, longitude, "", "");
+                store.setStartTime(startTime);
+                store.setEndTime(endTime);
                 storeList.add(store);//accountList 차례대로 삽입
             }
         }catch(Exception e){
@@ -375,9 +379,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int sector = jo.getInt("sector");
                 double latitude = jo.getDouble("latitude");
                 double longitude = jo.getDouble("longitude");
+                String startTime = jo.getString("start_time");
+                String endTime = jo.getString("end_time");
 
                 // TODO 영업 시작시간 종료시간 가져와서 넣어야됨
                 store = new Store(id, name, admin_id,tel,intro, inform, address, sector, latitude, longitude, "", "");
+                store.setStartTime(startTime);
+                store.setEndTime(endTime);
                 storeList.add(store);//accountList 차례대로 삽입
             }
 
@@ -408,6 +416,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int price = jo.getInt("price");
                 int count = jo.getInt("count");
                 int sex = jo.getInt("sex");
+
+
                 clothes = new Clothes(cloth_ids,store_ids,category, name,intro, price, count, sex);
                 clothesList.add(clothes);//accountList 차례대로 삽입
             }
