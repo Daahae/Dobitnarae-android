@@ -148,8 +148,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
 
             if (flag == 3) {//insertOrder, updateOrder
-                jsonObject.accumulate("user_id", order.getUserID());//insert를 위해 서버로 보낼 데이터들 req.on
-                jsonObject.accumulate("admin_id", order.getAdminID());
+                jsonObject.accumulate("user_id", order.getId());//insert를 위해 서버로 보낼 데이터들 req.on
+                jsonObject.accumulate("admin_id", order.getAdmin_id());
                 jsonObject.accumulate("accept", order.getAcceptStatus());
 
                 JSONArray jArray = new JSONArray();// 배열을 위해 선언

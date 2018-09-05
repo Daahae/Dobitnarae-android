@@ -70,22 +70,22 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
         if(id==0) {
             this.item = nConfirm.get(index);
-            this.basket = JSONTask.getInstance().getBascketCustomerAll(nConfirm.get(index).getOrderNo());
+            this.basket = JSONTask.getInstance().getBascketCustomerAll(nConfirm.get(index).getId());
 
             // 승인 버튼 클릭 시
             btnRegister = (LinearLayout) findViewById(R.id.order_clothes_register);
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), item.getUserID() + "님의 주문이 승인되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), item.getUser_id() + "님의 주문이 승인되었습니다.", Toast.LENGTH_SHORT).show();
                     item.setAcceptStatus(1); // 승인
-                    JSONTask.getInstance().updateOrderAccept(item.getOrderNo(), 1);
+                    JSONTask.getInstance().updateOrderAccept(item.getId(), 1);
                     btnRegister.setEnabled(false);
                     btnReject.setEnabled(false);
                     btnRegister.setBackgroundResource(R.color.darkergrey);
                     btnReject.setBackgroundResource(R.color.darkergrey);
                     OrderFragmentManagementFragment.changeFlg = true;
-                    JSONTask.getInstance().sendMsgByFCM(item.getUserID(), item.getUserID() + "님의 주문이 승인되었습니다.");
+                    JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), item.getUser_id() + "님의 주문이 승인되었습니다.");
                 }
             });
 
@@ -94,9 +94,9 @@ public class OrderSpecificActivity extends AppCompatActivity {
             btnReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), item.getUserID() + "님의 주문이 거절되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), item.getUser_id() + "님의 주문이 거절되었습니다.", Toast.LENGTH_SHORT).show();
                     item.setAcceptStatus(2); // 거절
-                    JSONTask.getInstance().updateOrderAccept(item.getOrderNo(), 2);
+                    JSONTask.getInstance().updateOrderAccept(item.getId(), 2);
                     btnRegister.setEnabled(false);
                     btnReject.setEnabled(false);
                     btnRegister.setBackgroundResource(R.color.darkergrey);
@@ -109,13 +109,13 @@ public class OrderSpecificActivity extends AppCompatActivity {
                         temp.setCount(tmpCnt + item.getCnt());
                         JSONTask.getInstance().updateCloth(temp);
                     }
-                    JSONTask.getInstance().sendMsgByFCM(item.getUserID(), item.getUserID() + "님의 주문이 거절되었습니다.");
+                    JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), item.getUser_id() + "님의 주문이 거절되었습니다.");
                 }
             });
         }
         else if(id==1){
             this.item2 = confirm.get(index);
-            this.basket = JSONTask.getInstance().getBascketCustomerAll(confirm.get(index).getOrderNo());
+            this.basket = JSONTask.getInstance().getBascketCustomerAll(confirm.get(index).getId());
             if(this.item2.getAcceptStatus()!=0)
                 layout.setVisibility(View.GONE);
         }

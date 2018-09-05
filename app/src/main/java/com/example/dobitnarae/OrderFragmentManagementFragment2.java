@@ -42,7 +42,7 @@ public class OrderFragmentManagementFragment2 extends Fragment{
                 items.add(item);
         }
         for (Order item:items)
-            item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getOrderNo()));
+            item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getId()));
     }
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -89,7 +89,7 @@ public class OrderFragmentManagementFragment2 extends Fragment{
                 items.add(item);
         }
         for (Order item:items)
-            item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getOrderNo()));
+            item.setBasket(JSONTask.getInstance().getBascketCustomerAll(item.getId()));
 
         mAdapter.setOrders(items);
     }

@@ -47,7 +47,7 @@ public class OrderListRecyclerAdapter2 extends RecyclerView.Adapter<OrderListRec
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 1벌");
         else
             holder.tv_basket.setText("비어있음");
-        holder.tv_date.setText(item.getOrderDate());
+        holder.tv_date.setText(item.getRentalDate());
         holder.tv_accept.setId(item.getAcceptStatus());
 
         if(item.getAcceptStatus()==0) {
