@@ -17,13 +17,14 @@ public class SplashActivity extends Activity {
         // MainActivity.class 자리에 다음에 넘어갈 액티비티를 넣어주기
 
         // 앱이 실행될때 토큰정보
-        token = (FirebaseInstanceId.getInstance().getToken()).toString();
+        token = FirebaseInstanceId.getInstance().getToken();
         Log.e("token", token);
         JSONTask.getInstance().updateFcmToken(Account.getInstance(), token);
 
         int priv = Account.getInstance().getPrivilege();
         Intent intent = null;
 
+        Log.e("hio","asda");
         switch (priv){
             case Constant.CLIENT:
                 intent = new Intent(this, MainActivity.class);

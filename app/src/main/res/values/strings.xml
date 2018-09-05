@@ -27,4 +27,6 @@
         따라서 두빛나래는 한복 예약, 대여, 취소 등과 관련한 의무와 책임이 없으며,\n
         거래에 따른 법적 책임은 각 판매자에게 있습니다.
     </string>
+    <string name="default_notification_channel_name">oreoChanel</string>
+    <string name="default_notification_channel_id">notification_id</string>
 </resources>

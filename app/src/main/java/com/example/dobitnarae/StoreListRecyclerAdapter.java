@@ -72,7 +72,7 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
         }
         else{
             holder.storeInfoText.setText("엽업종료");
-            holder.storeInfoText.setTextColor(Color.parseColor("#339738"));
+            holder.storeInfoText.setTextColor(Color.parseColor("#f94c4c"));
             storeStatus = closeStore;
         }
         holder.storeInfoLayout.setBackground(storeStatus);

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.camera2" />
 
@@ -68,7 +69,9 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="OPEN_ACTIVITY"/>
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -79,7 +82,7 @@
         </activity>
 
         <activity android:name=".UploadImgActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity"/>
         
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -91,6 +94,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".OpenSourceInfoActivity"></activity>
+        <activity android:name=".OpenSourceInfoActivity" />
     </application>
 </manifest>
