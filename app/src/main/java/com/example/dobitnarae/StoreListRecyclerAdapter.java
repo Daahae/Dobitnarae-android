@@ -3,6 +3,7 @@ package com.example.dobitnarae;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -20,15 +21,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecyclerAdapter.ViewHolder> {
     Context context;
     ArrayList<Store> stores;
+    Drawable openStore, closeStore;
 
     public StoreListRecyclerAdapter(Context context, ArrayList<Store> stores) {
         this.context = context;
         this.stores = stores;
+        openStore = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
+        closeStore = context.getResources().getDrawable(R.drawable.border_all_layout_item_red);
     }
 
     @Override
@@ -56,19 +59,23 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
         });
 
         // 영업정보 설정
-//        try {
-//            Date startTime = new SimpleDateFormat("hh:mm").parse(item.getStartTime());
-//            Date endTime = new SimpleDateFormat("hh:mm").parse(item.getStartTime());;
-//            Date today = new Date();
-//
-//            if(startTime.after(today) && endTime.before(today)){
-//                Log.e("ㅁㄴㅇㄻㄴ", "영업중");
-//            }
-//            else
-//                Log.e("ㅁㄴㅇㄻㄴ", "영업종료");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        String startTime = item.getStartTime();
+        String endTime = item.getEndTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String now = simpleDateFormat.format(new Date());
+
+        Drawable storeStatus = null;
+        if(startTime.compareTo(now) <= 0 && endTime.compareTo(now) >= 0){
+            holder.storeInfoText.setText("영업중");
+            holder.storeInfoText.setTextColor(Color.parseColor("#339738"));
+            storeStatus = openStore;
+        }
+        else{
+            holder.storeInfoText.setText("엽업종료");
+            holder.storeInfoText.setTextColor(Color.parseColor("#339738"));
+            storeStatus = closeStore;
+        }
+        holder.storeInfoLayout.setBackground(storeStatus);
 
     }
 
