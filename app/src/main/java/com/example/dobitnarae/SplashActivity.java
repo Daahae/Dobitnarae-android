@@ -8,8 +8,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SplashActivity extends Activity {
-    private String token, loginID;
-    private Account account;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

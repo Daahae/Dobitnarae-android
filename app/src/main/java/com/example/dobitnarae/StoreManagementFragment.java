@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -33,14 +35,20 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,22 +59,20 @@ public class StoreManagementFragment extends Fragment {
     private static final int REQUEST_TAKE_ALBUM = 3333;
     private static final int REQUEST_IMAGE_CROP = 4444;
 
-    private Uri imageURI;
-    private Uri photoURI, albumURI;
+    private Uri imageURI, photoURI, albumURI;
     private ImageView imageView_store;
     private String mCurrentPhotoPath;
 
-    private int iv_width;
-    private int iv_height;
+    private int iv_width, iv_height;
 
     private Store store;
-    private EditText edit_name;
+    private EditText edit_name, edit_tel, edit_intro, edit_info, edit_address;
     private TextView edit_admin_id;
-    private EditText edit_tel;
-    private EditText edit_intro;
-    private EditText edit_info;
-    private EditText edit_address;
+    private TextView editFrom, editTo;
     private Spinner spinnerSector;
+
+    private TimePickerDialog tpd;
+    private String time;
 
     private int sectorData;
 
@@ -98,6 +104,26 @@ public class StoreManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
 
+        LinearLayout logout = (LinearLayout)rootView.findViewById(R.id.footer_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.setLogOut();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        LinearLayout openSourceInfo = (LinearLayout)rootView.findViewById(R.id.footer_opensource);
+        openSourceInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), OpenSourceInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); //onCreate 이후,,
 
         editTextArrayList = new ArrayList<EditText>();
@@ -109,8 +135,24 @@ public class StoreManagementFragment extends Fragment {
         edit_intro = (EditText)rootView.findViewById(R.id.edit_intro);
         edit_info = (EditText)rootView.findViewById(R.id.edit_info);
         edit_address = (EditText)rootView.findViewById(R.id.edit_address);
-        //edit_sector = (EditText)rootView.findViewById(R.id.edit_sector);
         spinnerSector = (Spinner)rootView.findViewById(R.id.spinner_sector);
+
+        editFrom = (TextView) rootView.findViewById(R.id.edit_from);
+        editFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTimePicker(0);
+                tpd.show(getActivity().getFragmentManager(), "TimePickerdialog");
+            }
+        });
+        editTo = (TextView) rootView.findViewById(R.id.edit_to);
+        editTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTimePicker(1);
+                tpd.show(getActivity().getFragmentManager(), "TimePickerdialog");
+            }
+        });
 
         btnEdit = (FloatingActionButton) rootView.findViewById(R.id.fab1);
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +164,8 @@ public class StoreManagementFragment extends Fragment {
 
         // 카테고리 선택
         sectorList = new ArrayList<String>();
-        sectorList.add("1");
-        sectorList.add("2");
+        sectorList.add("경복궁");
+        sectorList.add("창경궁");
 
         ArrayAdapter adapterSector = new ArrayAdapter(getContext(), R.layout.component_spin, sectorList);
 
@@ -164,8 +206,6 @@ public class StoreManagementFragment extends Fragment {
             });
         }
         ServerImg.getStoreImageGlide(getContext(), store.getId(), imageView_store);
-        //Bitmap bm = ServerImg.getStoreImage(store.getId());
-       //imageView_store.setImageBitmap(bm);
 
         iv_width = imageView_store.getMaxWidth();
         iv_height = imageView_store.getMaxHeight();
@@ -203,6 +243,37 @@ public class StoreManagementFragment extends Fragment {
 
         checkPermission();
         return rootView;
+    }
+
+    private void setTimePicker(final int selection)
+    {
+        tpd = TimePickerDialog.newInstance(null,
+                Calendar.HOUR_OF_DAY,
+                Calendar.MINUTE,
+                true
+        );
+        tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+        tpd.setTitle("영업 시작시간");
+        tpd.setOkText("변경");
+        tpd.setCancelText("취소");
+        if(selection==0)
+            tpd.setInitialSelection(Integer.parseInt(store.getStartTime().substring(0,2)), Integer.parseInt(store.getStartTime().substring(3,5)));
+        else if(selection==1)
+            tpd.setInitialSelection(Integer.parseInt(store.getEndTime().substring(0,2)), Integer.parseInt(store.getEndTime().substring(3,5)));
+        tpd.setTimeInterval(1, 5);
+        tpd.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+                time = String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second);
+                if(selection==0) {
+                    editFrom.setText(time);
+                    Toast.makeText(getContext(), time, Toast.LENGTH_SHORT).show();
+                }
+                else if(selection == 1)
+                    editTo.setText(time);
+            }
+        });
+        tpd.dismissOnPause(true);
     }
 
     private void captureCamera(){
@@ -471,6 +542,8 @@ public class StoreManagementFragment extends Fragment {
         edit_intro.setText(store.getIntro());
         edit_info.setText(store.getInform());
         edit_address.setText(store.getAddress());
+        editFrom.setText(store.getStartTime());
+        editTo.setText(store.getEndTime());
     }
 
     private void updateStoreByText(){
@@ -480,6 +553,8 @@ public class StoreManagementFragment extends Fragment {
         store.setInform(edit_info.getText().toString());
         store.setAddress(edit_address.getText().toString());
         store.setSector(sectorData);
+        store.setStartTime(editFrom.getText().toString());
+        store.setEndTime(editTo.getText().toString());
     }
 
     public void refresh(){

@@ -253,9 +253,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
 
 
@@ -276,9 +273,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
         return adminID;
     }
@@ -349,9 +343,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
         return storeList;
     }
@@ -678,9 +669,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
     }
     public void updateCloth(Clothes upClothes){
@@ -752,8 +740,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             Log.e("err","order삽입 성공!!");
         }catch(Exception e){
             e.printStackTrace();
-        }finally {
-            JT.cancel(true);
         }
     }
 
@@ -778,9 +764,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             Log.e("err","cloth삭제 성공");
         }catch(Exception e) {
             e.printStackTrace();
-        } finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
     }
     public void deleteOrder(int orderNo){ // user_id에 해당하는 매장에 옷 삭제(관리자)
@@ -833,9 +816,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             return 1;
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            Log.e("err","JSONTask Disconnect!");
-            JT.cancel(true);
         }
 
         return 1;
@@ -855,8 +835,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
-        } finally {
-            JT.cancel(true);
         }
 
         return userID;

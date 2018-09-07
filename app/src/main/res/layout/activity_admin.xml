@@ -30,7 +30,6 @@
                 app:tabTextColor="@color/tabTextColor"
                 app:tabSelectedTextColor="@color/tabSelectedTextColor">
 
-
                 <android.support.design.widget.TabItem
                     android:id="@+id/tabItem"
                     android:layout_width="wrap_content"

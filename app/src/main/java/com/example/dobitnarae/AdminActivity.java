@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,9 @@ public class AdminActivity extends AppCompatActivity {
      private Store store;
 
      private Context context;
+
+     private final long FINISH_INTERVAL_TIME = 2000;
+     private long backPressedTime = 0;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -59,23 +63,12 @@ public class AdminActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
-        /*
-        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
-*/
         LinearLayout myPageBtn = (LinearLayout)findViewById(R.id.myPage);
         myPageBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //Intent intent = new Intent(AdminActivity.this, MyPageActivity.class);
-                //startActivity(intent);
-                LoginActivity.setLogOut();
-                Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+                Intent intent = new Intent(AdminActivity.this, AdminMyPageActivity.class);
+                intent.putExtra("store", store);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -118,28 +111,21 @@ public class AdminActivity extends AppCompatActivity {
 
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(store.getName());
+    }
 
-        /*
-        LinearLayout logout = (LinearLayout)findViewById(R.id.footer_logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.setLogOut();
-                Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
 
-        LinearLayout openSourceInfo = (LinearLayout)findViewById(R.id.footer_opensource);
-        openSourceInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminActivity.this, OpenSourceInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-        */
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+            finish();
+        }
+        else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -212,7 +198,6 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (storeManagementFragment != null)
             ((StoreManagementFragment) storeManagementFragment).onActivityResult(requestCode, resultCode, data);
     }
