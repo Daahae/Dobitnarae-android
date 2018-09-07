@@ -373,10 +373,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 String startTime = jo.getString("start_time");
                 String endTime = jo.getString("end_time");
 
-                // TODO 영업 시작시간 종료시간 가져와서 넣어야됨
-                store = new Store(id, name, admin_id,tel,intro, inform, address, sector, latitude, longitude, "", "");
-                store.setStartTime(startTime);
-                store.setEndTime(endTime);
+                store = new Store(id, name, admin_id,tel,intro, inform, address, sector, latitude, longitude, startTime, endTime);
                 storeList.add(store);//accountList 차례대로 삽입
             }
 

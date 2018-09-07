@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.camera2" />
 
@@ -68,23 +69,23 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="OPEN_ACTIVITY"/>
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".AdminMyPageActivity"/>
 
         <!-- 스플래시 페이지 -->
-        <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
-
-        </activity>
-
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"/>
         <activity android:name=".UploadImgActivity" />
-        <activity android:name=".RegisterActivity"></activity>
-        
+        <activity android:name=".RegisterActivity" />
+
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service android:name=".fcm.MyFirebaseInstanceIDService">
@@ -92,6 +93,18 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".OpenSourceInfoActivity"></activity>
+
+        <activity android:name=".OpenSourceInfoActivity" />
+
+        <receiver
+            android:name=".fcm.FirebaseDataReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
     </application>
+
 </manifest>

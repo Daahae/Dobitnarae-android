@@ -1,43 +1,39 @@
 package com.example.dobitnarae;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.content.CursorLoader;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.dobitnarae.Retrofit.ImageInfo;
+import com.example.dobitnarae.Retrofit.RetrofitInterface;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 이미지를 bitmap형식으로 뿌리기
-    Bitmap bmImg;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-    @Override
-    protected Bitmap doInBackground(String... urls) {
-        // TODO Auto-generated method stub
-        try{
-            URL myFileUrl = new URL(urls[0]);
-            HttpURLConnection conn = (HttpURLConnection)myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
+public class ServerImg {// 서버에 이미지를 bitmap형식으로 뿌리기
 
-            InputStream is = conn.getInputStream();
-            bmImg = BitmapFactory.decodeStream(is);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return bmImg;
-    }
+    static final String BaseURL = "http://13.125.232.225/";
 
     // 상점 이미지 가져오기
     public static void getStoreImageGlide(Context context, int storeID, ImageView imageView){
         Glide.with(context)
-                .load("http://13.125.232.225/store/" + storeID +".jpg")
+                .load(BaseURL + "store/" + storeID +".jpg")
                 .apply(new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .fitCenter()
@@ -47,7 +43,7 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
 
     // 옷 이미지 가져오기
     public static void getClothesImageGlide(Context context, int clothesID, ImageView imageView){
-        Glide.with(context).load("http://13.125.232.225/cloth/" + clothesID +".jpg")
+        Glide.with(context).load(BaseURL + "cloth/" + clothesID +".jpg")
                 .apply(new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .fitCenter()
@@ -55,32 +51,61 @@ public  class ServerImg  extends AsyncTask<String, Integer,Bitmap>{// 서버에 
                 .into(imageView);
     }
 
-    public static Bitmap getStoreImage(int storeID){
 
-        String str = ""+storeID;
-        Bitmap BM = null;
-        try {
-            ServerImg SI = new ServerImg();
-            BM = SI.execute("http://13.125.232.225/store/" + str+".jpg").get();
+    public static void uploadFile(Uri fileUri, String storeID, final Context context) {
 
-        }catch(Exception E){
-            E.printStackTrace();
-        }
-        return BM;
+        //creating a file
+        File file = new File(getRealPathFromURI(fileUri, context));
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody storeIDField = RequestBody.create(MediaType.parse("text/plain"), storeID);
+
+        //The gson builder
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+
+        //creating retrofit object
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BaseURL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        //creating our api
+        RetrofitInterface api = retrofit.create(RetrofitInterface.class);
+
+        //creating a call and calling the upload image method
+        Call<ImageInfo> call = api.uploadImage(requestFile, storeIDField);
+
+        //finally performing the call
+        call.enqueue(new Callback<ImageInfo>() {
+            @Override
+            public void onResponse(Call<ImageInfo> call, Response<ImageInfo> response) {
+                if (response.body() != null && !response.body().error) {
+                    Toast.makeText(context.getApplicationContext(), "File Uploaded Successfully...", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context.getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageInfo> call, Throwable t) {
+                Log.e("","" + call.toString() + ", " + t.getMessage());
+                Toast.makeText(context.getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
-    public static Bitmap getClothImage(int clothID){
-        String str = ""+clothID;
-        Bitmap BM = null;
-        try {
-            ServerImg SI = new ServerImg();
-            BM = SI.execute("http://13.125.232.225/cloth/" + str+".jpg").get();
-        }catch(Exception E){
-            E.printStackTrace();
-        }
-        return BM;
+
+    private static String getRealPathFromURI(Uri contentUri, Context context) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader loader = new CursorLoader(context, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
-
-
-
 }
 
