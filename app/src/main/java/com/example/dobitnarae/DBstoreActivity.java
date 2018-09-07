@@ -55,11 +55,6 @@ public class DBstoreActivity extends AppCompatActivity {// db실험용
         button = (Button)findViewById(R.id.button);
 
         try {
-           Bitmap BM = ServerImg.getStoreImage(1);
-           Bitmap BM2 = ServerImg.getClothImage(1);
-
-           imageView.setImageBitmap(BM);
-           imageView2.setImageBitmap(BM2);
 
             //Bitmap BMT = SI.execute("http://192.168.219.104:3443/서버사진저장구조.png").get();
            // imageView2.setImageBitmap(BMT);

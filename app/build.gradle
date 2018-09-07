@@ -42,8 +42,12 @@ dependencies {
     // FCM 푸시알림
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-messaging:17.3.0'
+    // glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 }
 
 // FCM 푸시알림
