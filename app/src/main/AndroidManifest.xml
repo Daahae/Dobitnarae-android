@@ -80,7 +80,6 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme"/>
-        <activity android:name=".UploadImgActivity" />
         <activity android:name=".RegisterActivity" />
 
         <service android:name=".fcm.MyFirebaseMessagingService">

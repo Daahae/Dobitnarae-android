@@ -81,8 +81,6 @@ public class StoreManagementFragment extends Fragment {
 
     private InputMethodManager imm; //전역변수
 
-    private UploadFile uploadFile;
-
     private FloatingActionButton btnEdit;
 
     public StoreManagementFragment(Store store) {
@@ -104,6 +102,7 @@ public class StoreManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
 
+        /*
         LinearLayout logout = (LinearLayout)rootView.findViewById(R.id.footer_logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +122,7 @@ public class StoreManagementFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        */
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); //onCreate 이후,,
 
         editTextArrayList = new ArrayList<EditText>();
@@ -391,6 +390,7 @@ public class StoreManagementFragment extends Fragment {
                             photoURI = data.getData();
                             albumURI = Uri.fromFile(albumFile);
                             //cropImage();
+                            ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), getContext());
                             cropSingleImage(photoURI);
                         } catch (Exception e) {
                             Log.e("TAKE_ALBUM_SINGLE ERROR", e.toString());
@@ -402,8 +402,6 @@ public class StoreManagementFragment extends Fragment {
                 if(resultCode == Activity.RESULT_OK) {
                     galleryAddPic();
                     imageView_store.setImageURI(photoURI);
-                    this.uploadFile = new UploadFile(getContext());
-                    this.uploadFile.setPath(mCurrentPhotoPath);
                 }
                 break;
         }
