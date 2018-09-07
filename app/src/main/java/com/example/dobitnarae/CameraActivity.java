@@ -31,17 +31,20 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         imageView=(ImageView)findViewById(R.id.imageView);
+
+
+
     }
     final int REQ_SELECT=0;
 
     //갤러리 호출해서 이미지 읽어오기
     public void push(View v){
         //사진 읽어오기 위한 uri 작성하기.
-        Uri uri = Uri.parse("content://media/external/images/media");
+       // Uri uri = Uri.parse("content://media/external/images/media");
         //무언가 보여달라는 암시적 인텐트 객체 생성하기.
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         //인텐트에 요청을 덧붙인다.
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
         //모든 이미지
         intent.setType("image/*");
         //결과값을 받아오는 액티비티를 실행한다.
@@ -79,12 +82,13 @@ public class CameraActivity extends AppCompatActivity {
         Uri selPhotoUri = intent.getData();
 
         //업로드할 서버의 url 주소
-        String urlString = "http://172.16.20.206:3443";
+
+        String urlString = "http://192.168.101.162:3443/api/photo";
         //절대경로를 획득한다!!! 중요~
-        Cursor c = getContentResolver().query(Uri.parse(selPhotoUri.toString()), null,null,null,null);
-        c.moveToNext();
-        //업로드할 파일의 절대경로 얻어오기("_data") 로 해도 된다.
-        String absolutePath = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+
+
+        String absolutePath = getPath(selPhotoUri);
+
         Log.e("###파일의 절대 경로###", absolutePath);
         //파일 업로드 시작!
         HttpFileUpload(urlString ,"", absolutePath);
@@ -99,7 +103,6 @@ public class CameraActivity extends AppCompatActivity {
     public void HttpFileUpload(String urlString, String params, String fileName) {
 
         try{
-            //선택한 파일의 절대 경로를 이용해서 파일 입력 스트림 객체를 얻어온다.
             FileInputStream mFileInputStream = new FileInputStream(fileName);
             //파일을 업로드할 서버의 url 주소를이용해서 URL 객체 생성하기.
             URL connectUrl = new URL(urlString);
@@ -158,5 +161,15 @@ public class CameraActivity extends AppCompatActivity {
             Toast.makeText(this,"업로드중 에러발생!" +  e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        startManagingCursor(cursor);
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(columnIndex);
+    }
+
+
 
 }
