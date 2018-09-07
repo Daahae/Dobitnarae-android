@@ -39,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String messageBody) {
         // TODO 어디로 보낼지 수정 필요
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         // 푸시알림 아이콘 및 기타 수정은 여기서

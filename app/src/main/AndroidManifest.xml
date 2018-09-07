@@ -78,7 +78,6 @@
         <!-- 스플래시 페이지 -->
         <activity android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
-
         </activity>
 
         <activity android:name=".UploadImgActivity" />
@@ -95,5 +94,13 @@
             </intent-filter>
         </service>
         <activity android:name=".OpenSourceInfoActivity" />
+
+        <receiver android:name=".fcm.FirebaseDataReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
