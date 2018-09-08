@@ -30,7 +30,7 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
 
     public ReserveListRecyclerAdapter(Context context, ArrayList<Reserve> reserves) {
         this.context = context;
-        this.reserves = reserves;
+        setReserves(reserves);
 
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
@@ -38,17 +38,6 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         acceptFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
         pendingFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_gray);
         rejectFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_red);
-
-        stores = new ArrayList<>();
-        for(Reserve reserve : reserves){
-            Store tmp = JSONTask.getInstance().getAdminStoreAll(reserve.getAdmin_id()).get(0);
-            stores.add(tmp);
-        }
-
-        storeID = new int[reserves.size()];
-        for(int i=0; i<storeID.length; i++){
-            storeID[i] = JSONTask.getInstance().changeStoreID(reserves.get(i).getAdmin_id());
-        }
     }
 
     @Override
@@ -60,6 +49,7 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Reserve item = reserves.get(position);
+
         Store store = stores.get(position);
 
         ServerImg.getStoreImageGlide(context, storeID[position], holder.image);
@@ -73,17 +63,15 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         Drawable successLayoutDrawable;
         int successStatus = item.getAcceptStatus();
 
-        if(successStatus == 0){
+        if (successStatus == 0) {
             holder.successText.setText("대기");
             holder.successText.setTextColor(Color.parseColor("#8f8f8f"));
             successLayoutDrawable = pendingFlg;
-        }
-        else if(successStatus == 1){
+        } else if (successStatus == 1) {
             holder.successText.setText("승인");
             holder.successText.setTextColor(Color.parseColor("#339738"));
             successLayoutDrawable = acceptFlg;
-        }
-        else {
+        } else {
             holder.successText.setText("거절");
             holder.successText.setTextColor(Color.parseColor("#f94c4c"));
             successLayoutDrawable = rejectFlg;
@@ -123,6 +111,18 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
 
     public void setReserves(ArrayList<Reserve> reserves) {
         this.reserves = reserves;
+
+        stores = new ArrayList<>();
+        for(Reserve reserve : reserves){
+            Store tmp = JSONTask.getInstance().getAdminStoreAll(reserve.getAdmin_id()).get(0);
+            stores.add(tmp);
+        }
+
+        storeID = new int[reserves.size()];
+        for(int i=0; i<storeID.length; i++){
+            storeID[i] = JSONTask.getInstance().changeStoreID(reserves.get(i).getAdmin_id());
+        }
+
         this.notifyDataSetChanged();
     }
 }

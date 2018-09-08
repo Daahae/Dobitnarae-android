@@ -10,6 +10,7 @@ public interface RetrofitInterface {
     @Multipart
     @POST("api/photo")
     Call<ImageInfo> uploadImage(@Part("image\"; filename=\"myPicture.jpg\" ") RequestBody file,
-                                @Part("storeID") RequestBody storeID);
+                                @Part("storeID") RequestBody storeID,
+                                @Part("clothesID") RequestBody clothesID);
 
 }

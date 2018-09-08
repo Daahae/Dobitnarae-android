@@ -390,7 +390,7 @@ public class StoreManagementFragment extends Fragment {
                             photoURI = data.getData();
                             albumURI = Uri.fromFile(albumFile);
                             //cropImage();
-                            ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), getContext());
+                            ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), "-1", getContext());
                             cropSingleImage(photoURI);
                         } catch (Exception e) {
                             Log.e("TAKE_ALBUM_SINGLE ERROR", e.toString());

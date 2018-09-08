@@ -35,19 +35,18 @@ public class ItemCategoryListRecyclerAdapter extends RecyclerView.Adapter<ItemCa
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.image.setImageResource(R.drawable.tshirt);
-        holder.text.setText(Constant.category[position]);
+        holder.text.setText(Constant.CATEGORY[position]);
         holder.layout.setTag(position);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 전부 다시 원상태 색으로 되돌림
                 for(ViewHolder h : categories){
-                    h.text.setTextColor(v.getResources().getColor(R.color.darkergrey));
+                    h.text.setTextColor(v.getResources().getColor(R.color.appMainColor));
                     h.layout.setSelected(false);
                 }
                 // 카테고리 메뉴 선택됨 표시
-                holder.text.setTextColor(v.getResources().getColor(R.color.appMainColor));
+                holder.text.setTextColor(v.getResources().getColor(R.color.white));
                 holder.layout.setSelected(true);
 
                 // 선택된 분야의 한복 얻어옴
@@ -57,14 +56,14 @@ public class ItemCategoryListRecyclerAdapter extends RecyclerView.Adapter<ItemCa
         });
         // 처음 프레그먼트 생성시 "전체"분류가 체크 되있도록함
         if(position == 0){
-            holder.text.setTextColor(context.getResources().getColor(R.color.appMainColor));
+            holder.text.setTextColor(context.getResources().getColor(R.color.white));
             holder.layout.setSelected(true);
         }
     }
 
     @Override
     public int getItemCount() {
-        return Constant.category_cnt;
+        return Constant.CATEGORY_CNT;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,7 +74,6 @@ public class ItemCategoryListRecyclerAdapter extends RecyclerView.Adapter<ItemCa
         public ViewHolder(View itemView) {
             super(itemView);
             layout = (LinearLayout) itemView.findViewById(R.id.clothes_category_layout);
-            image = (ImageView) itemView.findViewById(R.id.clothes_category_img);
             text = (TextView) itemView.findViewById(R.id.clothes_category_txt);
         }
     }

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Account account;
     private ClothesRecommendationListRecyclerAdapter cAdapter;
     private ArrayList<Clothes> clothes;
-    private final int RANDOM_CLOTHES_CNT = 5;
+    private final int RANDOM_CLOTHES_CNT = 6;
 
     // 날씨
     private final String[] skyStatus = {"맑음", "구름조금", "구름많음", "흐림"};

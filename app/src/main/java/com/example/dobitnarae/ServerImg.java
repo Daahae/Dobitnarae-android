@@ -26,7 +26,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServerImg {// 서버에 이미지를 bitmap형식으로 뿌리기
+public class ServerImg {
 
     static final String BaseURL = "http://13.125.232.225/";
 
@@ -52,19 +52,19 @@ public class ServerImg {// 서버에 이미지를 bitmap형식으로 뿌리기
     }
 
 
-    public static void uploadFile(Uri fileUri, String storeID, final Context context) {
+    public static void uploadFile(Uri fileUri, String storeID, String clothesID, final Context context) {
 
         //creating a file
         File file = new File(getRealPathFromURI(fileUri, context));
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
         RequestBody storeIDField = RequestBody.create(MediaType.parse("text/plain"), storeID);
+        RequestBody clothesIDField = RequestBody.create(MediaType.parse("text/plain"), clothesID);
 
         //The gson builder
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
-
 
         //creating retrofit object
         Retrofit retrofit = new Retrofit.Builder()
@@ -76,7 +76,7 @@ public class ServerImg {// 서버에 이미지를 bitmap형식으로 뿌리기
         RetrofitInterface api = retrofit.create(RetrofitInterface.class);
 
         //creating a call and calling the upload image method
-        Call<ImageInfo> call = api.uploadImage(requestFile, storeIDField);
+        Call<ImageInfo> call = api.uploadImage(requestFile, storeIDField, clothesIDField);
 
         //finally performing the call
         call.enqueue(new Callback<ImageInfo>() {
