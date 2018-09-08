@@ -8,4 +8,8 @@ public class Constant {
 
     public static final int CLIENT = 1;
     public static final int ADMIN = 0;
+
+    public static final int MY_PERMISSION_CAMERA = 1111;
+    public static final int REQUEST_TAKE_PHOTO = 2222;
+    public static final int REQUEST_TAKE_ALBUM = 3333;
 }

@@ -32,6 +32,7 @@ public class AdminActivity extends AppCompatActivity {
      private ItemManagementFragment itemManagementFragment;
      private OrderManagementFragment orderManagementFragment;
      private Store store;
+     private TextView textView;
 
      private Context context;
 
@@ -109,7 +110,7 @@ public class AdminActivity extends AppCompatActivity {
         // 로그인된 매장 주인의 매장정보를 가져옴
         this.store = JSONTask.getInstance().getAdminStoreAll(JSONTask.getInstance().getLoginID()).get(0);
 
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(store.getName());
     }
 
@@ -200,5 +201,9 @@ public class AdminActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (storeManagementFragment != null)
             ((StoreManagementFragment) storeManagementFragment).onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setToolbarTitle(String name){
+        textView.setText(name);
     }
 }

@@ -132,6 +132,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("sector", upStore.getSector());
                 jsonObject.accumulate("longitude", upStore.getLongitude());
                 jsonObject.accumulate("latitude", upStore.getLatitude());
+                jsonObject.accumulate("start_time", upStore.getStartTime());
+                jsonObject.accumulate("end_time", upStore.getEndTime());
 
             }
 

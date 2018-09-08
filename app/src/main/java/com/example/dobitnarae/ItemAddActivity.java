@@ -1,6 +1,7 @@
 package com.example.dobitnarae;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,8 +37,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,25 +51,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemAddActivity extends AppCompatActivity {
-    private static final int MY_PERMISSION_CAMERA = 1111;
-    private static final int REQUEST_TAKE_PHOTO = 2222;
-    private static final int REQUEST_TAKE_ALBUM = 3333;
-    private static final int REQUEST_IMAGE_CROP = 4444;
-
-    private Uri imageURI;
-    private Uri photoURI, albumURI;
-    private ImageView imageView_store;
-    private String mCurrentPhotoPath;
-
-    private int iv_width;
-    private int iv_height;
+    private CameraLoad camera;
+    private Uri photoURI, resultUri;
+    private ImageView imageViewStore;
 
     private DecimalFormat dc;
     private LinearLayout btnReduce, btnAdd;
     private TextView selectCnt;
     private Store store;
 
-    private Context context;
+    private Activity activity;
 
     private Clothes item;
 
@@ -74,11 +70,15 @@ public class ItemAddActivity extends AppCompatActivity {
     private ArrayList<String> sexList;
     private int sexData;
 
+    public ItemAddActivity() {
+        this.camera = new CameraLoad();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-        context = this;
+        activity = this;
 
         Intent intent = getIntent();
         store = (Store) intent.getSerializableExtra("store");
@@ -101,23 +101,20 @@ public class ItemAddActivity extends AppCompatActivity {
         titleName.setText(store.getName());
 
         // 이미지
-        imageView_store = findViewById(R.id.reserve_clothes_img);
-        iv_width = imageView_store.getMaxWidth();
-        iv_height = imageView_store.getMaxHeight();
-
-        imageView_store.setOnClickListener(new View.OnClickListener() {
+        imageViewStore = findViewById(R.id.reserve_clothes_img);
+        imageViewStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        captureCamera();
+                        camera.captureCamera(activity);
                     }
                 };
                 DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getAlbum();
+                        camera.getAlbum(activity);
                     }
                 };
                 DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
@@ -127,7 +124,7 @@ public class ItemAddActivity extends AppCompatActivity {
                     }
                 };
 
-                new AlertDialog.Builder(context)
+                new AlertDialog.Builder(activity)
                         .setTitle("업로드할 이미지 선택")
                         .setPositiveButton("사진촬영", cameraListener)
                         .setNeutralButton("앨범선택", albumListener)
@@ -136,7 +133,7 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
-        checkPermission();
+        camera.checkPermission(activity);
 
         // 옷 이름
         final EditText name = findViewById(R.id.reserve_clothes_name);
@@ -279,14 +276,6 @@ public class ItemAddActivity extends AppCompatActivity {
         });
     }
 
-    public String deleteDC(String data){
-        return data.replaceAll("\\,","");
-    }
-
-    public String deleteWon(String data){
-        return data.replaceAll(" 원", "");
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -295,105 +284,17 @@ public class ItemAddActivity extends AppCompatActivity {
             newConfig.orientation = Configuration.ORIENTATION_PORTRAIT;
     }
 
-    private void captureCamera(){
-        String state = Environment.getExternalStorageState();
-        // 외장메모리 검사
-        if(Environment.MEDIA_MOUNTED.equals(state)){
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex ){
-                    Log.e("captureCamera Error", ex.toString());
-                }
-                if(photoFile != null) {
-                    // getUriForFile의 두 번째 인자는 Manifest provider authorites와 일치해야함
-
-                    Uri providerURI = FileProvider.getUriForFile(this, getPackageName(), photoFile);
-                    imageURI = providerURI;
-
-                    // 인텐트에 전달할 때는 FileProvider의 Return값인 content로만, providerURI의 값에 카메라 데이터를 넣어 보냄
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI);
-
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                }
-            }
-        }else {
-            Toast.makeText(this, "저장공간이 접근 불가능한 기기입니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
-
-    public File createImageFile() throws  IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + ".jpg";
-        File imageFile = null;
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures", "img");
-
-        if(!storageDir.exists()){
-            Log.i("mCurrentPhotoPath1", storageDir.toString());
-            storageDir.mkdirs();
-        }
-        imageFile = new File(storageDir, imageFileName);
-        mCurrentPhotoPath = imageFile.getAbsolutePath();
-
-        return imageFile;
-    }
-
-    private void getAlbum() {
-        Log.i("getAlbum", "Call");
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, REQUEST_TAKE_ALBUM);
-    }
-
-    private void galleryAddPic(){
-        Log.i("galleryAddPic", "Call");
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        // 해당 경로에 있는 파일을 객체화
-        File f = new File(mCurrentPhotoPath);
-        Uri contentURI = Uri.fromFile(f);
-        mediaScanIntent.setData(contentURI);
-        sendBroadcast(mediaScanIntent);
-        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show();
-    }
-
-    // 카메라 전용 크랍
-    public void cropImage(){
-        Log.i("cropImage", "Call");
-        Log.i("cropImage", "PhotoURI: " + photoURI + " / albumURI: " + albumURI);
-
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-
-        // 50X50픽셀 미만은 편집할 수 없다는 문구 처리 + 갤러리, 포토 둘다 호환하는 방법
-        cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        cropIntent.setDataAndType(photoURI, "image/*");
-        cropIntent.putExtra("outputX", iv_width); // CROP한 이미지의 x축 크기
-        cropIntent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
-        cropIntent.putExtra("aspectX", iv_width/200); // CROP 박스의 X축 비율
-        cropIntent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
-        cropIntent.putExtra("scale", true);
-        cropIntent.putExtra("output", albumURI);
-        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP); // CROP_FROM_CAMERA case문 이동
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode){
-            case REQUEST_TAKE_PHOTO:
-                if(resultCode == RESULT_OK){
+            case Constant.REQUEST_TAKE_PHOTO:
+                if(resultCode == Activity.RESULT_OK){
                     try {
                         Log.i("REQUEST_TAKE_PHOTO", "OK");
                         // 갤러리에 추가만 시킴
-                        galleryAddPic();
-                        //imageView_store.setImageURI(imageURI);
+                        camera.galleryAddPic(activity);
                     } catch (Exception e){
                         Log.e("REQUEST_TAKE_PHOTO", e.toString());
                     }
@@ -401,62 +302,38 @@ public class ItemAddActivity extends AppCompatActivity {
                     Toast.makeText(this, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case REQUEST_TAKE_ALBUM:
-                if(resultCode == RESULT_OK){
+            case Constant.REQUEST_TAKE_ALBUM:
+                if(resultCode == Activity.RESULT_OK){
                     if(data.getData() != null){
                         try {
-                            File albumFile = null;
-                            albumFile = createImageFile();
                             photoURI = data.getData();
-                            albumURI = Uri.fromFile(albumFile);
-                            //cropImage();
-                            ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), getApplicationContext());
-                            cropSingleImage(photoURI);
+                            InputStream i = getContentResolver().openInputStream(photoURI);
+                            camera.createImageFile();
+                            camera.copyFile(activity, i, camera.getmCurrentPhotoPath());
+                            File f = new File(camera.getmCurrentPhotoPath());
+                            resultUri = Uri.fromFile(f);
+                            CropImage.activity(resultUri)
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .setCropMenuCropButtonTitle("자르기")
+                                    //.setActivityTitle("이미지 업로드")
+                                    .setOutputUri(resultUri)
+                                    .start(this);
                         } catch (Exception e) {
                             Log.e("TAKE_ALBUM_SINGLE ERROR", e.toString());
                         }
                     }
                 }
                 break;
-            case REQUEST_IMAGE_CROP:
-                if(resultCode == RESULT_OK) {
-                    galleryAddPic();
-                    imageView_store.setImageURI(photoURI);
-                    Toast.makeText(this, photoURI + "주소", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(this, "사진찍기를 취소하였습니다.", Toast.LENGTH_SHORT).show();
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                CropImage.ActivityResult result= CropImage.getActivityResult(data);
+                if(resultCode == Activity.RESULT_OK) {
+                    imageViewStore.setImageURI(resultUri);
+                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), this);
+                    camera.removeDir(activity,"Pictures/img");
+                } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
+                    Exception error = result.getError();
                 }
                 break;
-        }
-    }
-
-    private void checkPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // 처음 호출시엔 if()안의 부분은 false로 리턴 됨 -> else{...}의 요청으로 넘어감
-            if((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) || (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))){
-                new AlertDialog.Builder(this)
-                        .setTitle("알림")
-                        .setMessage("저장소 권한이 거부되었습니다. 사용을 원하시면 설정에서 해당 권한을 직접 허용하셔야 합니다.")
-                        .setNeutralButton("설정", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                intent.setData(Uri.parse("package:" + getPackageName()));
-                                startActivity(intent);
-                            }
-                        })
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
-            }
         }
     }
 
@@ -465,7 +342,7 @@ public class ItemAddActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch(requestCode) {
-            case MY_PERMISSION_CAMERA:
+            case Constant.MY_PERMISSION_CAMERA:
                 for(int i = 0; i< grantResults.length; i++){
                     // grantResult[]: 허용된 권한은 0, 거부한 권한은 -1
                     if(grantResults[i] < 0){
@@ -476,37 +353,5 @@ public class ItemAddActivity extends AppCompatActivity {
                 // 허용했다면
                 break;
         }
-    }
-
-    // 카메라 전용 크랍(앨범엔 크롭된 이미지만 저장시키기 위해)
-    public void cropSingleImage(Uri photoURIPath) {
-        Log.i("cropSingleImage", "Call");
-        Log.i("cropSingleImage", "PhotoURIPath: " + photoURIPath);
-
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-
-        // 50X50픽셀 미만은 편집할 수 없다는 문구 처리 + 갤러리, 포토 둘다 호환하는 방법
-        cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        cropIntent.setDataAndType(photoURI, "image/*");
-        cropIntent.putExtra("outputX", iv_width); // CROP한 이미지의 x축 크기
-        cropIntent.putExtra("outputY", iv_height); // CROP한 이미지의 y축 크기
-        cropIntent.putExtra("aspectX", iv_width/iv_height); // CROP 박스의 X축 비율
-        cropIntent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
-        cropIntent.putExtra("scale", true);
-        cropIntent.putExtra("output", photoURIPath);
-
-        // 같은 photoURIPath에 저장하려면 아래가 있어야함
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(cropIntent, 0);
-        grantUriPermission(list.get(0).activityInfo.packageName, photoURIPath, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        Intent i = new Intent(cropIntent);
-        ResolveInfo res =  list.get(0);
-        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        grantUriPermission(res.activityInfo.packageName, photoURIPath, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-
-        startActivityForResult(i, REQUEST_IMAGE_CROP);
     }
 }
