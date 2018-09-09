@@ -102,7 +102,6 @@ public class StoreManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
 
-        /*
         LinearLayout logout = (LinearLayout)rootView.findViewById(R.id.footer_logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +121,7 @@ public class StoreManagementFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        */
+
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); //onCreate 이후,,
 
         editTextArrayList = new ArrayList<EditText>();
@@ -249,7 +248,7 @@ public class StoreManagementFragment extends Fragment {
         tpd = TimePickerDialog.newInstance(null,
                 Calendar.HOUR_OF_DAY,
                 Calendar.MINUTE,
-                true
+                false
         );
         tpd.setVersion(TimePickerDialog.Version.VERSION_2);
         tpd.setTitle("영업 시작시간");

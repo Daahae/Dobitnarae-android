@@ -56,8 +56,8 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
 
         holder.name.setText(store.getName());
 
-        String reserveTime = item.getRentalDate();
-        holder.time.setText(reserveTime);
+        String[] date = item.getRentalDate().split(":");
+        holder.time.setText(String.format("%s:%s", date[0], date[1]));
         holder.storeView.setId(item.getId());
 
         Drawable successLayoutDrawable;

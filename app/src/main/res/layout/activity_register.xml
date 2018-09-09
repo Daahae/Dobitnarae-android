@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".RegisterActivity"
-    android:background="@color/appMainColor"
+    android:background="@drawable/backgoround_street"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/register_form"
-        android:orientation="vertical"
-        android:layout_marginBottom="20dp">
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,12 +40,12 @@
     <LinearLayout
         android:id="@+id/register_form"
         android:layout_width="match_parent"
-        android:layout_height="466dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="0dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="60dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,6 +61,8 @@
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
+                android:singleLine = "true"
+                android:lines = "1"
                 android:hint="아이디"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -81,6 +82,8 @@
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:inputType="textPassword"
+                android:singleLine = "true"
+                android:lines = "1"
                 android:hint="비밀번호"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -100,6 +103,8 @@
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:inputType="textPassword"
+                android:singleLine = "true"
+                android:lines = "1"
                 android:hint="비밀번호 확인"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -118,6 +123,8 @@
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
+                android:singleLine = "true"
+                android:lines = "1"
                 android:hint="이름"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -136,6 +143,8 @@
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
+                android:singleLine = "true"
+                android:lines = "1"
                 android:hint="전화번호"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -153,8 +162,8 @@
                 android:layout_width="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:background="@color/appMainColor"
                 android:gravity="center_vertical"
+                android:textColor="@color/white"
                 android:text="매장관리자"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -162,7 +171,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+
             android:gravity="center"
             android:weightSum="1">
 
@@ -172,7 +181,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="0.65"
-                android:background="@color/titleColor"
+                android:background="@color/appMainColor"
                 android:gravity="center">
 
                 <TextView

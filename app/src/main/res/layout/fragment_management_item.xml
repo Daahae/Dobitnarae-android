@@ -16,7 +16,9 @@
         android:scrollbars="none"
         android:id="@+id/clothes_category"
         android:padding="5dp"
-        android:elevation="1dp"/>
+        android:elevation="1dp"
+        android:background="@drawable/border_bottom_layout_item">
+    </android.support.v7.widget.RecyclerView>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_marginRight="5dp"

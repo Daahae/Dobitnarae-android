@@ -1,6 +1,7 @@
 package com.example.dobitnarae;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
     private Intent intent;
     private Store store;
+    private String customerID;
+    private String rentalDate;
 
     private OrderSpecificRecyclerAdapter mAdapter;
     private TextView totalClothesCnt, reservationCost;
@@ -55,6 +60,8 @@ public class OrderSpecificActivity extends AppCompatActivity {
         index = (int) intent.getIntExtra("order", 0);
         id = (int) intent.getIntExtra("id", 0);
         store = (Store) intent.getSerializableExtra("store");
+        customerID = intent.getStringExtra("customerID");
+        rentalDate = intent.getStringExtra("rentalDate");
 
         this.originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
         this.nConfirm = new ArrayList<Order>();
@@ -136,6 +143,25 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
         totalClothesCnt = findViewById(R.id.reservation_clothes_total_cnt);
         setTotalClothesCnt();
+
+        // 대여자 정보
+        final Account account = JSONTask.getInstance().getAccountAll(customerID).get(0);
+        TextView id = findViewById(R.id.reserve_client_id);
+        TextView name = findViewById(R.id.reserve_client_name);
+        TextView phone = findViewById(R.id.reserve_client_phone);
+        TextView rent = findViewById(R.id.reserve_client_rentalDate);
+        id.setText(account.getId());
+        name.setText(account.getName());
+        phone.setText(account.getPhone());
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tel = "tel:" + account.getPhone();
+                startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
+            }
+        });
+        String[] date = rentalDate.split(":");
+        rent.setText(String.format("%s:%s", date[0], date[1]));
     }
     public void setTotalClothesCnt()
     {

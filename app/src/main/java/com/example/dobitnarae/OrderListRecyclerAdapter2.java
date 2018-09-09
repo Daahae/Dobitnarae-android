@@ -2,6 +2,7 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,15 +54,15 @@ public class OrderListRecyclerAdapter2 extends RecyclerView.Adapter<OrderListRec
         if(item.getAcceptStatus()==0) {
             holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_gray);
             holder.tv_accept.setText("승인 대기");
-            holder.tv_accept.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.contentColor));
+            holder.tv_accept.setTextColor(Color.parseColor("#8f8f8f"));
         } else if(item.getAcceptStatus()==1) {
             holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_green);
             holder.tv_accept.setText("승인");
-            holder.tv_accept.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.storeOpeningColor));
+            holder.tv_accept.setTextColor(Color.parseColor("#339738"));
         } else if(item.getAcceptStatus()==2) {
             holder.layout_accept.setBackgroundResource(R.drawable.border_all_layout_item_red);
             holder.tv_accept.setText("거절");
-            holder.tv_accept.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.storeClosingColor));
+            holder.tv_accept.setTextColor(Color.parseColor("#f94c4c"));
         }
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +72,8 @@ public class OrderListRecyclerAdapter2 extends RecyclerView.Adapter<OrderListRec
                 intent.putExtra("order", position);
                 intent.putExtra("id", 1);
                 intent.putExtra("store", store);
+                intent.putExtra("rentalDate", item.getRentalDate());
+                intent.putExtra("customerID", item.getUser_id());
                 context.startActivity(intent);
             }
         });

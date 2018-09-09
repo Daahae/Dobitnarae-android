@@ -48,7 +48,8 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 1벌");
         else
             holder.tv_basket.setText("비어있음");
-        holder.tv_date.setText(item.getRentalDate());
+        String[] date = item.getRentalDate().split(":");
+        holder.tv_date.setText(String.format("%s:%s", date[0], date[1]));
         holder.tv_accept.setId(item.getAcceptStatus());
 
         if(item.getAcceptStatus()==0) {
@@ -72,6 +73,8 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
                 intent.putExtra("order", position);
                 intent.putExtra("id", 0);
                 intent.putExtra("store", store);
+                intent.putExtra("rentalDate", item.getRentalDate());
+                intent.putExtra("customerID", item.getUser_id());
                 context.startActivity(intent);
             }
         });

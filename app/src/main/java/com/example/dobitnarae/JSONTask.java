@@ -299,7 +299,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 String HP = jo.getString("HP");
                 int priv = jo.getInt("priv");
 
-                // TODO 영업 시작시간 종료시간 가져와서 넣어야됨
                 account = new Account(ID, PW, name, HP, priv);
                 accountList.add(account);
 
