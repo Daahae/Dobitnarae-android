@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        /*
         //로그인정보가 있을시
         if (saveLoginData) {
             IDTxt.setText(id);
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(0, 0);
         }
-
+        */
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

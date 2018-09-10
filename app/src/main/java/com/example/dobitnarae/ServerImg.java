@@ -36,8 +36,7 @@ public class ServerImg {
                 .load(BaseURL + "store/" + storeID +".jpg")
                 .apply(new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter()
-                        .error(R.mipmap.ic_launcher))
+                        .fitCenter())
                 .into(imageView);
     }
 
@@ -46,8 +45,7 @@ public class ServerImg {
         Glide.with(context).load(BaseURL + "cloth/" + clothesID +".jpg")
                 .apply(new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter()
-                        .error(R.mipmap.ic_launcher))
+                        .fitCenter())
                 .into(imageView);
     }
 

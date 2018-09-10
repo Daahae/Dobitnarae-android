@@ -102,8 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), nameTxt.getText().toString() + "님 회원가입에 성공하였습니다. 로그인해주세요", Toast.LENGTH_LONG).show();
                         Account account = new Account(idTxt.getText().toString(), passwordTxt.getText().toString(), nameTxt.getText().toString(), hpTxt.getText().toString(), flag);
                         JSONTask.getInstance().insertAccount(account);
+                        if(flag==0) {
+                            Store store = new Store(account.getId());
+                            JSONTask.getInstance().insertStore(store);
+                        }
                         LoginActivity.setLogOut();
-
                         finish();
                     }
                     else{
