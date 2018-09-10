@@ -19,6 +19,7 @@ public class OrderFragmentManagementFragment2 extends Fragment{
     private OrderListRecyclerAdapter mAdapter = null;
 
     private Store store;
+    public static boolean changeFlg = false;
 
     public OrderFragmentManagementFragment2(Store store) {
         this.store = store;
@@ -66,6 +67,15 @@ public class OrderFragmentManagementFragment2 extends Fragment{
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(changeFlg) {
+            dataUpdate();
+            changeFlg = false;
+        }
     }
 
     public void dataUpdate(){

@@ -12,15 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +28,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemAddActivity extends AppCompatActivity {
@@ -48,7 +46,10 @@ public class ItemAddActivity extends AppCompatActivity {
     private Clothes item;
 
     private ArrayList<String> categoryList;
-    private int categoryData;
+    private CharSequence[] items2;
+    private List SelectedItems;
+    private int categoryData, defaultItem;
+    private TextView tvCategory;
 
     private int sexData;
 
@@ -127,23 +128,25 @@ public class ItemAddActivity extends AppCompatActivity {
 
         // 카테고리 선택
         categoryList = new ArrayList<String>();
+        for(int i =0; i<Constant.CATEGORY_CNT; i++){
+            if(i == 0)
+                continue;
+            categoryList.add(Constant.CATEGORY[i]);
+        }
         categoryData = 1;
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner_clothes_category);
 
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, categoryList);
-        //adapter.setDropDownViewResource(R.layout.component_spin_dropdown);
+        items2 =  categoryList.toArray(new String[ categoryList.size()]);
 
-        spinner.setAdapter(adapter);
+        SelectedItems  = new ArrayList();
+        defaultItem = 0;
+        SelectedItems.add(defaultItem);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tvCategory = findViewById(R.id.tv_category);
+        tvCategory.setText(categoryList.get(categoryData-1));
+        tvCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoryData = position + 1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                categoryDialog();
             }
         });
 
@@ -215,7 +218,8 @@ public class ItemAddActivity extends AppCompatActivity {
                                 selectCnt.setText("1");
                                 rg.check(R.id.rb1);
                                 sexData = 1;
-                                spinner.setSelection(0);
+                                SelectedItems.clear();
+                                defaultItem = 0;
                                 categoryData = 1;
 
                                 JSONTask.getInstance().insertCloth(item, store.getId());
@@ -318,5 +322,33 @@ public class ItemAddActivity extends AppCompatActivity {
                 // 허용했다면
                 break;
         }
+    }
+
+    public void categoryDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("카테고리 선택");
+        builder.setSingleChoiceItems(items2, defaultItem,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SelectedItems.clear();
+                        SelectedItems.add(which);
+                    }
+                });
+        builder.setPositiveButton("선택",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!SelectedItems.isEmpty())
+                            categoryData = (int) SelectedItems.get(0) + 1;
+                        tvCategory.setText(categoryList.get(categoryData-1));
+                    }
+                });
+        builder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
     }
 }
