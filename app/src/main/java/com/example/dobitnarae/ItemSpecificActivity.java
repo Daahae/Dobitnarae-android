@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemSpecificActivity extends AppCompatActivity {
@@ -50,7 +51,10 @@ public class ItemSpecificActivity extends AppCompatActivity {
     private ArrayList<Clothes> items;
 
     private ArrayList<String> categoryList;
-    private int categoryData;
+    private CharSequence[] items2;
+    private List SelectedItems;
+    private int categoryData, defaultItem;
+    private TextView tvCategory;
 
     public ItemSpecificActivity() {
         this.camera = new Camera();
@@ -128,27 +132,25 @@ public class ItemSpecificActivity extends AppCompatActivity {
 
         // 카테고리 선택
         categoryList = new ArrayList<String>();
-        categoryList.add("상   의");
-        categoryList.add("하   의");
-        categoryList.add("모   자");
-        categoryList.add("신   발");
-        categoryList.add("장신구");
-        categoryData = 1;
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner_clothes_category);
+        for(int i =0; i<Constant.CATEGORY_CNT; i++){
+            if(i == 0)
+                continue;
+            categoryList.add(Constant.CATEGORY[i]);
+        }
+        categoryData = item.getCategory();
 
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, categoryList);
+        items2 =  categoryList.toArray(new String[ categoryList.size()]);
 
-        spinner.setAdapter(adapter);
-        spinner.setSelection(item.getCategory()-1);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        SelectedItems  = new ArrayList();
+        defaultItem = categoryData-1;
+        SelectedItems.add(defaultItem);
+
+        tvCategory = findViewById(R.id.tv_category);
+        tvCategory.setText(categoryList.get(categoryData-1));
+        tvCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoryData = position + 1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                categoryDialog();
             }
         });
 
@@ -328,5 +330,33 @@ public class ItemSpecificActivity extends AppCompatActivity {
                 // 허용했다면
                 break;
         }
+    }
+
+    public void categoryDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("카테고리 선택");
+        builder.setSingleChoiceItems(items2, defaultItem,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SelectedItems.clear();
+                        SelectedItems.add(which);
+                    }
+                });
+        builder.setPositiveButton("선택",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!SelectedItems.isEmpty())
+                            categoryData = (int) SelectedItems.get(0) + 1;
+                        tvCategory.setText(categoryList.get(categoryData-1));
+                    }
+                });
+        builder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
     }
 }

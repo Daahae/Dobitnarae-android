@@ -40,6 +40,7 @@ public class ItemManagementFragment extends Fragment{
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2;
     public static boolean changeFlg = false;
+    public static boolean checkFlg = false;
 
     public ItemManagementFragment(Store store) {
         this.store = store;
@@ -71,7 +72,7 @@ public class ItemManagementFragment extends Fragment{
             @Override
             public void onBindViewHolder(final ViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
-
+                final Clothes item = clothes.get(position);
                 holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -87,6 +88,10 @@ public class ItemManagementFragment extends Fragment{
                                 deleteList.remove(items.get(position));
                             holder.layout_cardview.setBackgroundResource(R.drawable.cardview_bordernone);
                         }
+                        if(deleteList.size()>0)
+                            checkFlg = true;
+                        else
+                            checkFlg = false;
 
                         // 리턴값이 있다
                         // 이메서드에서 이벤트에대한 처리를 끝냈음
@@ -94,6 +99,35 @@ public class ItemManagementFragment extends Fragment{
                         // 여기서 이벤트 처리를 못했을 경우는 false
 
                         return true;
+                    }
+                });
+
+                holder.cardview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(deleteList.size()==0)
+                            checkFlg = false;
+                        if(ItemManagementFragment.checkFlg == false) {
+                            Intent intent = new Intent(context, ItemSpecificActivity.class);
+                            intent.putExtra("clothesid", item.getCloth_id());
+                            intent.putExtra("store", store);
+                            context.startActivity(intent);
+                        }
+                        else {
+                            if(holder.clicked == 0) {
+                                holder.clicked = 1;
+                                if(!deleteList.contains(items.get(position)))
+                                    deleteList.add(items.get(position));
+                                holder.layout_cardview.setBackgroundResource(R.drawable.cardview_border);
+                            }
+                            else {
+                                holder.clicked = 0;
+                                if(deleteList.contains(items.get(position)))
+                                    deleteList.remove(items.get(position));
+                                holder.layout_cardview.setBackgroundResource(R.drawable.cardview_bordernone);
+                            }
+                        }
+
                     }
                 });
             }

@@ -38,22 +38,12 @@ public class ItemListRecyclerAdapter extends RecyclerView.Adapter<ItemListRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Clothes item = clothes.get(position);
+        Clothes item = clothes.get(position);
         ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
         holder.name.setText(item.getName());
         DecimalFormat dc = new DecimalFormat("###,###,###,###");
         holder.price.setText(dc.format(item.getPrice()) + " 원");
         holder.cardview.setId(item.getCloth_id());
-
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ItemSpecificActivity.class);
-                intent.putExtra("clothesid", item.getCloth_id());
-                intent.putExtra("store", store);
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override

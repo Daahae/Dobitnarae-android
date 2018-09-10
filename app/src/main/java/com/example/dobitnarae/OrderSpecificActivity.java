@@ -66,6 +66,9 @@ public class OrderSpecificActivity extends AppCompatActivity {
         customerID = intent.getStringExtra("customerID");
         rentalDate = intent.getStringExtra("rentalDate");
 
+        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        textView.setText(store.getName());
+
         this.originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
         this.nConfirm = new ArrayList<Order>();
         this.confirm = new ArrayList<Order>();
@@ -202,6 +205,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         JSONTask.getInstance().deleteOrder(order.getId());
                         Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        OrderFragmentManagementFragment2.changeFlg = true;
                         finish();
                     }
                 });
