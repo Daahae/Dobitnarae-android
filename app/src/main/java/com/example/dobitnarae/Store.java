@@ -26,8 +26,8 @@ public class Store implements Serializable{
         this.intro = "";
         this.inform = "";
         this.sector = 1;
-        this.longitude = 36.0;
-        this.latitude = 126.0;
+        this.longitude = 37.579617;
+        this.latitude = 126.9748523;
         this.startTime = "09:00:00";
         this.endTime = "20:00:00";
     }
