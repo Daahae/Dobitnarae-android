@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -54,6 +55,7 @@ public class StoreManagementFragment extends Fragment {
     private InputMethodManager imm; //전역변수
 
     private FloatingActionButton btnEdit;
+    private LinearLayout linearLayout;
 
     private Camera camera;
     public StoreManagementFragment(Store store) {
@@ -76,7 +78,7 @@ public class StoreManagementFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
-        /*
+
         LinearLayout logout = (LinearLayout)rootView.findViewById(R.id.footer_logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +98,6 @@ public class StoreManagementFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        */
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); //onCreate 이후,,
 
         editTextArrayList = new ArrayList<EditText>();
@@ -260,12 +261,13 @@ public class StoreManagementFragment extends Fragment {
                             photoURI = data.getData();
                             InputStream i = getActivity().getContentResolver().openInputStream(photoURI);
                             camera.createImageFile();
-                            camera.copyFile(getContext(),i, camera.getmCurrentPhotoPath());
+                            camera.copyFile(getContext(), i, camera.getmCurrentPhotoPath());
                             File f = new File(camera.getmCurrentPhotoPath());
                             resultUri = Uri.fromFile(f);
                             CropImage.activity(resultUri)
                                     .setGuidelines(CropImageView.Guidelines.ON)
-                                    .setCropMenuCropButtonTitle("자르기")
+                                    .setCropMenuCropButtonTitle("올리기")
+                                    .setAllowFlipping(false)
                                     //.setActivityTitle("이미지 업로드")
                                     .setOutputUri(resultUri)
                                     .start(getActivity());
@@ -279,7 +281,7 @@ public class StoreManagementFragment extends Fragment {
                 CropImage.ActivityResult result= CropImage.getActivityResult(data);
                 if(resultCode == Activity.RESULT_OK) {
                     imageViewStore.setImageURI(resultUri);
-                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), getContext());
+                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), String.valueOf(-1), getContext());
                     camera.removeDir(getContext(),"Pictures/img");
                 } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                     Exception error = result.getError();

@@ -1,6 +1,8 @@
 package com.example.dobitnarae;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,8 +41,15 @@ public class StoreInfoFragment extends Fragment {
         intro.setText(store.getIntro());
         TextView info = (TextView)rootView.findViewById(R.id.content_info);
         info.setText(store.getInform());
-        TextView sales_info = (TextView)rootView.findViewById(R.id.content_sales_info);
-        sales_info.setText(store.getTel());
+        TextView phone = (TextView)rootView.findViewById(R.id.content_phone);
+        phone.setText(store.getTel());
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tel = "tel:" + store.getTel();
+                startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
+            }
+        });
         TextView owner_info = (TextView)rootView.findViewById(R.id.content_owner_info);
         owner_info.setText(store.getAdmin_id());
         TextView address = (TextView)rootView.findViewById(R.id.content_address);

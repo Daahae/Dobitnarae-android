@@ -12,7 +12,8 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="20dp">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nestedScorllView_store"
@@ -56,12 +57,20 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/border_bottom_layout_item">
 
+                    <ImageView
+                        android:id="@+id/default_picture"
+                        android:layout_centerInParent="true"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/add_picture"/>
                     <ImageView
                         android:id="@+id/reserve_clothes_img"
                         android:layout_width="400dp"
@@ -70,8 +79,8 @@
                         android:adjustViewBounds="true"
                         android:maxHeight="200dp"
                         android:maxWidth="400dp"
-                        android:src="@drawable/sejong" />
-                </LinearLayout>
+                        android:elevation="1dp"/>
+                </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -134,7 +143,8 @@
                             android:text="설명"
                             android:textColor="#000"
                             android:textSize="15dp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -144,10 +154,12 @@
                             <LinearLayout
                                 android:layout_weight="1"
                                 android:layout_width="0dp"
-                                android:layout_height="30dp"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/round_text_input_layout"
                                 android:gravity="center_vertical"
-                                android:paddingLeft="10dp">
+                                android:padding="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp">
 
                                 <EditText
                                     android:id="@+id/reserve_clothes_introduction"
@@ -155,9 +167,10 @@
                                     android:layout_height="match_parent"
                                     android:background="@null"
                                     android:hint="설명을 입력하세요"
-                                    android:inputType="text"
+                                    android:inputType="textMultiLine"
                                     android:textColor="#000"
-                                    android:textSize="15dp" />
+                                    android:textSize="15dp"
+                                    android:gravity="start"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -192,48 +205,10 @@
                                 android:gravity="center_vertical"
                                 android:paddingLeft="10dp">
 
-                                <RadioGroup
-                                    android:id="@+id/rg_cg"
+                                <Spinner
+                                    android:id="@+id/spinner_clothes_category"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:weightSum="2.5">
-                                    <RadioButton
-                                        android:id="@+id/rb1_cg"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="상의"
-                                        android:textSize="15sp"
-                                        android:layout_weight="0.5"/>
-                                    <RadioButton
-                                        android:id="@+id/rb2_cg"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="하의"
-                                        android:textSize="15sp"
-                                        android:layout_weight="0.5"/>
-                                    <RadioButton
-                                        android:id="@+id/rb3_cg"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="모자"
-                                        android:textSize="15sp"
-                                        android:layout_weight="0.5"/>
-                                    <RadioButton
-                                        android:id="@+id/rb4_cg"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="신발"
-                                        android:textSize="15sp"
-                                        android:layout_weight="0.5"/>
-                                    <RadioButton
-                                        android:id="@+id/rb5_cg"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="장신구"
-                                        android:textSize="15sp"
-                                        android:layout_weight="0.5"/>
-                                </RadioGroup>
+                                    android:layout_height="40dp"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -259,7 +234,7 @@
                         android:textStyle="bold" />
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -350,7 +325,7 @@
                         android:id="@+id/title_info"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="20dp"
                         android:text="수량"
                         android:textColor="#000"
@@ -374,11 +349,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="#dcdcdc"/>
             </LinearLayout>
         </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

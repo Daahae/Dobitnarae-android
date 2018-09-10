@@ -127,11 +127,6 @@ public class ItemAddActivity extends AppCompatActivity {
 
         // 카테고리 선택
         categoryList = new ArrayList<String>();
-        categoryList.add("상   의");
-        categoryList.add("하   의");
-        categoryList.add("모   자");
-        categoryList.add("신   발");
-        categoryList.add("장신구");
         categoryData = 1;
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_clothes_category);
 
@@ -298,7 +293,7 @@ public class ItemAddActivity extends AppCompatActivity {
                 CropImage.ActivityResult result= CropImage.getActivityResult(data);
                 if(resultCode == Activity.RESULT_OK) {
                     imageViewStore.setImageURI(resultUri);
-                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), this);
+                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), String.valueOf(item.getCloth_id()),this);
                     camera.removeDir(activity,"Pictures/img");
                 } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                     Exception error = result.getError();

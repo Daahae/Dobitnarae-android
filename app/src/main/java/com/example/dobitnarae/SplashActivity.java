@@ -9,6 +9,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SplashActivity extends Activity {
     private String token;
+    private final int sleepTime = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +18,17 @@ public class SplashActivity extends Activity {
 
         // 앱이 실행될때 토큰정보
         token = FirebaseInstanceId.getInstance().getToken();
-        Log.e("token", token);
         JSONTask.getInstance().updateFcmToken(Account.getInstance(), token);
 
         int priv = Account.getInstance().getPrivilege();
         Intent intent = null;
 
-        Log.e("hio","asda");
+        try {
+            Thread.sleep(sleepTime);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         switch (priv){
             case Constant.CLIENT:
                 intent = new Intent(this, MainActivity.class);

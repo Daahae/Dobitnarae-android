@@ -43,6 +43,119 @@
                     android:background="@color/lineColor"/>
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="대여자 정보"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:textColor="#000"
+                        android:layout_marginBottom="10dp"
+                        android:paddingBottom="5dp"
+                        android:background="@drawable/border_bottom_layout_item_red"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="아이디"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginLeft="10dp"/>
+                        <TextView
+                            android:id="@+id/reserve_client_id"
+                            android:textAlignment="textEnd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="test"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginRight="10dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="이름"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginLeft="10dp"/>
+                        <TextView
+                            android:id="@+id/reserve_client_name"
+                            android:textAlignment="textEnd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="홍길동"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginRight="10dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="전화번호"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginLeft="10dp"/>
+                        <TextView
+                            android:id="@+id/reserve_client_phone"
+                            android:textAlignment="textEnd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="010-0000-0000"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginRight="10dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="대여날짜"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginLeft="10dp"/>
+                        <TextView
+                            android:id="@+id/reserve_client_rentalDate"
+                            android:textAlignment="textEnd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="2018-09-10 12:00"
+                            android:textSize="15dp"
+                            android:textColor="#000"
+                            android:layout_marginRight="10dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:background="@drawable/border_bottom_layout_item">
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:orientation="vertical"
                     android:paddingTop="20dp"
@@ -81,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:text="16,000원"
                         android:textSize="25dp"
-                        android:textColor="#ff8484"
+                        android:textColor="@color/appMainColor"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
@@ -101,7 +214,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@android:color/holo_green_light"
+            android:background="@color/titleColor"
             android:gravity="center">
 
             <TextView
@@ -118,7 +231,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="#ff8484"
+            android:background="@color/appMainColor"
             android:gravity="center">
 
             <TextView

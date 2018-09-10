@@ -40,14 +40,14 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
 
 
         ServerImg.getClothesImageGlide(context, item.getBasket().get(0).getClothes().getCloth_id(), holder.iv_main);
-        holder.tvClient.setText(JSONTask.getInstance().getAccountAll(item.getUser_id()).get(0).getName()+"님");
         if(item.getBasket().size()!=0 && sum != 1)
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 등 " + sum + "벌");
         else if(sum==1)
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 1벌");
         else
             holder.tv_basket.setText("비어있음");
-        holder.tv_date.setText(item.getRentalDate());
+        String[] date = item.getRentalDate().split(":");
+        holder.tv_date.setText(String.format("%s:%s", date[0], date[1]));
         holder.tv_accept.setId(item.getAcceptStatus());
 
         if(item.getAcceptStatus()==0) {
@@ -71,6 +71,8 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
                 intent.putExtra("order", position);
                 intent.putExtra("id", item.getAcceptStatus());
                 intent.putExtra("store", store);
+                intent.putExtra("rentalDate", item.getRentalDate());
+                intent.putExtra("customerID", item.getUser_id());
                 context.startActivity(intent);
             }
         });
@@ -84,13 +86,12 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout linearLayout, layout_accept;
         public ImageView iv_main;
-        public TextView tvClient, tv_basket, tv_date, tv_accept;
+        public TextView tv_basket, tv_date, tv_accept;
 
         public ViewHolder(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.order_list_item);
             iv_main = (ImageView) itemView.findViewById(R.id.order_list_img);
-            tvClient = (TextView) itemView.findViewById(R.id.order_client);
             tv_basket = (TextView) itemView.findViewById(R.id.order_basket);
             tv_date = (TextView) itemView.findViewById(R.id.order_date);
             layout_accept = (LinearLayout) itemView.findViewById(R.id.order_accept_layout);

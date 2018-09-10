@@ -303,7 +303,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
                 CropImage.ActivityResult result= CropImage.getActivityResult(data);
                 if(resultCode == Activity.RESULT_OK) {
                     imageViewStore.setImageURI(resultUri);
-                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), this);
+                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), String.valueOf(item.getCloth_id()), this);
                     camera.removeDir(activity,"Pictures/img");
                 } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                     Exception error = result.getError();

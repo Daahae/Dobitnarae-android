@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
             Account.getInstance().setAccount(JSONTask.getInstance().getAccountAll(id).get(0));
 
             Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-            Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
             finish();
             startActivity(intent);
             overridePendingTransition(0, 0);
@@ -93,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                         Account.getInstance().setAccount(accountList.get(0));
 
                         Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-                        Toast.makeText(getApplicationContext(), IDTxt.getText().toString() + "님 두빛나래에 오신걸 환영합니다.", Toast.LENGTH_LONG).show();
                         finish();
                         startActivity(intent);
                         overridePendingTransition(0, 0);
