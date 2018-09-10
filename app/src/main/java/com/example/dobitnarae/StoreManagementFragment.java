@@ -1,29 +1,16 @@
 package com.example.dobitnarae;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,12 +20,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -46,17 +32,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class StoreManagementFragment extends Fragment {
@@ -67,24 +45,20 @@ public class StoreManagementFragment extends Fragment {
     private EditText edit_name, edit_tel, edit_intro, edit_info, edit_address;
     private TextView edit_admin_id;
     private TextView editFrom, editTo;
-    private Spinner spinnerSector;
 
     private TimePickerDialog tpd;
     private String time;
 
-    private int sectorData;
-
-    private ArrayList<String> sectorList;
     private ArrayList<EditText> editTextArrayList;
 
     private InputMethodManager imm; //전역변수
 
     private FloatingActionButton btnEdit;
 
-    private CameraLoad camera;
+    private Camera camera;
     public StoreManagementFragment(Store store) {
         this.store = store;
-        this.camera = new CameraLoad();
+        this.camera = new Camera();
     }
 
 
@@ -101,7 +75,7 @@ public class StoreManagementFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
         /*
         LinearLayout logout = (LinearLayout)rootView.findViewById(R.id.footer_logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +108,6 @@ public class StoreManagementFragment extends Fragment {
         edit_intro = (EditText)rootView.findViewById(R.id.edit_intro);
         edit_info = (EditText)rootView.findViewById(R.id.edit_info);
         edit_address = (EditText)rootView.findViewById(R.id.edit_address);
-        spinnerSector = (Spinner)rootView.findViewById(R.id.spinner_sector);
 
         editFrom = (TextView) rootView.findViewById(R.id.edit_from);
         editFrom.setOnClickListener(new View.OnClickListener() {
@@ -153,36 +126,28 @@ public class StoreManagementFragment extends Fragment {
             }
         });
 
+
+        final RadioGroup rg = (RadioGroup) rootView.findViewById(R.id.rg);
+        if(store.getSector()!=1 && store.getSector()!=2)
+            store.setSector(1);
+        final RadioButton rb1 = (RadioButton) rootView.findViewById(R.id.rb1);
+        final RadioButton rb2 = (RadioButton) rootView.findViewById(R.id.rb2);
+        // 저장된 정보에 따른 디폴드값 설정
+        if(store.getSector()==1)
+            rg.check(R.id.rb1);
+        else
+            rg.check(R.id.rb2);
+
         btnEdit = (FloatingActionButton) rootView.findViewById(R.id.fab1);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(rb1.isChecked())
+                    store.setSector(1);
+                else if(rb2.isChecked())
+                    store.setSector(2);
+                Toast.makeText(getContext(), store.getSector() + "", Toast.LENGTH_SHORT).show();
                 showAlert(getActivity(), store);
-            }
-        });
-
-        // 카테고리 선택
-        sectorList = new ArrayList<String>();
-        sectorList.add("경복궁");
-        sectorList.add("창경궁");
-
-        ArrayAdapter adapterSector = new ArrayAdapter(getContext(), R.layout.component_spin, sectorList);
-
-        spinnerSector.setAdapter(adapterSector);
-
-        if(store.getSector()!=1 && store.getSector()!=2)
-            store.setSector(1);
-        spinnerSector.setSelection(store.getSector()-1);
-
-        spinnerSector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sectorData = position + 1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -354,7 +319,7 @@ public class StoreManagementFragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        updateStoreByText();
+                        updateStoreByText(store);
                         JSONTask.getInstance().updateStore(store, store.getAdmin_id());
                         //setEditText(store);
                         Toast.makeText(getContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
@@ -389,13 +354,12 @@ public class StoreManagementFragment extends Fragment {
         editTo.setText(store.getEndTime());
     }
 
-    private void updateStoreByText(){
+    private void updateStoreByText(Store store){
         store.setName(edit_name.getText().toString());
         store.setTel(edit_tel.getText().toString());
         store.setIntro(edit_intro.getText().toString());
         store.setInform(edit_info.getText().toString());
         store.setAddress(edit_address.getText().toString());
-        store.setSector(sectorData);
         store.setStartTime(editFrom.getText().toString());
         store.setEndTime(editTo.getText().toString());
         // 툴바 이름변경

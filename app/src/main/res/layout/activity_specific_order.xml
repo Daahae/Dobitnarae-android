@@ -130,4 +130,32 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_action_bar"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/order_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#ff8484"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="삭제"
+                android:textColor="#fff"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

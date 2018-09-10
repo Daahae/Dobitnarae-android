@@ -1,34 +1,22 @@
 package com.example.dobitnarae;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
 public class OrderFragmentManagementFragment2 extends Fragment{
     private ArrayList<Order> originItems, items;
-    private OrderListRecyclerAdapter2 mAdapter = null;
+    private OrderListRecyclerAdapter mAdapter = null;
 
     private Store store;
 
@@ -63,7 +51,7 @@ public class OrderFragmentManagementFragment2 extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new OrderListRecyclerAdapter2(getContext(), items, store);
+        mAdapter = new OrderListRecyclerAdapter(getContext(), items, store);
         recyclerView.setAdapter(mAdapter);
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);

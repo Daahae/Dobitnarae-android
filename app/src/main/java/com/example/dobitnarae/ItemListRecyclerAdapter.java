@@ -38,28 +38,18 @@ public class ItemListRecyclerAdapter extends RecyclerView.Adapter<ItemListRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Clothes item = clothes.get(position);
-        // TODO  서버에서 이미지 받아야함
-        //Bitmap bm = ServerImg.getClothImage(item.getCloth_id());
-        //holder.image.setImageBitmap(bm);
         ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
         holder.name.setText(item.getName());
         holder.price.setText("" + item.getPrice());
         holder.cardview.setId(item.getCloth_id());
 
-        holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 Intent intent = new Intent(context, ItemSpecificActivity.class);
                 intent.putExtra("clothesid", item.getCloth_id());
                 intent.putExtra("store", store);
                 context.startActivity(intent);
-
-                // 리턴값이 있다
-                // 이메서드에서 이벤트에대한 처리를 끝냈음
-                //    그래서 다른데서는 처리할 필요없음 true
-                // 여기서 이벤트 처리를 못했을 경우는 false
-
-                return true;
             }
         });
     }
@@ -75,7 +65,6 @@ public class ItemListRecyclerAdapter extends RecyclerView.Adapter<ItemListRecycl
         CardView cardview;
         LinearLayout layout_cardview;
         int clicked;
-        int cloth_id;
 
         public ViewHolder(View itemView) {
             super(itemView);

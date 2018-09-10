@@ -24,9 +24,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CameraLoad {
+public class Camera {
     private String mCurrentPhotoPath;
-    private File albumFile;
 
     public String getmCurrentPhotoPath() {
         return mCurrentPhotoPath;
@@ -34,14 +33,6 @@ public class CameraLoad {
 
     public void setmCurrentPhotoPath(String mCurrentPhotoPath) {
         this.mCurrentPhotoPath = mCurrentPhotoPath;
-    }
-
-    public File getAlbumFile() {
-        return albumFile;
-    }
-
-    public void setAlbumFile(File albumFile) {
-        this.albumFile = albumFile;
     }
 
     public void captureCamera(Activity activity){

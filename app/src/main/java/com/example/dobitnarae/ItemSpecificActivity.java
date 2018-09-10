@@ -1,38 +1,25 @@
 package com.example.dobitnarae;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,17 +28,13 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class ItemSpecificActivity extends AppCompatActivity {
-    private CameraLoad camera;
+    private Camera camera;
     private Uri photoURI, resultUri;
     private ImageView imageViewStore;
 
@@ -69,11 +52,8 @@ public class ItemSpecificActivity extends AppCompatActivity {
     private ArrayList<String> categoryList;
     private int categoryData;
 
-    private ArrayList<String> sexList;
-    private int sexData;
-
     public ItemSpecificActivity() {
-        this.camera = new CameraLoad();
+        this.camera = new Camera();
     }
 
     @Override
@@ -212,30 +192,14 @@ public class ItemSpecificActivity extends AppCompatActivity {
             }
         });
 
-        // 성별 선택
-        sexList = new ArrayList<String>();
-        sexList.add("남");
-        sexList.add("여");
-
-
-        final Spinner spinner_sex = (Spinner) findViewById(R.id.spinner_clothes_sex);
-
-        ArrayAdapter adapter_sex = new ArrayAdapter(getApplicationContext(), R.layout.component_spin, sexList);
-
-        spinner_sex.setAdapter(adapter_sex);
-
-        spinner_sex.setSelection(item.getSex()-1);
-        spinner_sex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sexData = position + 1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        final RadioGroup rg = (RadioGroup) findViewById(R.id.rg);
+        final RadioButton rb1 = (RadioButton) findViewById(R.id.rb1);
+        final RadioButton rb2 = (RadioButton) findViewById(R.id.rb2);
+        // 저장된 정보에 따른 디폴드값 설정
+        if(item.getSex()==1)
+            rg.check(R.id.rb1);
+        else
+            rg.check(R.id.rb2);
 
         LinearLayout dataUpdate = (LinearLayout)findViewById(R.id.order_clothes_basket);
         dataUpdate.setOnClickListener(new View.OnClickListener() {
@@ -254,19 +218,17 @@ public class ItemSpecificActivity extends AppCompatActivity {
                             if(value <= 0){
                                 Toast.makeText(getApplicationContext(), "에러: 올바른 가격을 입력하세요", Toast.LENGTH_SHORT).show();
                             } else {
-                                item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(price.getText().toString()), Integer.parseInt(selectCnt.getText().toString()), sexData);
+                                item.setName(name.getText().toString());
+                                item.setCategory(categoryData);
+                                if(rb1.isChecked())
+                                    item.setSex(1);
+                                else if(rb2.isChecked())
+                                    item.setSex(2);
+                                item.setCount(Integer.parseInt(selectCnt.getText().toString()));
+                                item.setPrice(Integer.parseInt(price.getText().toString()));
+                                item.setIntro(description.getText().toString());
 
-                                // 데이터 초기화
-                                name.setText("");
-                                description.setText("");
-                                price.setText("0 원");
-                                selectCnt.setText("1");
-                                spinner_sex.setSelection(0);
-                                sexData = 1;
-                                spinner.setSelection(0);
-                                categoryData = 1;
-
-                                JSONTask.getInstance().insertCloth(item, store.getId());
+                                JSONTask.getInstance().updateCloth(item);
                                 Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
                                 ItemManagementFragment.changeFlg = true;
                             }

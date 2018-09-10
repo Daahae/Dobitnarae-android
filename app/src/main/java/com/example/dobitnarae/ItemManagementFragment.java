@@ -71,9 +71,9 @@ public class ItemManagementFragment extends Fragment{
             public void onBindViewHolder(final ViewHolder holder, final int position) {
                 super.onBindViewHolder(holder, position);
 
-                holder.cardview.setOnClickListener(new View.OnClickListener() {
+                holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onLongClick(View v) {
                         if(holder.clicked == 0) {
                             holder.clicked = 1;
                             if(!deleteList.contains(items.get(position)))
@@ -86,6 +86,13 @@ public class ItemManagementFragment extends Fragment{
                                 deleteList.remove(items.get(position));
                             holder.layout_cardview.setBackgroundResource(R.drawable.cardview_bordernone);
                         }
+
+                        // 리턴값이 있다
+                        // 이메서드에서 이벤트에대한 처리를 끝냈음
+                        //    그래서 다른데서는 처리할 필요없음 true
+                        // 여기서 이벤트 처리를 못했을 경우는 false
+
+                        return true;
                     }
                 });
             }

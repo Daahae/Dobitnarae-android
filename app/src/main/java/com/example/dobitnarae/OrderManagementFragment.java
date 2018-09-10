@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,10 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
 public class OrderManagementFragment extends Fragment {
@@ -79,12 +74,8 @@ public class OrderManagementFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 if(position == 0) {
-                    fm1.dataUpdate();
-                    //fm1.refresh();
                 }
                 else if(position == 1) {
-                    fm2.dataUpdate();
-                    //fm2.refresh();
                 }
             }
 

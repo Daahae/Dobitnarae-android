@@ -2,7 +2,6 @@ package com.example.dobitnarae;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,15 +35,15 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
         final Order item = orders.get(position);
 
         int sum = 0;
-        for(int i = 0; i < item.getBasket().size(); i++){
+        for(int i = 0; i < item.getBasket().size(); i++)
             sum += item.getBasket().get(i).getCnt() ;
-        }
-        sum -= 1;
+
 
         ServerImg.getClothesImageGlide(context, item.getBasket().get(0).getClothes().getCloth_id(), holder.iv_main);
-        if(item.getBasket().size()!=0 && sum != 0)
-            holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 외 " + sum + "벌");
-        else if(sum==0)
+        holder.tvClient.setText(JSONTask.getInstance().getAccountAll(item.getUser_id()).get(0).getName()+"님");
+        if(item.getBasket().size()!=0 && sum != 1)
+            holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 등 " + sum + "벌");
+        else if(sum==1)
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 1벌");
         else
             holder.tv_basket.setText("비어있음");
@@ -70,7 +69,7 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
             public void onClick(View v) {
                 Intent intent = new Intent(context, OrderSpecificActivity.class);
                 intent.putExtra("order", position);
-                intent.putExtra("id", 0);
+                intent.putExtra("id", item.getAcceptStatus());
                 intent.putExtra("store", store);
                 context.startActivity(intent);
             }
@@ -83,17 +82,15 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout linearLayout;
+        public LinearLayout linearLayout, layout_accept;
         public ImageView iv_main;
-        public TextView tv_basket;
-        public TextView tv_date;
-        public LinearLayout layout_accept;
-        public TextView tv_accept;
+        public TextView tvClient, tv_basket, tv_date, tv_accept;
 
         public ViewHolder(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.order_list_item);
             iv_main = (ImageView) itemView.findViewById(R.id.order_list_img);
+            tvClient = (TextView) itemView.findViewById(R.id.order_client);
             tv_basket = (TextView) itemView.findViewById(R.id.order_basket);
             tv_date = (TextView) itemView.findViewById(R.id.order_date);
             layout_accept = (LinearLayout) itemView.findViewById(R.id.order_accept_layout);

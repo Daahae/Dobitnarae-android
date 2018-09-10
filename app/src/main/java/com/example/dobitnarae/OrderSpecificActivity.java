@@ -1,12 +1,16 @@
 package com.example.dobitnarae;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,9 +26,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
     private ArrayList<Order> originItems, nConfirm, confirm;
     int index, id;
 
-    private LinearLayout layout;
-    private LinearLayout btnRegister;
-    private LinearLayout btnReject;
+    private LinearLayout layout, layout1, btnRegister, btnReject, btnDelete;
 
     private ArrayList<BasketItem> basket;
 
@@ -33,6 +35,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
     private OrderSpecificRecyclerAdapter mAdapter;
     private TextView totalClothesCnt, reservationCost;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class OrderSpecificActivity extends AppCompatActivity {
             }
         });
 
+        context = this;
+
         intent = getIntent();
         index = (int) intent.getIntExtra("order", 0);
         id = (int) intent.getIntExtra("id", 0);
@@ -67,11 +72,11 @@ public class OrderSpecificActivity extends AppCompatActivity {
         }
 
         layout = (LinearLayout) findViewById(R.id.layout_confirmornot);
-
+        layout1 = (LinearLayout) findViewById(R.id.layout_delete);
+        // 미승인 목록
         if(id==0) {
             this.item = nConfirm.get(index);
             this.basket = JSONTask.getInstance().getBascketCustomerAll(nConfirm.get(index).getId());
-
             // 승인 버튼 클릭 시
             btnRegister = (LinearLayout) findViewById(R.id.order_clothes_register);
             btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -113,11 +118,19 @@ public class OrderSpecificActivity extends AppCompatActivity {
                 }
             });
         }
-        else if(id==1){
+        else {
             this.item2 = confirm.get(index);
             this.basket = JSONTask.getInstance().getBascketCustomerAll(confirm.get(index).getId());
-            if(this.item2.getAcceptStatus()!=0)
-                layout.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
+            layout1.setVisibility(View.VISIBLE);
+
+            btnDelete = (LinearLayout) findViewById(R.id.order_delete);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAlert(context, item2);
+                }
+            });
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.reservation_list);
@@ -153,5 +166,28 @@ public class OrderSpecificActivity extends AppCompatActivity {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###");
         String str = decimalFormat.format(price) + " 원";
         reservationCost.setText(str);
+    }
+
+    private void showAlert(final Context context, final Order order){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String name = JSONTask.getInstance().getAccountAll(order.getUser_id()).get(0).getName();
+        builder.setMessage(name+ "님의 주문정보를 삭제하시겠습니까?\n 주문내역에서 사라집니다.");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        JSONTask.getInstance().deleteOrder(order.getId());
+                        Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        builder.show();
     }
 }
