@@ -15,14 +15,15 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/register_form"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:textColor="#fff"
-            android:textSize="50dp"
             android:fontFamily="@font/jejuhallasan"
-            android:text="@string/app_name"/>
+            android:text="@string/app_name"
+            android:textColor="#fff"
+            android:textSize="50dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:text="나래가 되어줄 한복의 이야기"/>
+                android:text="날개가 되어줄 한복의 이야기"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -45,7 +46,7 @@
         android:layout_marginBottom="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="60dp">
+        android:paddingTop="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,13 +58,14 @@
             <EditText
                 android:id="@+id/register_id"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:singleLine = "true"
                 android:lines = "1"
-                android:hint="아이디"
+                android:inputType="text"
+                android:hint="아이디(영문,숫자조합)"
                 android:paddingLeft="15dp" />
         </LinearLayout>
 
@@ -77,14 +79,14 @@
             <EditText
                 android:id="@+id/register_password"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:inputType="textPassword"
                 android:singleLine = "true"
                 android:lines = "1"
-                android:hint="비밀번호"
+                android:hint="비밀번호(8~20자리)"
                 android:paddingLeft="15dp" />
         </LinearLayout>
 
@@ -98,7 +100,7 @@
             <EditText
                 android:id="@+id/register_password_confirm"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
@@ -119,12 +121,13 @@
             <EditText
                 android:id="@+id/register_name"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:singleLine = "true"
                 android:lines = "1"
+                android:inputType="text"
                 android:hint="이름"
                 android:paddingLeft="15dp" />
         </LinearLayout>
@@ -139,13 +142,14 @@
             <EditText
                 android:id="@+id/register_phone"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.65"
                 android:background="#fff"
                 android:gravity="center_vertical"
                 android:singleLine = "true"
                 android:lines = "1"
-                android:hint="전화번호"
+                android:hint="전화번호(010-0000-0000)"
+                android:inputType="text"
                 android:paddingLeft="15dp" />
         </LinearLayout>
 
@@ -158,14 +162,17 @@
 
             <CheckBox
                 android:id="@+id/register_check"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+
+                android:buttonTint="#ffffff"
                 android:gravity="center_vertical"
-                android:textColor="@color/white"
+                android:paddingLeft="15dp"
                 android:text="매장관리자"
-                android:paddingLeft="15dp" />
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textColorLink="@android:color/background_light" />
         </LinearLayout>
 
         <LinearLayout
