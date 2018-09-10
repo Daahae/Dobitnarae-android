@@ -121,7 +121,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             jsonObject.accumulate("msg", msg);
 
 
-            if (flag == 1) {//updateStore를 위한 서버에 데이터 전송
+            if (flag == 1) {//insertStore updateStore를 위한 서버에 데이터 전송
 
                 jsonObject.accumulate("name", upStore.getName());//update를 위해 서버로 보낼 데이터들 req.on
                 jsonObject.accumulate("admin_id", upStore.getAdmin_id());
@@ -722,8 +722,22 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
             JT.setUser_id(store_id+"");
             JT.setCloth(inCloth);
-            JT.execute("http://13.125.232.225/insertCloth");// URL변경필수
+            JT.execute("http://13.125.232.225/insertCloth");
             Log.e("err","cloth삽입 성공!!");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void insertStore(Store store){ // user_id에 해당하는 매장에 옷 추가(관리자)
+        JSONTask JT = new JSONTask();
+        try {
+
+            JT.setUser_id(""+store.getId());
+            JT.setUpStore(store);
+            JT.execute("http://13.125.232.225/insertStore");// URL변경필수
+            Log.e("err","store삽입 성공!!");
 
         }catch(Exception e){
             e.printStackTrace();
