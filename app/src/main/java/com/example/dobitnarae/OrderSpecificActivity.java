@@ -66,8 +66,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
         customerID = intent.getStringExtra("customerID");
         rentalDate = intent.getStringExtra("rentalDate");
 
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
-        textView.setText(store.getName());
+        ((TextView) findViewById(R.id.toolbar_title)).setText(store.getName());
 
         this.originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
         this.nConfirm = new ArrayList<Order>();

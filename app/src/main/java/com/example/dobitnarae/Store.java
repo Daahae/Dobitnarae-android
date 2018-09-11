@@ -17,6 +17,21 @@ public class Store implements Serializable{
     private double longitude;
     private double latitude;
 
+    public Store(String admin_id){
+        this.id=id;
+        this.name = "";
+        this.admin_id= admin_id;
+        this.address = "";
+        this.tel = "";
+        this.intro = "";
+        this.inform = "";
+        this.sector = 1;
+        this.longitude = 37.579617;
+        this.latitude = 126.9748523;
+        this.startTime = "09:00:00";
+        this.endTime = "20:00:00";
+    }
+
 
     public Store(int id, String name, String admin_id, String tel, String intro, String inform,
                  String address, int sector, double latitude, double longitude, String startTime, String endTime){

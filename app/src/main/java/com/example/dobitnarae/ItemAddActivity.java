@@ -150,11 +150,8 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
-        // 옷 가격
-        dc = new DecimalFormat("###,###,###,###");
         final EditText price = findViewById(R.id.reserve_clothes_price);
-        String str = dc.format(item.getPrice());
-        price.setText(str);
+        price.setText(item.getPrice());
 
         btnReduce = findViewById(R.id.counting_btn_reduce);
         btnAdd = findViewById(R.id.counting_btn_add);

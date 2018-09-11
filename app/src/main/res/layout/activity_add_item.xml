@@ -255,6 +255,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
+                                android:inputType="number"
                                 android:hint="10000"
                                 android:textColor="#000"
                                 android:textSize="15dp" />
@@ -288,9 +289,7 @@
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/round_text_input_layout"
-                            android:gravity="center_vertical"
-                            android:paddingLeft="10dp">
+                            android:gravity="center_vertical">
 
                             <RadioGroup
                                 android:id="@+id/rg"
