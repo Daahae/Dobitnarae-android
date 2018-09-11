@@ -733,7 +733,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public void insertStore(Store store){ // user_id에 해당하는 매장에 옷 추가(관리자)
         JSONTask JT = new JSONTask();
         try {
-            
+
             JT.setUpStore(store);
             JT.execute("http://13.125.232.225/insertStore");// URL변경필수
             Log.e("err","store삽입 성공!!");
