@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:scrollY="0dp">
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -27,40 +28,61 @@
                 android:elevation="2dp"
                 android:focusable="true">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:weightSum="1">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
-                        android:id="@+id/store_sector_1"
-                        android:tag="0"
-                        android:layout_weight="0.5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#62ca73"
-                        android:gravity="center">
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="0dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="50dp"
-                            android:text="경복궁"
-                            android:textColor="#fff"
-                            android:fontFamily="@font/jejuhallasan"/>
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:textSize="15dp"
+                            android:text="대여점 위치"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/store_sector_2"
-                        android:tag="1"
-                        android:layout_weight="0.5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/appMainColor"
-                        android:gravity="center">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="50dp"
-                            android:text="창경궁"
-                            android:textColor="#fff"
-                            android:fontFamily="@font/jejuhallasan" />
+                        android:layout_height="200dp"
+                        android:weightSum="1">
+                        <LinearLayout
+                            android:id="@+id/store_sector_1"
+                            android:tag="0"
+                            android:layout_weight="0.5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/seochon"
+                            android:gravity="center">
+                            <TextView
+                                android:layout_marginLeft="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="50dp"
+                                android:text="서촌"
+                                android:textColor="#000"
+                                android:fontFamily="@font/jejuhallasan"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/store_sector_2"
+                            android:tag="1"
+                            android:layout_weight="0.5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bukchon"
+                            android:gravity="center">
+                            <TextView
+                                android:layout_marginRight="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="50dp"
+                                android:text="북촌"
+                                android:textColor="#000"
+                                android:fontFamily="@font/jejuhallasan" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>

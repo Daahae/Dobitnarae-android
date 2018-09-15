@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         //로그인정보가 있을시
         if (saveLoginData) {
             IDTxt.setText(id);
