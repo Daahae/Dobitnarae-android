@@ -162,8 +162,8 @@ public class ItemSpecificActivity extends AppCompatActivity {
         final EditText description = findViewById(R.id.reserve_clothes_introduction);
         description.setText(item.getIntro());
 
-        final EditText price = findViewById(R.id.reserve_clothes_price);
-        price.setText(item.getPrice());
+        final EditText price = findViewById(R.id.item_price);
+        price.setText(""+item.getPrice());
 
         btnReduce = findViewById(R.id.counting_btn_reduce);
         btnAdd = findViewById(R.id.counting_btn_add);

@@ -251,7 +251,7 @@
                             android:paddingLeft="10dp">
 
                             <EditText
-                                android:id="@+id/reserve_clothes_price"
+                                android:id="@+id/item_price"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"

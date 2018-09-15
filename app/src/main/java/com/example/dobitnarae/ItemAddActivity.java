@@ -150,8 +150,8 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
-        final EditText price = findViewById(R.id.reserve_clothes_price);
-        price.setText(item.getPrice());
+        final EditText price = findViewById(R.id.item_price);
+        price.setText("");
 
         btnReduce = findViewById(R.id.counting_btn_reduce);
         btnAdd = findViewById(R.id.counting_btn_add);
@@ -211,7 +211,7 @@ public class ItemAddActivity extends AppCompatActivity {
                                 // 데이터 초기화
                                 name.setText("");
                                 description.setText("");
-                                price.setText("0 원");
+                                price.setText("");
                                 selectCnt.setText("1");
                                 rg.check(R.id.rb1);
                                 sexData = 1;
