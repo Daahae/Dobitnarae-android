@@ -385,6 +385,41 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         return storeList;
     }
 
+    public  ArrayList<Store> getStoreBySector(int sector){ // JSON.HTML넣어서 사용, 전송되는 user_id jong4876~~
+        ArrayList<Store> storeList = new ArrayList<Store>();
+        Store store;
+
+        try {
+            JSONTask JT = new JSONTask();
+            JT.setUser_id(sector+"");
+            String str = JT.execute("http://13.125.232.225/storeBySector").get();
+            JSONArray ja = new JSONArray(str);
+
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                int id = jo.getInt("id");
+                String name = jo.getString("name");
+                String admin_id = jo.getString("admin_id");
+                String tel = jo.getString("tel");
+                String intro = jo.getString("intro");
+                String inform = jo.getString("inform");
+                String address = jo.getString("address");
+                int sectors = jo.getInt("sector");
+                double latitude = jo.getDouble("latitude");
+                double longitude = jo.getDouble("longitude");
+                String startTime = jo.getString("start_time");
+                String endTime = jo.getString("end_time");
+
+                store = new Store(id, name, admin_id,tel,intro, inform, address, sectors, latitude, longitude, startTime, endTime);
+                storeList.add(store);//accountList 차례대로 삽입
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return storeList;
+    }
     public ArrayList<Clothes> getStoreClothesList(int storeID){ //storeID로 해당 매장 옷 검색
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
         Clothes clothes;
