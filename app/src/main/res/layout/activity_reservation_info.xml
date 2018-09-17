@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/tool_bar"/>
+        layout="@layout/tool_bar_reservation"/>
 
     <LinearLayout
         android:layout_marginTop="?android:attr/actionBarSize"

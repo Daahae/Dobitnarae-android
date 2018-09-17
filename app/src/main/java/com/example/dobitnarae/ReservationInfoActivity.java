@@ -65,6 +65,16 @@ public class ReservationInfoActivity extends AppCompatActivity {
         recyclerView.setMinimumHeight(displayMetrics.heightPixels - px);
         recyclerView.setLayoutManager(layoutManager);
 
+        LinearLayout qrButton = (LinearLayout)findViewById(R.id.reservation_qr);
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReservationInfoActivity.this, MyQRCodeActivity.class);
+                intent.putExtra("reservationID", reserve.getId());
+                startActivity(intent);
+            }
+        });
+
         //전체 옷 개수 설정
         totalClothesCnt = findViewById(R.id.reservation_clothes_total_cnt);
         setTotalClothesCnt();

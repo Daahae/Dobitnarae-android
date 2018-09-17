@@ -31,7 +31,7 @@
     <string name="default_notification_channel_name">oreoChanel</string>
     <string name="default_notification_channel_id">notification_id</string>
     <string name="papago_ID">zgvN61GVH8aqvH8kEtH0</string>
-    
+
     <!--main_activity-->
     <string name="store_location_text">대여점 위치</string>
     <string name="store_location1">서촌</string>

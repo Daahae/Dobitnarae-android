@@ -3,6 +3,7 @@ package com.example.dobitnarae;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dobitnarae.QRCode.CreateQRCode;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -91,7 +93,28 @@ public class BasketActivity extends AppCompatActivity {
                 if(Basket.getInstance().getClothesCnt() == 0)
                     Toast.makeText(v.getContext(), "담은 한복이 없습니다", Toast.LENGTH_SHORT).show();
                 else {
-                    dpd.show(getFragmentManager(), "Datepickerdialog");
+                    ArrayList<BasketItem> clothes = Basket.getInstance().getBasket();
+                    int mTop = 0, mBottom = 0, wTop = 0, wBottom = 0;
+                    for(BasketItem item : clothes) {
+                        Clothes tmp = item.getClothes();
+                        if(Constant.CATEGORY[tmp.getCategory()] == "상의"){
+                            if(tmp.getSex() == Constant.MAN)
+                                mTop++;
+                            else if(tmp.getSex() == Constant.WOMAN)
+                                wTop++;
+                        }
+                        else if(Constant.CATEGORY[tmp.getCategory()] == "하의") {
+                            if(tmp.getSex() == Constant.MAN)
+                                mBottom++;
+                            else if(tmp.getSex() == Constant.WOMAN)
+                                wBottom++;
+                        }
+                    }
+
+                    if(mTop == mBottom && wTop == wBottom)
+                        dpd.show(getFragmentManager(), "Datepickerdialog");
+                    else
+                        showAlert();
                 }
             }
         });
@@ -171,6 +194,22 @@ public class BasketActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+
+        CreateQRCode qrCode = new CreateQRCode();
+        qrCode.createQRCode("HOHOHO", "" + reserve.getId());
         finish();
+    }
+
+    private void showAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("한복은 갖춰 입었을때 빛이 나는 법입니다.\n예약목록을 다시한번 확인해 주세요.");
+        builder.setPositiveButton("닫기",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        builder.show();
     }
 }
