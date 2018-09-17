@@ -21,7 +21,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <include
-                layout="@layout/tool_bar_mainpage"/>
+                layout="@layout/tool_bar_adminpage"/>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"

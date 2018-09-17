@@ -3,11 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingRight="@dimen/padding_horizontal"
-    android:paddingLeft="@dimen/padding_horizontal"
     android:scrollbars="none"
-    android:background="#fff"
-    >
+    android:background="#fff">
 
     <include
         layout="@layout/tool_bar"/>
@@ -17,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:paddingRight="@dimen/padding_horizontal"
+        android:paddingLeft="@dimen/padding_horizontal"
         android:background="#fff"
         android:layout_marginBottom="@dimen/bottom_action_bar">
 

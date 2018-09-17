@@ -56,7 +56,7 @@ public class AdminActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.activity_admin);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_adminpage);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
@@ -65,6 +65,15 @@ public class AdminActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(AdminActivity.this, AdminMyPageActivity.class);
                 intent.putExtra("store", store);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout qrScan = (LinearLayout)findViewById(R.id.adminpage_qr);
+        qrScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, QRScanActivity.class);
                 startActivity(intent);
             }
         });

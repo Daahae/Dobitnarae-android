@@ -1,8 +1,12 @@
 package com.example.dobitnarae.QRCode;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -18,8 +22,8 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 public class CreateQRCode {
-    public void createQRCode(String context, String name){
 
+    public Bitmap createQRCode(String context){
         Bitmap bitmap = null ;
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -32,12 +36,10 @@ public class CreateQRCode {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
-
-
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        saveBitmaptoJpeg(bitmap, name);
+        return bitmap;
     }
 
     public void saveBitmaptoJpeg(Bitmap bitmap, String name){

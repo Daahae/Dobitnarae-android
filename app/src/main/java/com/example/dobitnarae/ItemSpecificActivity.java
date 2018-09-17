@@ -195,7 +195,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
         final RadioButton rb1 = (RadioButton) findViewById(R.id.rb1);
         final RadioButton rb2 = (RadioButton) findViewById(R.id.rb2);
         // 저장된 정보에 따른 디폴드값 설정
-        if(item.getSex()==1)
+        if(item.getSex()==Constant.MAN)
             rg.check(R.id.rb1);
         else
             rg.check(R.id.rb2);
@@ -220,9 +220,9 @@ public class ItemSpecificActivity extends AppCompatActivity {
                                 item.setName(name.getText().toString());
                                 item.setCategory(categoryData);
                                 if(rb1.isChecked())
-                                    item.setSex(1);
+                                    item.setSex(Constant.MAN);
                                 else if(rb2.isChecked())
-                                    item.setSex(2);
+                                    item.setSex(Constant.WOMAN);
                                 item.setCount(Integer.parseInt(selectCnt.getText().toString()));
                                 item.setPrice(Integer.parseInt(price.getText().toString()));
                                 item.setIntro(description.getText().toString());

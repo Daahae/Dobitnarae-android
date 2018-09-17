@@ -195,8 +195,6 @@ public class BasketActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
-        CreateQRCode qrCode = new CreateQRCode();
-        qrCode.createQRCode("HOHOHO", "" + reserve.getId());
         finish();
     }
 
