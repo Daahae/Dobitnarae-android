@@ -135,7 +135,8 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("latitude", upStore.getLatitude());
                 jsonObject.accumulate("start_time", upStore.getStartTime());
                 jsonObject.accumulate("end_time", upStore.getEndTime());
-
+                jsonObject.accumulate("TransIntro", upStore.getTransIntro());
+                jsonObject.accumulate("TransAddress", upStore.getTransAddress());
             }
 
             if (flag == 2) {//insertCloth
@@ -148,6 +149,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("price", inCloth.getPrice());
                 jsonObject.accumulate("count", inCloth.getCount());
                 jsonObject.accumulate("sex", inCloth.getSex());
+                jsonObject.accumulate("TransIntro", inCloth.getTransIntro());
             }
 
             if (flag == 3) {//insertOrder, updateOrder
@@ -410,9 +412,17 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 String name = jo.getString("name");
                 String admin_id = jo.getString("admin_id");
                 String tel = jo.getString("tel");
-                String intro = jo.getString("intro");
                 String inform = jo.getString("inform");
-                String address = jo.getString("address");
+                String address;
+                String intro;
+                if(Locale.getDefault().getLanguage()=="ko") {
+                    intro = jo.getString("intro");
+                    address = jo.getString("address");
+                }
+                else {// 영문일때
+                    intro = jo.getString("TransIntro");
+                    address = jo.getString("TransAddress");
+                }
                 int sectors = jo.getInt("sector");
                 double latitude = jo.getDouble("latitude");
                 double longitude = jo.getDouble("longitude");
@@ -485,7 +495,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int store_ids = jo.getInt("store_id");
                 int category = jo.getInt("category");
                 String name= jo.getString("name");
-                String intro = jo.getString("intro");
+                String intro;
+                if(Locale.getDefault().getLanguage()=="ko") {
+                    intro = jo.getString("intro");
+                }
+                else {// 영문일때
+                    intro = jo.getString("TransIntro");
+                }
                 int price = jo.getInt("price");
                 int count = jo.getInt("count");
                 int sex = jo.getInt("sex");
@@ -501,6 +517,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
         Clothes clothes;
 
+
         JSONTask JT = new JSONTask();
         try{
             JT.setUser_id(cnt+"");
@@ -512,7 +529,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int store_ids = jo.getInt("store_id");
                 int category = jo.getInt("category");
                 String name= jo.getString("name");
-                String intro = jo.getString("intro");
+                String intro;
+                if(Locale.getDefault().getLanguage()=="ko") {
+                    intro = jo.getString("intro");
+                }
+                else {// 영문일때
+                    intro = jo.getString("TransIntro");
+                }
                 int price = jo.getInt("price");
                 int count = jo.getInt("count");
                 int sex = jo.getInt("sex");

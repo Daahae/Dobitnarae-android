@@ -16,6 +16,8 @@ public class Store implements Serializable{
     private int sector;
     private double longitude;
     private double latitude;
+    private String TransIntro = "No Inform";
+    private String TransAddress = "No Inform";// 번역을위한필드
 
     public Store(String admin_id){
         this.id=id;
@@ -86,12 +88,17 @@ public class Store implements Serializable{
     public double getLatitude(){
         return latitude;
     }
+    public String getTransIntro() {
+        return TransIntro;
+    }
+    public String getTransAddress() {
+        return TransAddress;
+    }
 
 
     public void setId(int id) {
         this.id = id;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -125,4 +132,7 @@ public class Store implements Serializable{
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+    public void setTransIntro(String TransIntro){this.TransIntro = TransIntro;}
+    public void setTransAddress(String TransAddress){this.TransAddress = TransAddress;}
+
 }
