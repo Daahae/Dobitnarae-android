@@ -137,7 +137,7 @@
                             android:textStyle="bold"
                             android:textColor="#000"
                             android:textSize="15dp"
-                            android:text="고궁 알아보기"/>
+                            android:text="@string/gogung_search"/>
                     </LinearLayout>
                 </LinearLayout>
                 <HorizontalScrollView

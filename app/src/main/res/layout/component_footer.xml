@@ -45,10 +45,11 @@
                 android:layout_height="match_parent"
                 android:gravity="end|center_vertical"
                 android:paddingRight="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="오픈소스"/>
+                    android:text="@string/copyright" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/footer_logout"
@@ -60,7 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="로그아웃"/>
+                    android:text="@string/logout"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

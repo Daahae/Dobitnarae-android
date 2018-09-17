@@ -13,4 +13,26 @@
     <string name="tmp">It\'s a nice day to go around in HanBok.</string>
     <string name="login">Login</string>
     <string name="signup">SignUp</string>
+    <string name="store_location_text" translatable="false">Store Location</string>
+    <string name="hanbok_recommand">Hanbok Recommand</string>
+    <string name="gogung_search">Learn the Old Palace</string>
+    <string name="weather_location">Jongno-gu, Seoul</string>
+    <string name="copyright">Copyright</string>
+    <string name="logout">Logout</string>
+    <string name="register_id">ID(english, number only)</string>
+    <string name="register_pw">Password(8~20)</string>
+    <string name="register_pw_confirm">Password Confirm</string>
+    <string name="register_name">Name</string>
+    <string name="register_phone">Phone(010-0000-0000)</string>
+    <string name="register_admin">Are you an administrator?</string>
+    <string name="mypage">MyInfo</string>
+    <string name="reservation_list">Reservation List</string>
+    <string name="mypage_info">MyPage</string>
+    <string name="mypage_id">ID</string>
+    <string name="mypage_pw">PW</string>
+    <string name="mypage_name">Name</string>
+    <string name="mypage_phone">Phone</string>
+    <string name="mypage_change">Change</string>
+    <string name="total_text">"A Total "</string>
+    <string name="piece_text">" Piece Reservation Fee"</string>
 </resources>

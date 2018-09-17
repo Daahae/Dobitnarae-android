@@ -21,21 +21,48 @@
     <string name="tmp">한복입고 돌아다니기 좋은 날씨네요</string>
     <string name="login">로그인</string>
     <string name="signup">회원가입</string>
-    <string name="license">Icons made by Robin Kylander from www.flaticon.com is licensed by CC 3.0 BY
+    <string name="license" translatable="false">Icons made by Robin Kylander from www.flaticon.com is licensed by CC 3.0 BY
         \nIcons made by Smashicons from www.flaticon.com is licensed by CC 3.0 BY</string>
 
-    <string name="companyInfo">두빛나래는 통신판매중개자이며 통신판매의 당사자가 아닙니다.
+    <string name="companyInfo" translatable="false">두빛나래는 통신판매중개자이며 통신판매의 당사자가 아닙니다.
         \n따라서 두빛나래는 한복 예약, 대여, 취소 등과 관련한 의무와 책임이 없으며,
         \n거래에 따른 법적 책임은 각 판매자에게 있습니다.
     </string>
-    <string name="default_notification_channel_name">oreoChanel</string>
-    <string name="default_notification_channel_id">notification_id</string>
-    <string name="papago_ID">zgvN61GVH8aqvH8kEtH0</string>
+    <string name="default_notification_channel_name" translatable="false">oreoChanel</string>
+    <string name="default_notification_channel_id" translatable="false">notification_id</string>
+    <string name="papago_ID" translatable="false">zgvN61GVH8aqvH8kEtH0</string>
     
     <!--main_activity-->
     <string name="store_location_text">대여점 위치</string>
-    <string name="store_location1">서촌</string>
-    <string name="store_location2">북촌</string>
+    <string name="store_location1" translatable="false">서촌</string>
+    <string name="store_location2" translatable="false">북촌</string>
     <string name="hanbok_recommand">한복 추천</string>
     <string name="gogung_search">고궁 알아보기</string>
+    <string name="weather_location">서울특별시 종로구</string>
+    <string name="copyright">저작권</string>
+    <string name="logout">로그아웃</string>
+
+    <!--register_activity-->
+    <string name="register_id">아이디(영문,숫자조합)</string>
+    <string name="register_pw">비밀번호(8~20자리)</string>
+    <string name="register_pw_confirm">비밀번호 확인</string>
+    <string name="register_name">이름</string>
+    <string name="register_phone">전화번호(010-0000-0000)</string>
+    <string name="register_admin">매장관리자</string>
+
+    <!--mypage_activity-->
+    <string name="mypage">내 정보</string>
+    <string name="reservation_list">대여 기록</string>
+
+    <!--mypage_fragment-->
+    <string name="mypage_info">내 정보</string>
+    <string name="mypage_id">아이디</string>
+    <string name="mypage_pw">비밀번호</string>
+    <string name="mypage_name">이름</string>
+    <string name="mypage_phone">전화번호</string>
+    <string name="mypage_change">수 정</string>
+
+    <!--reservation_info_activity-->
+    <string name="total_text">총 </string>
+    <string name="piece_text"> 벌 대여비</string>
 </resources>

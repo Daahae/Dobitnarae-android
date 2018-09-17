@@ -157,7 +157,6 @@ public class StoreManagementFragment extends Fragment {
                     store.setSector(1);
                 else if(rb2.isChecked())
                     store.setSector(2);
-                Toast.makeText(getContext(), store.getSector() + "", Toast.LENGTH_SHORT).show();
                 showAlert(getActivity(), store);
             }
         });
@@ -356,17 +355,10 @@ public class StoreManagementFragment extends Fragment {
     }
 
     private void setEditText(Store store){
-
         edit_admin_id.setText(store.getAdmin_id());
         edit_tel.setText(store.getTel());
-        if(Locale.getDefault().getLanguage()=="ko") {
-            edit_name.setText(store.getName());
-            edit_intro.setText(store.getIntro());
-        }
-        else {
-            translateLan(store,edit_name);
-            translateLan(store, edit_intro);
-        }
+        edit_name.setText(store.getName());
+        edit_intro.setText(store.getIntro());
         edit_info.setText(store.getInform());
         edit_address.setText(store.getAddress());
         editFrom.setText(store.getStartTime());
@@ -381,6 +373,9 @@ public class StoreManagementFragment extends Fragment {
         store.setAddress(edit_address.getText().toString());
         store.setStartTime(editFrom.getText().toString());
         store.setEndTime(editTo.getText().toString());
+        NaverTranslate test = new NaverTranslate();
+        store.setTransAddress(test.translatedResult(store.getAddress()));
+        store.setTransIntro(test.translatedResult(store.getIntro()));
         // 툴바 이름변경
         ((AdminActivity)getActivity()).setToolbarTitle(store.getName());
     }
