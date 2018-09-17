@@ -43,7 +43,7 @@
                             android:textStyle="bold"
                             android:textColor="#000"
                             android:textSize="15dp"
-                            android:text="대여점 위치"/>
+                            android:text="@string/store_location_text"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="50dp"
-                                android:text="서촌"
+                                android:text="@string/store_location1"
                                 android:textColor="#000"
                                 android:fontFamily="@font/jejuhallasan"/>
                         </LinearLayout>
@@ -79,7 +79,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="50dp"
-                                android:text="북촌"
+                                android:text="@string/store_location2"
                                 android:textColor="#000"
                                 android:fontFamily="@font/jejuhallasan" />
                         </LinearLayout>
@@ -107,7 +107,7 @@
                             android:textStyle="bold"
                             android:textColor="#000"
                             android:textSize="15dp"
-                            android:text="한복 추천"/>
+                            android:text="@string/hanbok_recommand"/>
                     </LinearLayout>
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/clothes_recommendation_recycler_view"
