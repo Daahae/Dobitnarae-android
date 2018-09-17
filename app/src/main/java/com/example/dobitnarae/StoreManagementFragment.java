@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,14 +29,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 @SuppressLint("ValidFragment")
 public class StoreManagementFragment extends Fragment {
@@ -44,8 +56,7 @@ public class StoreManagementFragment extends Fragment {
 
     private Store store;
     private EditText edit_name, edit_tel, edit_intro, edit_info, edit_address;
-    private TextView edit_admin_id;
-    private TextView editFrom, editTo;
+    private TextView edit_admin_id, editFrom, editTo;
 
     private TimePickerDialog tpd;
     private String time;
@@ -345,10 +356,17 @@ public class StoreManagementFragment extends Fragment {
     }
 
     private void setEditText(Store store){
-        edit_name.setText(store.getName());
+
         edit_admin_id.setText(store.getAdmin_id());
         edit_tel.setText(store.getTel());
-        edit_intro.setText(store.getIntro());
+        if(Locale.getDefault().getLanguage()=="ko") {
+            edit_name.setText(store.getName());
+            edit_intro.setText(store.getIntro());
+        }
+        else {
+            translateLan(store,edit_name);
+            translateLan(store, edit_intro);
+        }
         edit_info.setText(store.getInform());
         edit_address.setText(store.getAddress());
         editFrom.setText(store.getStartTime());
@@ -369,5 +387,11 @@ public class StoreManagementFragment extends Fragment {
 
     public void refresh(){
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
+    public void translateLan(Store store, EditText ed) {
+        String temp = store.getIntro();
+        NaverTranslate test = new NaverTranslate(ed);
+        test.execute(temp);
     }
 }
