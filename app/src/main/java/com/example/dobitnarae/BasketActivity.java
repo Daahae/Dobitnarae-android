@@ -160,6 +160,7 @@ public class BasketActivity extends AppCompatActivity {
         Basket basket = Basket.getInstance();
         Account account = Account.getInstance();
         String adminID = JSONTask.getInstance().changeToAdminID(basket.getSelectedStoreID());
+        Store store = JSONTask.getInstance().getAdminStoreAll(adminID).get(0);
 
         Log.e("" + adminID, " " + basket.getSelectedStoreID());
 
@@ -169,7 +170,8 @@ public class BasketActivity extends AppCompatActivity {
         basket.clearBasket();
 
         Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
-        JSONTask.getInstance().sendMsgByFCM(adminID, "주문이 접수되었습니다.");
+        Toast.makeText(context, store.getName(), Toast.LENGTH_SHORT).show();
+        JSONTask.getInstance().sendMsgByFCM(adminID, store.getName(), "주문이 접수되었습니다.");
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
         finish();
