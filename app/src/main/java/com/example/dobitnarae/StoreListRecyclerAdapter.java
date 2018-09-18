@@ -71,7 +71,7 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
             storeStatus = openStore;
         }
         else{
-            holder.storeInfoText.setText("엽업종료");
+            holder.storeInfoText.setText("영업종료");
             holder.storeInfoText.setTextColor(Color.parseColor("#f94c4c"));
             storeStatus = closeStore;
         }

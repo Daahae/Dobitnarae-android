@@ -360,14 +360,13 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             JT.setUser_id(user_id);
             String str = JT.execute("http://13.125.232.225/storeCustomer").get();
             JSONArray ja = new JSONArray(str);
-            // txtView.setText(str);
+
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 int id = jo.getInt("id");
                 String name = jo.getString("name");
                 String admin_id = jo.getString("admin_id");
                 String tel = jo.getString("tel");
-                //String intro = jo.getString("intro");
                 String inform = jo.getString("inform");
                 String address;
                 String intro;
@@ -823,6 +822,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             JT.setReserveBasket(reserve, basketList);
             String str = JT.execute("http://13.125.232.225/insertReserve").get();// URL변경필수
             Log.e("err","order삽입 성공!!");
+
         }catch(Exception e){
             e.printStackTrace();
         }
