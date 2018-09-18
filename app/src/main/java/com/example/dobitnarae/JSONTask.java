@@ -965,11 +965,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void sendMsgByFCM(String userID, String msg){//
+    public void sendMsgByFCM(String userID, String storeName, String msg){//
 
         try{
             JSONTask JT = new JSONTask();
             JT.setUser_id(userID);
+            JT.setAdmin_id(storeName);
             JT.setMsg(msg);
             JT.execute("http://13.125.232.225/FCM");
 
