@@ -1,6 +1,8 @@
 package com.example.dobitnarae;
 
-public class BasketItem {
+import java.io.Serializable;
+
+public class BasketItem implements Serializable{
     private Clothes clothes;
     private int cnt;
 

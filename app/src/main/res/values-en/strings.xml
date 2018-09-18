@@ -35,4 +35,17 @@
     <string name="mypage_change">Change</string>
     <string name="total_text">"A Total "</string>
     <string name="piece_text">" Piece Reservation Fee"</string>
+    <string name="basket_text">Basket</string>
+    <string name="soldout_text">Sold Out</string>
+    <string name="total_fee">Total Reservation Fee</string>
+    <string name="cnt_text">Count</string>
+    <string name="fee_text">Fee</string>
+    <string name="man_text">M</string>
+    <string name="woman_text">F</string>
+    <string name="store_name_text">Store Name</string>
+    <string name="store_intro_text">Intro</string>
+    <string name="store_info_text">Information</string>
+    <string name="store_phone_text">Tel</string>
+    <string name="store_admin_text">Admin Info</string>
+    <string name="store_locationinfo_text">Location</string>
 </resources>

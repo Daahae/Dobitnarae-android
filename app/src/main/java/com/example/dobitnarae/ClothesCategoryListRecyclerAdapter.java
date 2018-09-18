@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ClothesCategoryListRecyclerAdapter extends RecyclerView.Adapter<ClothesCategoryListRecyclerAdapter.ViewHolder> {
     private Context context;
@@ -35,7 +36,10 @@ public class ClothesCategoryListRecyclerAdapter extends RecyclerView.Adapter<Clo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.text.setText(Constant.CATEGORY[position]);
+        if(Locale.getDefault().getLanguage()=="ko")
+            holder.text.setText(Constant.CATEGORY[position]);
+        else
+            holder.text.setText(Constant.CATEGORYEG[position]);
         holder.layout.setTag(position);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override

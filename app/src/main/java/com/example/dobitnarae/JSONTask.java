@@ -338,8 +338,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 double longitude = jo.getDouble("longitude");
                 String startTime = jo.getString("start_time");
                 String endTime = jo.getString("end_time");
-
-                // TODO 영업 시작시간 종료시간 가져와서 넣어야됨
                 store = new Store(id, name, admin_id,tel,intro, inform, address, sector, latitude, longitude, "", "");
                 store.setStartTime(startTime);
                 store.setEndTime(endTime);
@@ -364,20 +362,22 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 int id = jo.getInt("id");
-                String name = jo.getString("name");
+                String name = jo.getString("name");;
                 String admin_id = jo.getString("admin_id");
                 String tel = jo.getString("tel");
-                //String intro = jo.getString("intro");
-                String inform = jo.getString("inform");
+                String inform;
                 String address;
                 String intro;
                 if(Locale.getDefault().getLanguage()=="ko") {
                     intro = jo.getString("intro");
                     address = jo.getString("address");
+                    inform = jo.getString("inform");
                 }
                 else {// 영문일때
+                    NaverTranslate temp = new NaverTranslate();
                     intro = jo.getString("TransIntro");
                     address = jo.getString("TransAddress");
+                    inform = temp.translatedResult(jo.getString("inform"));
                 }
                 int sector = jo.getInt("sector");
                 double latitude = jo.getDouble("latitude");
@@ -409,17 +409,20 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 int id = jo.getInt("id");
-                String name = jo.getString("name");
+                String name;
                 String admin_id = jo.getString("admin_id");
                 String tel = jo.getString("tel");
                 String inform = jo.getString("inform");
                 String address;
                 String intro;
                 if(Locale.getDefault().getLanguage()=="ko") {
+                    name = jo.getString("name");
                     intro = jo.getString("intro");
                     address = jo.getString("address");
                 }
                 else {// 영문일때
+                    NaverTranslate temp = new NaverTranslate();
+                    name = temp.translatedResult(jo.getString("name"));
                     intro = jo.getString("TransIntro");
                     address = jo.getString("TransAddress");
                 }
@@ -454,13 +457,15 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int cloth_ids = jo.getInt("cloth_id");
                 int store_ids = jo.getInt("store_id");
                 int category = jo.getInt("category");
-                String name= jo.getString("name");
-                // String intro = jo.getString("intro");
+                String name;
                 String intro;
                 if(Locale.getDefault().getLanguage()=="ko") {
+                    name= jo.getString("name");
                     intro = jo.getString("intro");
                 }
                 else {// 영문일때
+                    NaverTranslate temp = new NaverTranslate();
+                    name= temp.translatedResult(jo.getString("name"));
                     intro = jo.getString("TransIntro");
                 }
                 int price = jo.getInt("price");
@@ -494,18 +499,21 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int cloth_ids = jo.getInt("cloth_id");
                 int store_ids = jo.getInt("store_id");
                 int category = jo.getInt("category");
-                String name= jo.getString("name");
+                String name;
                 String intro;
                 if(Locale.getDefault().getLanguage()=="ko") {
+                    name = jo.getString("name");
                     intro = jo.getString("intro");
                 }
-                else {// 영문일때
+                else { // 영문일때
+                    NaverTranslate temp = new NaverTranslate();
+                    name = temp.translatedResult(jo.getString("name"));
                     intro = jo.getString("TransIntro");
                 }
                 int price = jo.getInt("price");
                 int count = jo.getInt("count");
                 int sex = jo.getInt("sex");
-                clothes = new Clothes(cloth_ids,store_ids,category, name,intro, price, count, sex);
+                clothes = new Clothes(cloth_ids,store_ids,category, name, intro, price, count, sex);
                 clothesList.add(clothes);//accountList 차례대로 삽입
             }
         }catch(Exception e){
@@ -517,7 +525,6 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
         Clothes clothes;
 
-
         JSONTask JT = new JSONTask();
         try{
             JT.setUser_id(cnt+"");
@@ -528,12 +535,15 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int cloth_ids = jo.getInt("cloth_id");
                 int store_ids = jo.getInt("store_id");
                 int category = jo.getInt("category");
-                String name= jo.getString("name");
+                String name;
                 String intro;
                 if(Locale.getDefault().getLanguage()=="ko") {
+                    name = jo.getString("name");
                     intro = jo.getString("intro");
                 }
-                else {// 영문일때
+                else { // 영문일때
+                    NaverTranslate temp = new NaverTranslate();
+                    name = temp.translatedResult(jo.getString("name"));
                     intro = jo.getString("TransIntro");
                 }
                 int price = jo.getInt("price");

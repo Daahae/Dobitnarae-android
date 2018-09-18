@@ -44,30 +44,32 @@
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/store_clothes_sex_man_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
+                    android:background="@drawable/border_bottom_layout_item_thick"
+                    android:padding="5dp"
+                    android:text="@string/man_text"
                     android:textColor="#000"
                     android:textSize="15dp"
-                    android:text="남성"
-                    android:padding="5dp"
-                    android:background="@drawable/border_bottom_layout_item_thick"/>
+                    android:textStyle="bold" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/store_clothes_sex_woman"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/store_clothes_sex_woman_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/woman_text"
                     android:textColor="@color/darkergrey"
-                    android:textSize="15dp"
-                    android:text="여성"
-                    android:padding="5dp"/>
+                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>

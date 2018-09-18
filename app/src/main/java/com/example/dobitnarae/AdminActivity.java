@@ -25,15 +25,12 @@ import java.util.Objects;
 
 public class AdminActivity extends AppCompatActivity {
      private StoreManagementFragment storeManagementFragment;
-     private ItemManagementFragment itemManagementFragment;
-     private OrderManagementFragment orderManagementFragment;
      private Store store;
      private TextView textView;
 
-     private Context context;
-
      private final long FINISH_INTERVAL_TIME = 2000;
      private long backPressedTime = 0;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -128,7 +125,6 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         View view = super.onCreateView(name, context, attrs);
-        this.context = context;
         return view;
     }
 
@@ -178,9 +174,9 @@ public class AdminActivity extends AppCompatActivity {
                 case 0:
                     return storeManagementFragment = StoreManagementFragment.newInstance(0, store);
                 case 1:
-                    return itemManagementFragment = ItemManagementFragment.newInstance(1, store);
+                    return ItemManagementFragment.newInstance(1, store);
                 case 2:
-                    return orderManagementFragment = OrderManagementFragment.newInstance(2, store);
+                    return OrderManagementFragment.newInstance(2, store);
                 default:
                     return null;
             }

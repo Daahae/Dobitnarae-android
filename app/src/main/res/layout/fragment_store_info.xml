@@ -23,16 +23,16 @@
                 android:orientation="vertical"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="@dimen/content_margin_vertical">
+
                 <TextView
                     android:id="@+id/title_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="가게 이름"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/info_title"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="@string/store_name_text"
+                    android:textColor="#000"
+                    android:textSize="@dimen/info_title"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/content_name"
                     android:layout_width="match_parent"
@@ -49,16 +49,16 @@
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/content_margin_vertical"
                 android:layout_marginBottom="@dimen/content_margin_vertical">
+
                 <TextView
                     android:id="@+id/title_intro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="가게 소개"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/info_title"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="@string/store_intro_text"
+                    android:textColor="#000"
+                    android:textSize="@dimen/info_title"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/content_intro"
                     android:layout_width="match_parent"
@@ -76,16 +76,16 @@
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/content_margin_vertical"
                 android:layout_marginBottom="@dimen/content_margin_vertical">
+
                 <TextView
                     android:id="@+id/title_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="가게 정보"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/info_title"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="@string/store_info_text"
+                    android:textColor="#000"
+                    android:textSize="@dimen/info_title"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/content_info"
                     android:layout_width="match_parent"
@@ -103,16 +103,16 @@
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/content_margin_vertical"
                 android:layout_marginBottom="@dimen/content_margin_vertical">
+
                 <TextView
                     android:id="@+id/title_sales_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="전화번호"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/info_title"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="@string/store_phone_text"
+                    android:textColor="#000"
+                    android:textSize="@dimen/info_title"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/content_phone"
                     android:layout_width="match_parent"
@@ -130,16 +130,16 @@
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/content_margin_vertical"
                 android:layout_marginBottom="@dimen/content_margin_vertical">
+
                 <TextView
                     android:id="@+id/title_owner_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="사업자 정보"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/info_title"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="@string/store_admin_text"
+                    android:textColor="#000"
+                    android:textSize="@dimen/info_title"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/content_owner_info"
                     android:layout_width="match_parent"
@@ -157,16 +157,16 @@
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/content_margin_vertical"
                 android:layout_marginBottom="@dimen/content_margin_vertical">
+
                 <TextView
                     android:id="@+id/title_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="위치 정보"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/info_title"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="@string/store_locationinfo_text"
+                    android:textColor="#000"
+                    android:textSize="@dimen/info_title"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/content_address"
                     android:layout_width="match_parent"

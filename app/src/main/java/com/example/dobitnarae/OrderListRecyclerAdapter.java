@@ -31,16 +31,14 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        // TODO 뷰 형태 바꿔야함
         final Order item = orders.get(position);
 
         int sum = 0;
         for(int i = 0; i < item.getBasket().size(); i++)
-            sum += item.getBasket().get(i).getCnt() ;
-
+            sum += item.getBasket().get(i).getCnt();
 
         ServerImg.getClothesImageGlide(context, item.getBasket().get(0).getClothes().getCloth_id(), holder.iv_main);
-        if(item.getBasket().size()!=0 && sum != 1)
+        if(sum!=0 && sum != 1)
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 등 " + sum + "벌");
         else if(sum==1)
             holder.tv_basket.setText(item.getBasket().get(0).getClothes().getName() + " 1벌");
@@ -68,11 +66,8 @@ public class OrderListRecyclerAdapter extends RecyclerView.Adapter<OrderListRecy
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, OrderSpecificActivity.class);
-                intent.putExtra("order", position);
-                intent.putExtra("id", item.getAcceptStatus());
+                intent.putExtra("order", item);
                 intent.putExtra("store", store);
-                intent.putExtra("rentalDate", item.getRentalDate());
-                intent.putExtra("customerID", item.getUser_id());
                 context.startActivity(intent);
             }
         });

@@ -85,7 +85,7 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
                 holder.successText.setTextColor(Color.parseColor("#8f8f8f"));
                 successLayoutDrawable = pendingFlg;
             } else if (successStatus == 1) {
-                holder.successText.setText("Approvaled");
+                holder.successText.setText("Approval");
                 holder.successText.setTextColor(Color.parseColor("#339738"));
                 successLayoutDrawable = acceptFlg;
             } else {
