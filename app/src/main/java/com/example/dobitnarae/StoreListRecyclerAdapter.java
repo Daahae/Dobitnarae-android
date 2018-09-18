@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -66,12 +67,18 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
 
         Drawable storeStatus = null;
         if(startTime.compareTo(now) <= 0 && endTime.compareTo(now) >= 0){
-            holder.storeInfoText.setText("영업중");
+            if(Locale.getDefault().getLanguage()=="ko")
+                holder.storeInfoText.setText("영업중");
+            else
+                holder.storeInfoText.setText("Open");
             holder.storeInfoText.setTextColor(Color.parseColor("#339738"));
             storeStatus = openStore;
         }
         else{
-            holder.storeInfoText.setText("엽업종료");
+            if(Locale.getDefault().getLanguage()=="ko")
+                holder.storeInfoText.setText("영업종료");
+            else
+                holder.storeInfoText.setText("Closed");
             holder.storeInfoText.setTextColor(Color.parseColor("#f94c4c"));
             storeStatus = closeStore;
         }

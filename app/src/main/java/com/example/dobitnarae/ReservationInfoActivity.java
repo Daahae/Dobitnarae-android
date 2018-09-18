@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ReservationInfoActivity extends AppCompatActivity {
@@ -88,22 +89,40 @@ public class ReservationInfoActivity extends AppCompatActivity {
 
         int acceptStatus = reserve.getAcceptStatus();
 
-        if(acceptStatus == 2){
-            LinearLayout cancelBtn = (LinearLayout) findViewById(R.id.reservation_btn_layout);
-            cancelBtn.setBackgroundColor(Color.parseColor("#606060"));
-            TextView cancelBtnText = (TextView) findViewById(R.id.reservation_btn_text);
-            cancelBtnText.setText("대여 거절");
-        }
-        else {
-            LinearLayout cancelBtn = (LinearLayout) findViewById(R.id.reservation_btn_layout);
-            cancelBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showAlert();
-                }
-            });
-            TextView cancelBtnText = (TextView) findViewById(R.id.reservation_btn_text);
-            cancelBtnText.setText("대여 취소");
+        if(Locale.getDefault().getLanguage()=="ko") {
+            if (acceptStatus == 2) {
+                LinearLayout cancelBtn = (LinearLayout) findViewById(R.id.reservation_btn_layout);
+                cancelBtn.setBackgroundColor(Color.parseColor("#606060"));
+                TextView cancelBtnText = (TextView) findViewById(R.id.reservation_btn_text);
+                cancelBtnText.setText("대여 거절");
+            } else {
+                LinearLayout cancelBtn = (LinearLayout) findViewById(R.id.reservation_btn_layout);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showAlert();
+                    }
+                });
+                TextView cancelBtnText = (TextView) findViewById(R.id.reservation_btn_text);
+                cancelBtnText.setText("대여 취소");
+            }
+        } else {
+            if (acceptStatus == 2) {
+                LinearLayout cancelBtn = (LinearLayout) findViewById(R.id.reservation_btn_layout);
+                cancelBtn.setBackgroundColor(Color.parseColor("#606060"));
+                TextView cancelBtnText = (TextView) findViewById(R.id.reservation_btn_text);
+                cancelBtnText.setText("Rejected");
+            } else {
+                LinearLayout cancelBtn = (LinearLayout) findViewById(R.id.reservation_btn_layout);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showAlert();
+                    }
+                });
+                TextView cancelBtnText = (TextView) findViewById(R.id.reservation_btn_text);
+                cancelBtnText.setText("Cancel");
+            }
         }
     }
 
@@ -121,29 +140,53 @@ public class ReservationInfoActivity extends AppCompatActivity {
         for(BasketItem item : clothes)
             price += item.getCnt() * item.getClothes().getPrice();
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###");
-        String str = decimalFormat.format(price) + " 원";
+        String str;
+        if(Locale.getDefault().getLanguage()=="ko")
+            str = decimalFormat.format(price) + " 원";
+        else
+            str = decimalFormat.format(price) + " won";
         reservationCost.setText(str);
     }
 
     private void showAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("대여를 취소하시겠습니까?");
-        builder.setPositiveButton("예",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        JSONTask.getInstance().deleteOrder(reserve.getId());
-                        finish();
-                        MyReserveFragment.changeFlg = true;
-                    }
-                });
-        builder.setNegativeButton("아니요",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        if(Locale.getDefault().getLanguage()=="ko") {
+            builder.setMessage("대여를 취소하시겠습니까?");
+            builder.setPositiveButton("예",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            JSONTask.getInstance().deleteOrder(reserve.getId());
+                            finish();
+                            MyReserveFragment.changeFlg = true;
+                        }
+                    });
+            builder.setNegativeButton("아니요",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
+                        }
+                    });
+        } else {
+            builder.setMessage("Are you sure you want to cancel the reservation?");
+            builder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            JSONTask.getInstance().deleteOrder(reserve.getId());
+                            finish();
+                            MyReserveFragment.changeFlg = true;
+                        }
+                    });
+            builder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+        }
         builder.show();
     }
 }

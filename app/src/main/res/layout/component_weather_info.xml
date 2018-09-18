@@ -20,7 +20,7 @@
                 android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="15dp"
-                android:text="서울특별시 종로구"/>
+                android:text="@string/weather_location"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

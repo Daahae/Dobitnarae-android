@@ -23,18 +23,11 @@ import java.util.Objects;
 
 public class OrderSpecificActivity extends AppCompatActivity {
     private Order item;
-    private Order item2;
-    private ArrayList<Order> originItems, nConfirm, confirm;
-    int index, id;
-
     private LinearLayout layout, layout1, btnRegister, btnReject, btnDelete;
-
     private ArrayList<BasketItem> basket;
 
     private Intent intent;
     private Store store;
-    private String customerID;
-    private String rentalDate;
 
     private OrderSpecificRecyclerAdapter mAdapter;
     private TextView totalClothesCnt, reservationCost;
@@ -60,30 +53,17 @@ public class OrderSpecificActivity extends AppCompatActivity {
         context = this;
 
         intent = getIntent();
-        index = (int) intent.getIntExtra("order", 0);
-        id = (int) intent.getIntExtra("id", 0);
+        item = (Order) intent.getSerializableExtra("order");
         store = (Store) intent.getSerializableExtra("store");
-        customerID = intent.getStringExtra("customerID");
-        rentalDate = intent.getStringExtra("rentalDate");
+        basket = JSONTask.getInstance().getBascketCustomerAll(item.getId());
 
         ((TextView) findViewById(R.id.toolbar_title)).setText(store.getName());
 
-        this.originItems = JSONTask.getInstance().getOrderAdminAll(store.getAdmin_id());
-        this.nConfirm = new ArrayList<Order>();
-        this.confirm = new ArrayList<Order>();
-        for (Order item:originItems) {
-            if(item.getAcceptStatus()==0)
-                nConfirm.add(item);
-            else
-                confirm.add(item);
-        }
-
         layout = (LinearLayout) findViewById(R.id.layout_confirmornot);
         layout1 = (LinearLayout) findViewById(R.id.layout_delete);
+
         // 미승인 목록
-        if(id==0) {
-            this.item = nConfirm.get(index);
-            this.basket = JSONTask.getInstance().getBascketCustomerAll(nConfirm.get(index).getId());
+        if(item.getAcceptStatus()==0) {
             // 승인 버튼 클릭 시
             btnRegister = (LinearLayout) findViewById(R.id.order_clothes_register);
             btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -115,19 +95,19 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     btnReject.setBackgroundResource(R.color.darkergrey);
                     OrderFragmentManagementFragment.changeFlg = true;
 
+                    // 거절시 물품개수 반환
                     for (BasketItem item : basket) {
                         Clothes temp = item.getClothes();
                         int tmpCnt = item.getClothes().getCount();
                         temp.setCount(tmpCnt + item.getCnt());
                         JSONTask.getInstance().updateCloth(temp);
                     }
+                    // 푸시알림
                     JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), item.getUser_id() + "님의 주문이 거절되었습니다.");
                 }
             });
         }
         else {
-            this.item2 = confirm.get(index);
-            this.basket = JSONTask.getInstance().getBascketCustomerAll(confirm.get(index).getId());
             layout.setVisibility(View.GONE);
             layout1.setVisibility(View.VISIBLE);
 
@@ -135,7 +115,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showAlert(context, item2);
+                    showAlert(context, item);
                 }
             });
         }
@@ -158,7 +138,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
         setTotalClothesCnt();
 
         // 대여자 정보
-        final Account account = JSONTask.getInstance().getAccountAll(customerID).get(0);
+        final Account account = JSONTask.getInstance().getAccountAll(item.getUser_id()).get(0);
         TextView id = findViewById(R.id.reserve_client_id);
         TextView name = findViewById(R.id.reserve_client_name);
         TextView phone = findViewById(R.id.reserve_client_phone);
@@ -173,7 +153,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
                 startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
             }
         });
-        String[] date = rentalDate.split(":");
+        String[] date = item.getRentalDate().split(":");
         rent.setText(String.format("%s:%s", date[0], date[1]));
     }
     public void setTotalClothesCnt()

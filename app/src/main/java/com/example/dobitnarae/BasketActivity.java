@@ -192,6 +192,7 @@ public class BasketActivity extends AppCompatActivity {
         basket.clearBasket();
 
         Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
+        JSONTask.getInstance().sendMsgByFCM(adminID, "주문이 접수되었습니다.");
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 

@@ -1,8 +1,9 @@
 package com.example.dobitnarae;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Order extends Reserve{
+public class Order extends Reserve implements Serializable{
     private ArrayList<BasketItem> basket;
 
     public Order(int id, String user_id, String admin_id, int acceptStatus, String rentalDate) {

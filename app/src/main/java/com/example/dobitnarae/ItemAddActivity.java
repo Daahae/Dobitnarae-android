@@ -207,7 +207,8 @@ public class ItemAddActivity extends AppCompatActivity {
                                     sexData = 2;
 
                                 item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(price.getText().toString()), Integer.parseInt(selectCnt.getText().toString()), sexData);
-
+                                NaverTranslate test = new NaverTranslate();
+                                item.setTransIntro(test.translatedResult(item.getIntro()));
                                 // 데이터 초기화
                                 name.setText("");
                                 description.setText("");

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveListRecyclerAdapter.ViewHolder> {
@@ -60,21 +61,38 @@ public class ReserveListRecyclerAdapter extends RecyclerView.Adapter<ReserveList
         holder.time.setText(String.format("%s:%s", date[0], date[1]));
         holder.storeView.setId(item.getId());
 
-        Drawable successLayoutDrawable;
+        final Drawable successLayoutDrawable;
         int successStatus = item.getAcceptStatus();
 
-        if (successStatus == 0) {
-            holder.successText.setText("대기");
-            holder.successText.setTextColor(Color.parseColor("#8f8f8f"));
-            successLayoutDrawable = pendingFlg;
-        } else if (successStatus == 1) {
-            holder.successText.setText("승인");
-            holder.successText.setTextColor(Color.parseColor("#339738"));
-            successLayoutDrawable = acceptFlg;
+
+        if(Locale.getDefault().getLanguage()=="ko") {
+            if (successStatus == 0) {
+                holder.successText.setText("대기");
+                holder.successText.setTextColor(Color.parseColor("#8f8f8f"));
+                successLayoutDrawable = pendingFlg;
+            } else if (successStatus == 1) {
+                holder.successText.setText("승인");
+                holder.successText.setTextColor(Color.parseColor("#339738"));
+                successLayoutDrawable = acceptFlg;
+            } else {
+                holder.successText.setText("거절");
+                holder.successText.setTextColor(Color.parseColor("#f94c4c"));
+                successLayoutDrawable = rejectFlg;
+            }
         } else {
-            holder.successText.setText("거절");
-            holder.successText.setTextColor(Color.parseColor("#f94c4c"));
-            successLayoutDrawable = rejectFlg;
+            if (successStatus == 0) {
+                holder.successText.setText("Waiting");
+                holder.successText.setTextColor(Color.parseColor("#8f8f8f"));
+                successLayoutDrawable = pendingFlg;
+            } else if (successStatus == 1) {
+                holder.successText.setText("Approval");
+                holder.successText.setTextColor(Color.parseColor("#339738"));
+                successLayoutDrawable = acceptFlg;
+            } else {
+                holder.successText.setText("Rejected");
+                holder.successText.setTextColor(Color.parseColor("#f94c4c"));
+                successLayoutDrawable = rejectFlg;
+            }
         }
         holder.reserveSuccessBorder.setBackground(successLayoutDrawable);
 

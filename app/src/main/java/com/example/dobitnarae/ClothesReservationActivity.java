@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ClothesReservationActivity extends AppCompatActivity {
@@ -63,7 +64,11 @@ public class ClothesReservationActivity extends AppCompatActivity {
         // 옷 가격
         dc = new DecimalFormat("###,###,###,###");
         final TextView price = findViewById(R.id.reserve_clothes_price);
-        String str = dc.format(item.getPrice()) + " 원";
+        String str;
+        if(Locale.getDefault().getLanguage()=="ko")
+            str = dc.format(item.getPrice()) + " 원";
+        else
+            str = dc.format(item.getPrice()) + " won";
         price.setText(str);
 
         // 총 가격

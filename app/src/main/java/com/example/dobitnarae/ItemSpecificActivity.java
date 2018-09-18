@@ -39,7 +39,6 @@ public class ItemSpecificActivity extends AppCompatActivity {
     private Uri photoURI, resultUri;
     private ImageView imageViewStore;
 
-    private DecimalFormat dc;
     private LinearLayout btnReduce, btnAdd;
     private TextView selectCnt;
     private Store store;
@@ -88,9 +87,8 @@ public class ItemSpecificActivity extends AppCompatActivity {
             }
         });
 
-        TextView titleName = (TextView)findViewById(R.id.toolbar_title);
-        titleName.setText(store.getName());
-
+        ((TextView)findViewById(R.id.tv_add)).setText("변경");
+        ((TextView)findViewById(R.id.toolbar_title)).setText(store.getName());
         ((TextView)findViewById(R.id.tv_cloth_title)).setText("옷 정보 변경");
 
         // 이미지
@@ -226,6 +224,8 @@ public class ItemSpecificActivity extends AppCompatActivity {
                                 item.setCount(Integer.parseInt(selectCnt.getText().toString()));
                                 item.setPrice(Integer.parseInt(price.getText().toString()));
                                 item.setIntro(description.getText().toString());
+                                NaverTranslate test = new NaverTranslate();
+                                item.setTransIntro(test.translatedResult(item.getIntro()));
 
                                 JSONTask.getInstance().updateCloth(item);
                                 Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
