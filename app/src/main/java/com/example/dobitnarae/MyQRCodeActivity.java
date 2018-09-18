@@ -19,6 +19,7 @@ import com.example.dobitnarae.QRCode.CreateQRCode;
 import com.google.zxing.qrcode.encoder.QRCode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MyQRCodeActivity extends AppCompatActivity {
@@ -41,12 +42,16 @@ public class MyQRCodeActivity extends AppCompatActivity {
         });
 
         Intent intent = new Intent();
-        String reserveID = intent.getStringExtra("reservationID");
+        int reserveID = intent.getIntExtra("reservationID", -1);
 
-
+        // error
+        if(reserveID == -1){
+            finish();
+            return;
+        }
 
         CreateQRCode createQRCode = new CreateQRCode();
-        Bitmap bitmap = createQRCode.createQRCode("안녕");
+        Bitmap bitmap = createQRCode.createQRCode("예약 확인", reserveID);
         loadQRCode(bitmap);
     }
 

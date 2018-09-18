@@ -135,7 +135,4 @@ public class LoginActivity extends AppCompatActivity {
             editor.clear();
             editor.commit();
          }
-
-
-
 }

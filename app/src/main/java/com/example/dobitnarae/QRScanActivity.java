@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.dobitnarae.QRCode.CustomQRActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.CaptureActivity;
 
-public class QRScanActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class QRScanActivity extends CaptureActivity {
     /* QR code scanner 객체 */
     private IntentIntegrator qrScan;
 
@@ -19,8 +23,8 @@ public class QRScanActivity extends AppCompatActivity {
 
         /* QR code Scanner Setting */
         qrScan = new IntentIntegrator(this);
-        qrScan.setPrompt("아래 띄울 문구");
-        qrScan.setOrientationLocked(true);
+        qrScan.setOrientationLocked(false);
+        qrScan.setCaptureActivity(CustomQRActivity.class);
         qrScan.initiateScan();
     }
 
@@ -35,10 +39,15 @@ public class QRScanActivity extends AppCompatActivity {
             } else { //QR코드, 내용 존재
                 try {
                     /* QR 코드 내용*/
-                    String temp = result.getContents();
+                    String reserveID = result.getContents();
 
+                    Intent intent = new Intent(this, ItemSpecificActivity.class);
 
-                    Log.v("qrcode Contents :::::::", temp);
+//                    ArrayList<BasketItem> reserve = JSONTask.getInstance().getBascketCustomerAll(Integer.parseInt(reserveID));
+//                    Order order = new Order();
+//                    order.setBasket();
+
+                    Log.v("qrcode Contents :::::::", reserveID);
                     Toast.makeText(getApplicationContext(), result.getContents(), Toast.LENGTH_LONG).show();
 
                 } catch (Exception e) {

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.dobitnarae.BasketItem;
+import com.example.dobitnarae.JSONTask;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -19,13 +21,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class CreateQRCode {
 
-    public Bitmap createQRCode(String context){
-        Bitmap bitmap = null ;
+    public Bitmap createQRCode(String context, int reserveID){
+        Bitmap bitmap = null;
 
+        ArrayList<BasketItem> reservationInfo = JSONTask.getInstance().getBascketCustomerAll(reserveID);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             /* Encode to utf-8 */
@@ -59,11 +63,11 @@ public class CreateQRCode {
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
-
         }catch(FileNotFoundException exception){
             Log.e("FileNotFoundException", exception.getMessage());
         }catch(IOException exception){
             Log.e("IOException", exception.getMessage());
         }
     }
+
 }
