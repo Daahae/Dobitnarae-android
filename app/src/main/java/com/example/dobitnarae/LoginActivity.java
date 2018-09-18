@@ -18,6 +18,7 @@ import com.example.dobitnarae.fcm.MyFirebaseInstanceIDService;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private boolean saveLoginData;
@@ -79,11 +80,29 @@ public class LoginActivity extends AppCompatActivity {
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String ID = IDTxt.getText().toString();
+                String Password = PasswordTxt.getText().toString();
+                if(ID.length() * Password.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "내용을 입력하세요", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                else if(!Pattern.matches("^[a-zA-Z0-9]*$", ID) || !Pattern.matches("^[a-zA-Z0-9]*$", Password))
+                {
+                    Toast.makeText(getApplicationContext(),"올바른 내용을 입력하세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+
+
+
+
                 accountList = JSONTask.getInstance().getAccountAll(ID);//ID존재 확인
 
                 if (accountList.size() != 0) {
-                    String Password = PasswordTxt.getText().toString();
+
 
                     if (JSONTask.getInstance().getLoginResult(ID, Password) == 1) {
                         checkBox.setChecked(true);

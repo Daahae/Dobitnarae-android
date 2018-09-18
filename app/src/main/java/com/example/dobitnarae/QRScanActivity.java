@@ -35,29 +35,34 @@ public class QRScanActivity extends CaptureActivity {
 
         if (result != null) {
             if (result.getContents() == null) {
-                Log.v("qrcode :::::::::::", "no contents");
+                Log.v("qrcode", "no contents");
             } else { //QR코드, 내용 존재
                 try {
                     /* QR 코드 내용*/
-                    String reserveID = result.getContents();
+                    int reserveID = Integer.parseInt(result.getContents());
 
-                    Intent intent = new Intent(this, ItemSpecificActivity.class);
+                    Order reserved = JSONTask.getInstance().getOrderAllByRID(reserveID).get(0);
+                    ArrayList<BasketItem> clothes = JSONTask.getInstance().getBascketCustomerAll(reserveID);
 
-//                    ArrayList<BasketItem> reserve = JSONTask.getInstance().getBascketCustomerAll(Integer.parseInt(reserveID));
-//                    Order order = new Order();
-//                    order.setBasket();
+                    Store store = JSONTask.getInstance().getAdminStoreAll(reserved.getAdmin_id()).get(0);
 
-                    Log.v("qrcode Contents :::::::", reserveID);
+                    reserved.setBasket(clothes);
+
+                    Intent intent = new Intent(this, OrderSpecificActivity.class);
+                    intent.putExtra("order", reserved);
+                    intent.putExtra("store", store);
+                    startActivity(intent);
+
                     Toast.makeText(getApplicationContext(), result.getContents(), Toast.LENGTH_LONG).show();
-
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.v("Exception :::::::::::::", "QR code fail");
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+
+        Log.v("요/~~~~~~~", "ㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴ");
         finishAffinity();
     }
 }

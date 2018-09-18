@@ -961,4 +961,29 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Order> getOrderAllByRID(int reserveID){ //여기서부터
+        ArrayList<Order> orderList = new ArrayList<Order>();
+        Order order;
+        try{
+            JSONTask JT = new JSONTask();
+            JT.setReserve_ID(reserveID);
+            String str = JT.execute("http://13.125.232.225/reserve").get();
+
+            JSONArray ja = new JSONArray(str);
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                int ID = jo.getInt("ID");
+                String user_ID= jo.getString("user_ID");
+                String admin_ID = jo.getString("admin_ID");
+                int accept = jo.getInt("accept");
+                String date = jo.getString("date");
+                order = new Order(ID, user_ID, admin_ID, accept, date);
+                orderList.add(order);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return orderList;
+    }
 }
