@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,7 +42,7 @@ public class MyQRCodeActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         int reserveID = intent.getIntExtra("reservationID", -1);
 
         // error
@@ -51,7 +52,7 @@ public class MyQRCodeActivity extends AppCompatActivity {
         }
 
         CreateQRCode createQRCode = new CreateQRCode();
-        Bitmap bitmap = createQRCode.createQRCode("예약 확인", reserveID);
+        Bitmap bitmap = createQRCode.createQRCode(reserveID);
         loadQRCode(bitmap);
     }
 

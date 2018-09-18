@@ -26,17 +26,16 @@ import java.util.Hashtable;
 
 public class CreateQRCode {
 
-    public Bitmap createQRCode(String context, int reserveID){
+    public Bitmap createQRCode(int reserveID){
         Bitmap bitmap = null;
 
-        ArrayList<BasketItem> reservationInfo = JSONTask.getInstance().getBascketCustomerAll(reserveID);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             /* Encode to utf-8 */
             Hashtable hints = new Hashtable();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 
-            BitMatrix bitMatrix = multiFormatWriter.encode(context, BarcodeFormat.QR_CODE,300,300, hints);
+            BitMatrix bitMatrix = multiFormatWriter.encode(String.valueOf(reserveID), BarcodeFormat.QR_CODE,300,300, hints);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
 

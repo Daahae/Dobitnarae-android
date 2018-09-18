@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -63,6 +64,8 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
         String startTime = item.getStartTime();
         String endTime = item.getEndTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        simpleDateFormat.setTimeZone(timeZone);
         String now = simpleDateFormat.format(new Date());
 
         Drawable storeStatus = null;

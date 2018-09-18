@@ -25,9 +25,9 @@ public class CustomQRActivity extends CaptureActivity {
         title_view.setBackgroundColor(Color.parseColor("#00FFFFFF"));
         title_view.setPadding(150, 100, 100, 100);
         title_view.setTextColor(Color.parseColor("#FFFFFF"));
-        title_view.setGravity(Gravity.CENTER_HORIZONTAL);
-        title_view.setTextSize(30);
-        title_view.setText("QR 코드 입력화면");
+//        title_view.setGravity(Gravity.CENTER_HORIZONTAL);
+//        title_view.setTextSize(30);
+//        title_view.setText("QR 코드 입력화면");
 
         this.addContentView(title_view, layoutParams);
     }

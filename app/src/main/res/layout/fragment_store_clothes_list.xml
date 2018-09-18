@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="59dp">
         <android.support.v7.widget.RecyclerView
             android:orientation="horizontal"
             android:id="@+id/recyclerview_clothes"
