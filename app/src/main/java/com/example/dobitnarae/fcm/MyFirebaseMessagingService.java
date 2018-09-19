@@ -29,8 +29,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        Log.i("gd", "메세지가 왔습니다!!!");
-
         // 메세지가 올때 여기서 처리
         // 앱이 실행중일때 여기서 이벤트를 받습니다.
         //Map<String, String> bundle = remoteMessage.getData();
@@ -81,6 +79,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setSound(defaultSoundUri)
                     .setContentIntent(pendingIntent);
         }
+
+        // 화면 깨우기
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
+        PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_DIM_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG" );
+        wakeLock.acquire(3000);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }

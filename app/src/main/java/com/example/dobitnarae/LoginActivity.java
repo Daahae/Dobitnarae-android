@@ -94,11 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-
-
-
-
-
                 accountList = JSONTask.getInstance().getAccountAll(ID);//ID존재 확인
 
                 if (accountList.size() != 0) {

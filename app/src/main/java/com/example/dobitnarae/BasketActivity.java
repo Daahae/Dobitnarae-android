@@ -91,8 +91,12 @@ public class BasketActivity extends AppCompatActivity {
         reserveBtn.setOnClickListener(new LinearLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Basket.getInstance().getClothesCnt() == 0)
-                    Toast.makeText(v.getContext(), "담은 한복이 없습니다", Toast.LENGTH_SHORT).show();
+                if(Basket.getInstance().getClothesCnt() == 0) {
+                    if(Locale.getDefault().getLanguage()=="ko")
+                        Toast.makeText(v.getContext(), "담은 한복이 없습니다", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(v.getContext(), "There is no hanbok in Basket", Toast.LENGTH_SHORT).show();
+                }
                 else {
                     ArrayList<BasketItem> clothes = Basket.getInstance().getBasket();
                     int mTop = 0, mBottom = 0, wTop = 0, wBottom = 0;
@@ -147,9 +151,22 @@ public class BasketActivity extends AppCompatActivity {
                 now.get(Calendar.DAY_OF_MONTH) // Inital day selection
         );
         dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-        dpd.setTitle("예약 날짜");
-        dpd.setOkText("다음");
-        dpd.setCancelText("취소");
+
+        String titleMsg, nextBtnMsg, cancelBtnMsg;
+        if(Locale.getDefault().getLanguage() =="ko"){
+            titleMsg = "대여 날짜";
+            nextBtnMsg = "다음";
+            cancelBtnMsg = "취소";
+        }
+        else{
+            titleMsg = "Rental Date";
+            nextBtnMsg = "Next";
+            cancelBtnMsg = "Cancel";
+        }
+
+        dpd.setTitle(titleMsg);
+        dpd.setOkText(nextBtnMsg);
+        dpd.setCancelText(cancelBtnMsg);
         dpd.setMinDate(now);
         dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -168,10 +185,22 @@ public class BasketActivity extends AppCompatActivity {
                 Calendar.MINUTE,
                 false
         );
+        String titleMsg, nextBtnMsg, cancelBtnMsg;
+        if(Locale.getDefault().getLanguage() =="ko"){
+            titleMsg = "예약 시간";
+            nextBtnMsg = "예약 완료";
+            cancelBtnMsg = "취소";
+        }
+        else{
+            titleMsg = "Rental Time";
+            nextBtnMsg = "Finish";
+            cancelBtnMsg = "Cancel";
+        }
+
         tpd.setVersion(TimePickerDialog.Version.VERSION_2);
-        tpd.setTitle("예약 시간");
-        tpd.setOkText("예약 완료");
-        tpd.setCancelText("취소");
+        tpd.setTitle(titleMsg);
+        tpd.setOkText(nextBtnMsg);
+        tpd.setCancelText(cancelBtnMsg);
         tpd.setTimeInterval(1, 5);
         tpd.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -197,8 +226,13 @@ public class BasketActivity extends AppCompatActivity {
         JSONTask.getInstance().insertReserve(reserve, basket.getBasket());
         basket.clearBasket();
 
-        Toast toast = Toast.makeText(context, "대여 신청 완료", Toast.LENGTH_SHORT);
-        Toast.makeText(context, store.getName(), Toast.LENGTH_SHORT).show();
+        String toastMsg = "";
+        if(Locale.getDefault().getLanguage()=="ko")
+            toastMsg = "대여 신청 완료";
+        else
+            toastMsg = "Complete the Rental Reservation";
+
+        Toast toast = Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT);
         JSONTask.getInstance().sendMsgByFCM(adminID, store.getName(), "주문이 접수되었습니다.");
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
@@ -208,8 +242,19 @@ public class BasketActivity extends AppCompatActivity {
 
     private void showAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("한복은 갖춰 입었을때 빛이 나는 법입니다.\n예약목록을 다시한번 확인해 주세요.");
-        builder.setPositiveButton("닫기",
+        String alertMsg = "";
+        String closeBtnMsg = "";
+        if(Locale.getDefault().getLanguage() == "ko") {
+            alertMsg = "한복은 갖춰 입었을때 빛이 나는 법입니다.\n예약목록을 다시한번 확인해 주세요.";
+            closeBtnMsg = "닫기";
+        }
+        else {
+            alertMsg = "Please check the reservation list again.";
+            closeBtnMsg = "Close";
+        }
+
+        builder.setMessage(alertMsg);
+        builder.setPositiveButton(closeBtnMsg,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -41,8 +42,7 @@ public class StoreListActivity extends AppCompatActivity {
         // 구역에 따른 store 목록 가져오기
         Intent intent = getIntent();
         int sector = (int)intent.getIntExtra("sector", 1);
-
-        stores = JSONTask.getInstance().getCustomerStoreAll();
+        stores = JSONTask.getInstance().getStoreBySector(sector);
 
         mAdapter = new StoreListRecyclerAdapter(this, stores);
         recyclerView.setAdapter(mAdapter);

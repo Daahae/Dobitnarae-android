@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class BasketRecyclerAdapter extends RecyclerView.Adapter<BasketRecyclerAdapter.ViewHolder> {
     private Context context;
@@ -79,8 +80,20 @@ public class BasketRecyclerAdapter extends RecyclerView.Adapter<BasketRecyclerAd
 
     private void showAlert(final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("이 한복을 장바구니에서 빼시겠습니까?");
-        builder.setPositiveButton("예",
+        String alertMsg, okBtnMsg, cancelBtnMsg;
+        if(Locale.getDefault().getLanguage() == "ko") {
+            alertMsg = "이 한복을 장바구니에서 빼시겠습니까?";
+            okBtnMsg = "예";
+            cancelBtnMsg = "아니오";
+        }
+        else {
+            alertMsg = "Would you like to remove this Hanbok from your basket?";
+            okBtnMsg = "Yes";
+            cancelBtnMsg = "No";
+        }
+
+        builder.setMessage(alertMsg);
+        builder.setPositiveButton(okBtnMsg,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -90,7 +103,7 @@ public class BasketRecyclerAdapter extends RecyclerView.Adapter<BasketRecyclerAd
                         ((BasketActivity) context).setTotalClothesCnt();
                     }
                 });
-        builder.setNegativeButton("아니오",
+        builder.setNegativeButton(cancelBtnMsg,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -123,7 +123,12 @@ public class ClothesReservationActivity extends AppCompatActivity {
                         basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 0);
                     }
                     else{
-                        Toast.makeText(getApplicationContext(), "한벌 이상 고르셔야 합니다", Toast.LENGTH_SHORT).show();
+                        String toastMsg;
+                        if(Locale.getDefault().getLanguage() == "ko")
+                            toastMsg = "한벌 이상 고르셔야 합니다.";
+                        else
+                            toastMsg = "Please, choose at least one";
+                        Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -137,7 +142,12 @@ public class ClothesReservationActivity extends AppCompatActivity {
                         basket.addClothes(v.getContext(), new BasketItem(item, Integer.parseInt((String) selectCnt.getText())), 1);
                     }
                     else{
-                        Toast.makeText(getApplicationContext(), "한벌 이상 고르셔야 합니다", Toast.LENGTH_SHORT).show();
+                        String toastMsg;
+                        if(Locale.getDefault().getLanguage() == "ko")
+                            toastMsg = "한벌 이상 고르셔야 합니다.";
+                        else
+                            toastMsg = "Please, choose at least one";
+                        Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
                     }
                 }
             });

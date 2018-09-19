@@ -91,9 +91,22 @@ public class Basket {
 
     private void showAlert(final Context context, final BasketItem item, final int btn){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("장바구니에는 한 매장의 한복만 담을수 있습니다\n" +
-                "장바구니를 비우고 이 한복을 담으시겠습니까?");
-        builder.setPositiveButton("예",
+        String alertMsg, okBtnMsg, cancelBtnMsg;
+        if(Locale.getDefault().getLanguage() == "ko"){
+            alertMsg = "장바구니에는 한 매장의 한복만 담을수 있습니다\n" +
+                    "장바구니를 비우고 이 한복을 담으시겠습니까?";
+            okBtnMsg = "예";
+            cancelBtnMsg = "아니오";
+        }
+        else{
+            alertMsg = "Only one shop's Hanbok can be put in the basket\n" +
+                    "Would you like to empty your basket and put this Hanbok?";
+            okBtnMsg = "Yes";
+            cancelBtnMsg = "No";
+        }
+
+        builder.setMessage(alertMsg);
+        builder.setPositiveButton(okBtnMsg,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -104,7 +117,7 @@ public class Basket {
                         openBasketActivity(context, btn);
                     }
                 });
-        builder.setNegativeButton("아니요",
+        builder.setNegativeButton(cancelBtnMsg,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -119,7 +132,12 @@ public class Basket {
             Intent intent = new Intent((ClothesReservationActivity)context, BasketActivity.class);
             context.startActivity(intent);
         }
-        Toast toast = Toast.makeText(context, "장바구니에 담겼습니다", Toast.LENGTH_SHORT);
+        String toastMsg;
+        if(Locale.getDefault().getLanguage() == "ko")
+            toastMsg = "장바구니에 담겼습니다";
+        else
+            toastMsg = "Add to basket";
+        Toast toast = Toast.makeText(context, toastMsg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
