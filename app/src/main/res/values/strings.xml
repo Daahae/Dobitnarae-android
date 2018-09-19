@@ -87,4 +87,7 @@
     <string name="store_phone_text">전화번호</string>
     <string name="store_admin_text">사업자 정보</string>
     <string name="store_locationinfo_text">위치 정보</string>
+
+    <!--component_basket_cardview-->
+    <string name="piece1_text"> 벌</string>
 </resources>

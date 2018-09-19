@@ -65,14 +65,15 @@
                         android:textStyle="bold"
                         android:textSize="15dp"
                         android:text="12"/>
+
                     <TextView
-                        android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/piece1_text"
                         android:textColor="@color/appMainColor"
-                        android:textStyle="bold"
                         android:textSize="15dp"
-                        android:text=" 벌"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -225,6 +225,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
                                 item.setPrice(Integer.parseInt(price.getText().toString()));
                                 item.setIntro(description.getText().toString());
                                 NaverTranslate test = new NaverTranslate();
+                                item.setTransName(test.translatedResult(item.getName()));
                                 item.setTransIntro(test.translatedResult(item.getIntro()));
 
                                 JSONTask.getInstance().updateCloth(item);

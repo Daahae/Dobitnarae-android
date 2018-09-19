@@ -24,6 +24,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class BasketActivity extends AppCompatActivity {
@@ -105,7 +106,11 @@ public class BasketActivity extends AppCompatActivity {
     public void setTotalCost()
     {
         int price = Basket.getInstance().getTotalPrice();
-        String str = decimalFormat.format(price) + " 원";
+        String str;
+        if(Locale.getDefault().getLanguage()=="ko")
+            str = decimalFormat.format(price) + " 원";
+        else
+            str = decimalFormat.format(price) + " won";
         priceTextView.setText(str);
     }
 
