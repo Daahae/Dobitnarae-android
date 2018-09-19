@@ -34,10 +34,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // 메세지가 올때 여기서 처리
         // 앱이 실행중일때 여기서 이벤트를 받습니다.
         //Map<String, String> bundle = remoteMessage.getData();
-        sendNotification(remoteMessage.getData().get("num1"));
+        sendNotification(remoteMessage.getData().get("num2"), remoteMessage.getData().get("num1"));
     }
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageTitle, String messageBody) {
         // TODO 어디로 보낼지 수정 필요
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -55,7 +55,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationBuilder = new NotificationCompat.Builder(this, channelId)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("오늘하루 한복") // 이부분은 어플 켜놓은 상태에서 알림 메세지 받으면 저 텍스트로 띄워준다.
+                    .setContentTitle(messageTitle) // 이부분은 어플 켜놓은 상태에서 알림 메세지 받으면 저 텍스트로 띄워준다.
                     .setContentText(messageBody)
                     .setAutoCancel(true)
                     .setSound(defaultSoundUri)

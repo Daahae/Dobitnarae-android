@@ -77,7 +77,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     btnRegister.setBackgroundResource(R.color.darkergrey);
                     btnReject.setBackgroundResource(R.color.darkergrey);
                     OrderFragmentManagementFragment.changeFlg = true;
-                    JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), item.getUser_id() + "님의 주문이 승인되었습니다.");
+                    JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), store.getName(), item.getUser_id() + "님의 주문이 승인되었습니다.");
                 }
             });
 
@@ -103,7 +103,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
                         JSONTask.getInstance().updateCloth(temp);
                     }
                     // 푸시알림
-                    JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), item.getUser_id() + "님의 주문이 거절되었습니다.");
+                    JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), store.getName(), item.getUser_id() + "님의 주문이 거절되었습니다.");
                 }
             });
         }

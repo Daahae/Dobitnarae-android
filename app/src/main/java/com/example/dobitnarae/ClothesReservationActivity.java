@@ -150,7 +150,11 @@ public class ClothesReservationActivity extends AppCompatActivity {
 
     public void setTotalPrice(int cnt){
         totalPrice = findViewById(R.id.reserve_clothes_total_price);
-        String total = dc.format(item.getPrice() * cnt) + " 원";
+        String total;
+        if(Locale.getDefault().getLanguage()=="ko")
+            total = dc.format(item.getPrice() * cnt) + " 원";
+        else
+            total = dc.format(item.getPrice() * cnt) + " won";
         totalPrice.setText(total);
     }
 }

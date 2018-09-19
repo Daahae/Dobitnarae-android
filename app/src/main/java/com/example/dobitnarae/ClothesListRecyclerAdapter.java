@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ClothesListRecyclerAdapter extends RecyclerView.Adapter<ClothesListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -45,8 +46,10 @@ public class ClothesListRecyclerAdapter extends RecyclerView.Adapter<ClothesList
 
         holder.name.setText(item.getName());
         DecimalFormat dc = new DecimalFormat("###,###,###,###");
-        holder.price.setText(dc.format(item.getPrice()) + " 원");
-
+        if(Locale.getDefault().getLanguage()=="ko")
+            holder.price.setText(dc.format(item.getPrice()) + " 원");
+        else
+            holder.price.setText(dc.format(item.getPrice()) + " won");
         int clothesCnt = item.getCount();
         Drawable itemForegroundColor;
         if(clothesCnt == 0) {

@@ -13,6 +13,7 @@ public class Clothes implements Serializable{
     private int count;
     private int sex;
     private String TransIntro = "No Inform";
+    private String TransName = "No Eng Name";
 
     public Clothes() {
     }
@@ -28,6 +29,7 @@ public class Clothes implements Serializable{
     public int getCount() { return this.count; }
     public int getSex() { return this.sex; }
     public String getTransIntro(){return this.TransIntro;}
+    public String getTransName(){return this.TransName;}
 
     Clothes(int cloth_id, int store_id, int category, String name, String intro, int price, int count, int sex) {
         this.cloth_id = cloth_id;
@@ -73,4 +75,6 @@ public class Clothes implements Serializable{
     }
 
     public void setTransIntro(String TransIntro){this.TransIntro = TransIntro;}
+
+    public void setTransName(String TransName){this.TransName = TransName;}
 }

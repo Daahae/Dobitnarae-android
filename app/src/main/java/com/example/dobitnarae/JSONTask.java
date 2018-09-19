@@ -150,6 +150,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 jsonObject.accumulate("count", inCloth.getCount());
                 jsonObject.accumulate("sex", inCloth.getSex());
                 jsonObject.accumulate("TransIntro", inCloth.getTransIntro());
+                jsonObject.accumulate("TransName", inCloth.getTransName());
             }
 
             if (flag == 3) {//insertOrder, updateOrder
@@ -409,20 +410,17 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             for(int i=0; i<ja.length(); i++){
                 JSONObject jo = ja.getJSONObject(i);
                 int id = jo.getInt("id");
-                String name;
+                String name = jo.getString("name");
                 String admin_id = jo.getString("admin_id");
                 String tel = jo.getString("tel");
                 String inform = jo.getString("inform");
                 String address;
                 String intro;
                 if(Locale.getDefault().getLanguage()=="ko") {
-                    name = jo.getString("name");
                     intro = jo.getString("intro");
                     address = jo.getString("address");
                 }
                 else {// 영문일때
-                    NaverTranslate temp = new NaverTranslate();
-                    name = temp.translatedResult(jo.getString("name"));
                     intro = jo.getString("TransIntro");
                     address = jo.getString("TransAddress");
                 }
@@ -464,8 +462,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                     intro = jo.getString("intro");
                 }
                 else {// 영문일때
-                    NaverTranslate temp = new NaverTranslate();
-                    name= temp.translatedResult(jo.getString("name"));
+                    name= jo.getString("TransName");
                     intro = jo.getString("TransIntro");
                 }
                 int price = jo.getInt("price");
@@ -506,8 +503,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                     intro = jo.getString("intro");
                 }
                 else { // 영문일때
-                    NaverTranslate temp = new NaverTranslate();
-                    name = temp.translatedResult(jo.getString("name"));
+                    name= jo.getString("TransName");
                     intro = jo.getString("TransIntro");
                 }
                 int price = jo.getInt("price");
@@ -542,8 +538,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                     intro = jo.getString("intro");
                 }
                 else { // 영문일때
-                    NaverTranslate temp = new NaverTranslate();
-                    name = temp.translatedResult(jo.getString("name"));
+                    name= jo.getString("TransName");
                     intro = jo.getString("TransIntro");
                 }
                 int price = jo.getInt("price");
@@ -680,7 +675,11 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 int cloth_ids = jo.getInt("cloth_id");
                 int store_ids = jo.getInt("store_id");
                 int category = jo.getInt("category");
-                String name= jo.getString("name");
+                String name;
+                if(Locale.getDefault().getLanguage()=="ko")
+                    name= jo.getString("name");
+                else
+                    name= jo.getString("TransName");
                 String intro = jo.getString("intro");
                 int price = jo.getInt("price");
                 int count = jo.getInt("count");
@@ -758,6 +757,7 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             JSONTask JT = new JSONTask();
             JT.setUser_id(upClothes.getCloth_id()+"");// user_id가 필요없으므로 적당히 전달
             JT.setCloth(upClothes);
+            Log.e("gqegqe", upClothes.getTransName());
             JT.execute("http://13.125.232.225/updateCloth");
             Log.e("err","update 성공!!");
         }catch(Exception e){
@@ -949,11 +949,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         }
     }
 
-    public void sendMsgByFCM(String userID, String msg){//
+    public void sendMsgByFCM(String userID, String storeName, String msg){//
 
         try{
             JSONTask JT = new JSONTask();
             JT.setUser_id(userID);
+            JT.setAdmin_id(storeName);
             JT.setMsg(msg);
             JT.execute("http://13.125.232.225/FCM");
 
