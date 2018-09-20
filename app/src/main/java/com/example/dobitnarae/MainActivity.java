@@ -2,7 +2,9 @@ package com.example.dobitnarae;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.dobitnarae.RecyclerViewAdapter.ClothesRecommendationListRecyclerAdapter;
 
 import org.json.JSONException;
@@ -67,11 +72,17 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        LinearLayout sector1 = (LinearLayout)findViewById(R.id.store_sector_1);
+        CoordinatorLayout sector1 = (CoordinatorLayout) findViewById(R.id.store_sector_1);
         sector1.setOnClickListener(gotoStoreList);
 
-        LinearLayout sector2 = (LinearLayout)findViewById(R.id.store_sector_2);
+        ImageView seochonImgV = findViewById(R.id.sector_seochon);
+        setImageViewGlide(seochonImgV, R.drawable.seochon);
+
+        CoordinatorLayout sector2 = (CoordinatorLayout)findViewById(R.id.store_sector_2);
         sector2.setOnClickListener(gotoStoreList);
+
+        ImageView bukchonImgV = findViewById(R.id.sector_bukchon);
+        setImageViewGlide(bukchonImgV, R.drawable.bukchon);
 
         // 옷 추천 리스트
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.clothes_recommendation_recycler_view);
@@ -110,8 +121,11 @@ public class MainActivity extends AppCompatActivity {
             weatherContext.setText(getWeatherMessage(sky, pty));
 
             // 날씨 이미지
-            Drawable drawable = ContextCompat.getDrawable(this, getWeatherImg(sky, pty));
-            weatherImg.setBackground(drawable);
+            Glide.with(getApplicationContext()).load(getWeatherImg(sky, pty))
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .fitCenter())
+                    .into(weatherImg);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -260,5 +274,13 @@ public class MainActivity extends AppCompatActivity {
         else { // 비, 눈비
             return "눈부신 날을 위해\n 아름다운 한복을 구경해보세요";
         }
+    }
+
+    private void setImageViewGlide(ImageView imageView, int id){
+        Glide.with(getApplicationContext()).load(id)
+                .apply(new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .fitCenter())
+                .into(imageView);
     }
 }

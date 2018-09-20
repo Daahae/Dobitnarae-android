@@ -22,15 +22,24 @@ import com.example.dobitnarae.ServerImg;
 import com.example.dobitnarae.Store;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClothesRecommendationListRecyclerAdapter extends RecyclerView.Adapter<ClothesRecommendationListRecyclerAdapter.ViewHolder> {
     Context context;
     List<Clothes> clothes;
+    ArrayList<Store> stores;
 
     public ClothesRecommendationListRecyclerAdapter(Context context, List<Clothes> items) {
         this.context = context;
         this.clothes = items;
+
+        stores = new ArrayList<>();
+        for(Clothes item : items){
+            String adminID = JSONTask.getInstance().changeToAdminID(item.getStore_id());
+            final Store store = JSONTask.getInstance().getAdminStoreAll(adminID).get(0);
+            stores.add(store);
+        }
     }
 
     @Override
@@ -43,10 +52,7 @@ public class ClothesRecommendationListRecyclerAdapter extends RecyclerView.Adapt
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         final Clothes item = clothes.get(position);
-
-        // 상점 정보 가져오기
-        String adminID = JSONTask.getInstance().changeToAdminID(item.getStore_id());
-        final Store store = JSONTask.getInstance().getAdminStoreAll(adminID).get(0);
+        final Store store = stores.get(position);
 
         ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
 

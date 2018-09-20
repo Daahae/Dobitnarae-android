@@ -245,7 +245,7 @@ public class BasketActivity extends AppCompatActivity {
         String alertMsg = "";
         String closeBtnMsg = "";
         if(Locale.getDefault().getLanguage() == "ko") {
-            alertMsg = "한복은 갖춰 입었을때 빛이 나는 법입니다.\n예약목록을 다시한번 확인해 주세요.";
+            alertMsg = "한복은 갖춰 입었을때 빛이 나는 법입니다.\n장바구니를 다시한번 확인해 주세요.";
             closeBtnMsg = "닫기";
         }
         else {
@@ -258,7 +258,7 @@ public class BasketActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
                     }
                 });
         builder.show();
