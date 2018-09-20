@@ -99,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
         // 고궁 알아보기
         setPalaceRedirection();
 
+        LinearLayout hanbokRule = findViewById(R.id.hanbok_guideline);
+        hanbokRule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://cgg.cha.go.kr/agapp/public/html/HtmlPage.do?pg=/cgg/02/information_05.jsp&pageNo=78010200&siteCd=CGG";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }
+        });
+
         // 날씨 설정
         try {
             TextView temperature = (TextView) findViewById(R.id.weather_temperature);

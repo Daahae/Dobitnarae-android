@@ -39,7 +39,7 @@
     <string name="store_location_text">대여점 위치</string>
     <string name="store_location1" translatable="false">서촌</string>
     <string name="store_location2" translatable="false">북촌</string>
-    <string name="hanbok_recommand">오늘의 한복</string>
+    <string name="hanbok_recommand">오늘의 추천 한복</string>
     <string name="gogung_search">고궁 알아보기</string>
     <string name="weather_location">서울특별시 종로구</string>
     <string name="copyright">저작권</string>
@@ -90,4 +90,7 @@
 
     <!--component_basket_cardview-->
     <string name="piece1_text"> 벌</string>
+
+    <string name="hanbok_rule">한복 입는 법</string>
+    <string name="hanbok_guideline">한복 무료관람\n가이드라인</string>
 </resources>

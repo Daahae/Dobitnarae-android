@@ -79,7 +79,7 @@ public class StoreListRecyclerAdapter extends RecyclerView.Adapter<StoreListRecy
         }
         else{
             if(Locale.getDefault().getLanguage()=="ko")
-                holder.storeInfoText.setText("영업종료");
+                holder.storeInfoText.setText("영업시간종료");
             else
                 holder.storeInfoText.setText("Closed");
             holder.storeInfoText.setTextColor(Color.parseColor("#f94c4c"));

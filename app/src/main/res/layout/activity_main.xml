@@ -195,6 +195,9 @@
                 </HorizontalScrollView>
             </android.support.v7.widget.CardView>
 
+            <include
+                layout="@layout/component_habok_rule"/>
+
             <!-- 날씨 -->
             <include
                 layout="@layout/component_weather_info"/>

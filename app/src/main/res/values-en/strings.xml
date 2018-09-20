@@ -14,7 +14,7 @@
     <string name="login">Login</string>
     <string name="signup">SignUp</string>
     <string name="store_location_text" translatable="false">Store Location</string>
-    <string name="hanbok_recommand">Today\'s Hanbok</string>
+    <string name="hanbok_recommand">Today\'s recommendation Hanbok</string>
     <string name="gogung_search">Learn the Old Palace</string>
     <string name="weather_location">Jongno-gu, Seoul</string>
     <string name="copyright">Copyright</string>
@@ -49,4 +49,6 @@
     <string name="store_admin_text">Admin Info</string>
     <string name="store_locationinfo_text">Location</string>
     <string name="piece1_text">" Piece"</string>
+    <string name="hanbok_rule">How to wear Hanbok</string>
+    <string name="hanbok_guideline">Free Tour Guidelines\nfor Hanbok</string>
 </resources>
