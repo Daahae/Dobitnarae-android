@@ -27,7 +27,7 @@
                 android:layout_marginBottom="15dp"
                 android:elevation="2dp">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout
@@ -49,42 +49,52 @@
                         android:layout_height="200dp"
                         android:weightSum="1"
                         android:orientation="horizontal">
-                        <LinearLayout
+                        <android.support.design.widget.CoordinatorLayout
                             android:id="@+id/store_sector_1"
                             android:tag="1"
                             android:layout_weight="0.5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/seochon"
                             android:gravity="center"
                             android:orientation="horizontal">
+                            <ImageView
+                                android:id="@+id/sector_seochon"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/seochon"/>
                             <TextView
                                 android:layout_marginLeft="40dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="50dp"
                                 android:text="@string/store_location1"
+                                android:layout_gravity="center"
                                 android:textColor="#000"
                                 android:fontFamily="@font/jejuhallasan"/>
-                        </LinearLayout>
-                        <LinearLayout
+                        </android.support.design.widget.CoordinatorLayout>
+                        <android.support.design.widget.CoordinatorLayout
                             android:id="@+id/store_sector_2"
                             android:tag="2"
                             android:layout_weight="0.5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/bukchon"
                             android:gravity="center"
                             android:orientation="horizontal">
+                            <ImageView
+                                android:id="@+id/sector_bukchon"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bukchon"/>
                             <TextView
                                 android:layout_marginRight="40dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:textSize="50dp"
                                 android:text="@string/store_location2"
                                 android:textColor="#000"
                                 android:fontFamily="@font/jejuhallasan" />
-                        </LinearLayout>
+                        </android.support.design.widget.CoordinatorLayout>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
