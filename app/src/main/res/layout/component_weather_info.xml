@@ -39,7 +39,7 @@
                         android:layout_gravity="center"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/sunny_day_weather_symbol"/>
+                        android:src="@drawable/sunny_day_weather_symbol"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

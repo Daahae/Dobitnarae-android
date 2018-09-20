@@ -389,10 +389,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                     inform = jo.getString("inform");
                 }
                 else {// 영문일때
-                    //NaverTranslate temp = new NaverTranslate();
+                    NaverTranslate temp = new NaverTranslate();
                     intro = jo.getString("TransIntro");
                     address = jo.getString("TransAddress");
-                    inform =jo.getString("inform");
+                    inform =temp.translatedResult(jo.getString("inform"));
                 }
                 int sector = jo.getInt("sector");
                 double latitude = jo.getDouble("latitude");
