@@ -54,16 +54,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.dobitnarae"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
         <activity android:name=".BasketActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -88,9 +78,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminMyPageActivity" />
+        <activity android:name=".AdminMyPageActivity"
+            android:screenOrientation="portrait"/>
 
-        <!-- 스플래시 페이지 -->
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme"
@@ -100,6 +90,25 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+
+        <activity android:name=".OpenSourceInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MyQRCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".QRScanActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".QRCode.CustomQRActivity"
+            android:screenOrientation="portrait" />
+        
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.dobitnarae"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -111,15 +120,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <activity android:name=".OpenSourceInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".MyQRCodeActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".QRScanActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".QRCode.CustomQRActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
