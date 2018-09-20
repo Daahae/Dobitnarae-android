@@ -68,4 +68,12 @@ public class Reserve implements Serializable{
 
     public void addClothes(BasketItem item){
     }
+
+    public int compareTo(Reserve reserve){
+        if(this.id > reserve.id)
+            return 1;
+        else if(this.id == reserve.id)
+            return 0;
+        return -1;
+    }
 }

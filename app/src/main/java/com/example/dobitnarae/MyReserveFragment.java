@@ -21,6 +21,9 @@ import com.bumptech.glide.request.target.DrawableImageViewTarget;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MyReserveFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -82,7 +85,10 @@ public class MyReserveFragment extends Fragment {
     }
 
     private ArrayList<Reserve> getReserves() {
-        return JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
+        ArrayList<Reserve> reserves = JSONTask.getInstance().getCustomerReservationList(Account.getInstance().getId());
+        Descending descending = new Descending();
+        Collections.sort(reserves, descending);
+        return reserves;
     }
 
     @Override
@@ -99,4 +105,10 @@ public class MyReserveFragment extends Fragment {
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 
+    private class Descending implements Comparator<Reserve> {
+        @Override
+        public int compare(Reserve o1, Reserve o2) {
+            return o2.compareTo(o1);
+        }
+    }
 }

@@ -3,6 +3,8 @@ package com.example.dobitnarae;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -43,9 +45,9 @@ public class OrderSpecificActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         //뒤로가기
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 finish();
             }
         });
@@ -63,7 +65,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
         layout1 = (LinearLayout) findViewById(R.id.layout_delete);
 
         // 미승인 목록
-        if(item.getAcceptStatus()==0) {
+        if (item.getAcceptStatus() == 0) {
             // 승인 버튼 클릭 시
             btnRegister = (LinearLayout) findViewById(R.id.order_clothes_register);
             btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +108,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
                     JSONTask.getInstance().sendMsgByFCM(item.getUser_id(), store.getName(), item.getUser_id() + "님의 주문이 거절되었습니다.");
                 }
             });
-        }
-        else {
+        } else {
             layout.setVisibility(View.GONE);
             layout1.setVisibility(View.VISIBLE);
 
@@ -127,7 +128,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
         mAdapter = new OrderSpecificRecyclerAdapter(this, basket);
         recyclerView.setAdapter(mAdapter);
 
-        if(basket.size()==0){
+        if (basket.size() == 0) {
             Toast.makeText(getApplicationContext(), "장바구니가 비었습니다.", Toast.LENGTH_SHORT).show();
         }
 
@@ -136,6 +137,32 @@ public class OrderSpecificActivity extends AppCompatActivity {
 
         totalClothesCnt = findViewById(R.id.reservation_clothes_total_cnt);
         setTotalClothesCnt();
+
+
+        final Drawable successLayoutDrawable;
+        int successStatus = item.getAcceptStatus();
+        LinearLayout statusLayout = (LinearLayout)findViewById(R.id.order_accept_layout);
+        TextView statusText = (TextView)findViewById(R.id.order_accept_txt);
+
+        Drawable acceptFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_green);
+        Drawable pendingFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_gray);
+        Drawable rejectFlg = context.getResources().getDrawable(R.drawable.border_all_layout_item_red);
+
+        if (successStatus == 0) {
+            statusText.setText("대기");
+            statusText.setTextColor(Color.parseColor("#8f8f8f"));
+            successLayoutDrawable = pendingFlg;
+        } else if (successStatus == 1) {
+            statusText.setText("승인");
+            statusText.setTextColor(Color.parseColor("#339738"));
+            successLayoutDrawable = acceptFlg;
+        } else {
+            statusText.setText("거절");
+            statusText.setTextColor(Color.parseColor("#f94c4c"));
+            successLayoutDrawable = rejectFlg;
+        }
+
+        statusLayout.setBackground(successLayoutDrawable);
 
         // 대여자 정보
         final Account account = JSONTask.getInstance().getAccountAll(item.getUser_id()).get(0);
