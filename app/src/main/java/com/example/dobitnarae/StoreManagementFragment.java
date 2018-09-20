@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -47,6 +50,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 @SuppressLint("ValidFragment")
@@ -373,6 +377,11 @@ public class StoreManagementFragment extends Fragment {
         store.setAddress(edit_address.getText().toString());
         store.setStartTime(editFrom.getText().toString());
         store.setEndTime(editTo.getText().toString());
+
+        Point point = getPointFromGeoCoder(edit_address.getText().toString());
+        store.setLatitude(point.latitude);
+        store.setLongitude(point.longitude);
+
         NaverTranslate test = new NaverTranslate();
         store.setTransAddress(test.translatedResult(store.getAddress()));
         store.setTransIntro(test.translatedResult(store.getIntro()));
@@ -388,5 +397,38 @@ public class StoreManagementFragment extends Fragment {
         String temp = store.getIntro();
         NaverTranslate test = new NaverTranslate(ed);
         test.execute(temp);
+    }
+
+    private class Point {
+        public double latitude;
+        public double longitude;
+        public String addr;
+        // 포인트를 받았는지 여부
+        public boolean havePoint;
+    }
+
+    private Point getPointFromGeoCoder(String addr) {
+        Point point = new Point();
+        point.addr = addr;
+
+        Geocoder geocoder = new Geocoder(getActivity());
+        List<Address> listAddress;
+        try {
+            listAddress = geocoder.getFromLocationName(addr, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            point.havePoint = false;
+            return point;
+        }
+
+        if (listAddress.isEmpty()) {
+            point.havePoint = false;
+            return point;
+        }
+
+        point.havePoint = true;
+        point.longitude = listAddress.get(0).getLongitude();
+        point.latitude = listAddress.get(0).getLatitude();
+        return point;
     }
 }

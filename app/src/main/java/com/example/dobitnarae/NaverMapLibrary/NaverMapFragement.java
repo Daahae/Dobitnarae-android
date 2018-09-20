@@ -47,7 +47,6 @@ public class NaverMapFragement extends Fragment{
         NMapPOIdata poIdata = new NMapPOIdata(2, nMapResourceProvider);
         poIdata.beginPOIdata(2);
         poIdata.addPOIitem(store.getLongitude(), store.getLatitude(),null, markerID, 0);
-        poIdata.addPOIitem(store.getLongitude(), store.getLatitude(),null, markerID, 0);
         poIdata.endPOIdata();
         NMapPOIdataOverlay poIdataOverlay = mapOverlayManager.createPOIdataOverlay(poIdata, null);
         poIdataOverlay.showAllPOIdata(0);

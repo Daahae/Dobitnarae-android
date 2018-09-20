@@ -17,6 +17,7 @@ import java.util.Objects;
 public class StoreListActivity extends AppCompatActivity {
     ArrayList<Store> stores;
     StoreListRecyclerAdapter mAdapter;
+    int sector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class StoreListActivity extends AppCompatActivity {
 
         // 구역에 따른 store 목록 가져오기
         Intent intent = getIntent();
-        int sector = (int)intent.getIntExtra("sector", 1);
+        sector = (int)intent.getIntExtra("sector", 1);
         stores = JSONTask.getInstance().getStoreBySector(sector);
 
         mAdapter = new StoreListRecyclerAdapter(this, stores);
@@ -51,7 +52,7 @@ public class StoreListActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mAdapter.setStores(JSONTask.getInstance().getCustomerStoreAll());
+                mAdapter.setStores(JSONTask.getInstance().getStoreBySector(sector));
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
