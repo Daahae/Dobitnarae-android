@@ -257,8 +257,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                 id = jo.getInt("id");
 
             }
-        }catch(Exception e){
+        }catch(Exception e) {
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
 
 
@@ -279,7 +281,12 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
+
+
         return adminID;
     }
 
@@ -290,9 +297,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public  ArrayList<Account> getAccountAll(String user_id){ // JSON.HTML넣어서 사용, 전송되는 user_id jong4876~~
         ArrayList<Account> accountList = new ArrayList<Account>();
         Account account;
-
+        JSONTask JT = new JSONTask();
         try {
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(user_id);
             String str = JT.execute("http://13.125.232.225/account").get();
             JSONArray ja = new JSONArray(str);
@@ -311,7 +318,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return accountList;
     }
 
@@ -346,7 +356,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return storeList;
     }
 
@@ -354,8 +367,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<Store> storeList = new ArrayList<Store>();
         Store store;
         String user_id = "allUser";
+        JSONTask JT = new JSONTask();
         try {
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(user_id);
             String str = JT.execute("http://13.125.232.225/storeCustomer").get();
             JSONArray ja = new JSONArray(str);
@@ -375,10 +389,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
                     inform = jo.getString("inform");
                 }
                 else {// 영문일때
-                    NaverTranslate temp = new NaverTranslate();
+                    //NaverTranslate temp = new NaverTranslate();
                     intro = jo.getString("TransIntro");
                     address = jo.getString("TransAddress");
-                    inform = temp.translatedResult(jo.getString("inform"));
+                    inform =jo.getString("inform");
                 }
                 int sector = jo.getInt("sector");
                 double latitude = jo.getDouble("latitude");
@@ -393,16 +407,19 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return storeList;
     }
 
     public  ArrayList<Store> getStoreBySector(int sector){ // JSON.HTML넣어서 사용, 전송되는 user_id jong4876~~
         ArrayList<Store> storeList = new ArrayList<Store>();
         Store store;
-
+        JSONTask JT = new JSONTask();
         try {
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(sector+"");
             String str = JT.execute("http://13.125.232.225/storeBySector").get();
             JSONArray ja = new JSONArray(str);
@@ -437,15 +454,18 @@ public  class JSONTask extends AsyncTask<String, String, String> {
 
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return storeList;
     }
     public ArrayList<Clothes> getStoreClothesList(int storeID){ //storeID로 해당 매장 옷 검색
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
         Clothes clothes;
-
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(""+storeID);
             String str = JT.execute("http://13.125.232.225/clothes").get();
 
@@ -475,7 +495,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return clothesList;
     }
 
@@ -514,7 +537,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return clothesList;
     }
     public ArrayList<Clothes> getRandomClothesAll(int cnt){ // 옷 랜덤뽑기***
@@ -549,7 +575,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return clothesList;
     }
 
@@ -576,16 +605,19 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return reserves;
     }
 
     public ArrayList<Reserve> getReserveBeforeReserveID(String user_id, String admin_id) { // reserve_id가 주문한 옷 전체 검색
         ArrayList<Reserve> reserveArrayList = new ArrayList<>();
         Reserve reserve;
-
+        JSONTask JT = new JSONTask();
         try {
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(user_id);
             JT.setAdmin_id(admin_id);
 
@@ -604,16 +636,19 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return reserveArrayList;
     }
 
     public ArrayList<Order> getOrderCustomerAll(String customer_id){ // user_id가 주문한 옷 전체 검색
         ArrayList<Order> orderList = new ArrayList<Order>();
         Order order;
-
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(customer_id);
             String str = JT.execute("http://13.125.232.225/reserveCustomer").get();
             JSONArray ja = new JSONArray(str);
@@ -630,7 +665,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return orderList;
     }
     public ArrayList<Order> getOrderAdminAll(String admin_id){ // user_id가 주문한 옷 전체 검색
@@ -655,7 +693,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return orderList;
     }
 
@@ -663,9 +704,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
         ArrayList<BasketItem> basketList = new ArrayList<BasketItem>();
         Clothes clothes;
 
-
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
+
             JT.setReserve_ID(reserve_ID);
             String str = JT.execute("http://13.125.232.225/basketCustomer").get();
 
@@ -691,7 +732,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return basketList;
     }
 
@@ -701,9 +745,9 @@ public  class JSONTask extends AsyncTask<String, String, String> {
     public ArrayList<Clothes> getBascketAdminAll(String admin_id){ // user_id가 장바구니에 담은 옷 전체 검색
         ArrayList<Clothes> clothesList = new ArrayList<Clothes>();
         Clothes clothes;
-
+        JSONTask JT = new JSONTask();
         try{
-            JSONTask JT = new JSONTask();
+
             JT.setUser_id(admin_id);
             String str = JT.execute("http://13.125.232.225/basketAdmin").get();
 
@@ -723,7 +767,10 @@ public  class JSONTask extends AsyncTask<String, String, String> {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            JT.cancel(true);
         }
+
         return clothesList;
     }
 

@@ -48,7 +48,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:weightSum="1">
+                        android:weightSum="1"
+                        android:orientation="horizontal">
                         <LinearLayout
                             android:id="@+id/store_sector_1"
                             android:tag="1"
@@ -56,7 +57,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/seochon"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="horizontal">
                             <TextView
                                 android:layout_marginLeft="40dp"
                                 android:layout_width="wrap_content"
@@ -73,7 +75,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/bukchon"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="horizontal">
                             <TextView
                                 android:layout_marginRight="40dp"
                                 android:layout_width="wrap_content"
