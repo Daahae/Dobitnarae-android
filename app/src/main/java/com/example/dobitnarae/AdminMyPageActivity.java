@@ -18,12 +18,8 @@ import java.util.Objects;
 
 public class AdminMyPageActivity extends AppCompatActivity {
     private Store store;
-
     private Context context;
-
-    private String password, name, phone;
     private EditText passwordET, nameET, phoneET;
-
     private Account account;
 
     @Override
@@ -47,8 +43,7 @@ public class AdminMyPageActivity extends AppCompatActivity {
             }
         });
 
-        TextView titleName = (TextView)findViewById(R.id.toolbar_title);
-        titleName.setText(store.getName());
+        ((TextView)findViewById(R.id.toolbar_title)).setText(store.getName());
 
         passwordET = (EditText)findViewById(R.id.myPage_password);
         nameET = (EditText)findViewById(R.id.myPage_name);
@@ -59,12 +54,8 @@ public class AdminMyPageActivity extends AppCompatActivity {
         TextView idTextView = (TextView)findViewById(R.id.myPage_id);
         idTextView.setText(account.getId());
 
-        password = account.getPw();
-        name = account.getName();
-        phone = account.getPhone();
-
-        nameET.setText(name);
-        phoneET.setText(phone);
+        nameET.setText(account.getName());
+        phoneET.setText(account.getPhone());
 
         CardView editBtn = (CardView)findViewById(R.id.myPage_edit_btn);
         editBtn.setOnClickListener(new CardView.OnClickListener() {
@@ -84,13 +75,9 @@ public class AdminMyPageActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String tmp = passwordET.getText().toString();
                         if(tmp.length() > 0)
-                            password = tmp;
-                        name = nameET.getText().toString();
-                        phone = phoneET.getText().toString();
-
-                        account.setName(name);
-                        account.setPhone(phone);
-                        account.setPw(password);
+                            account.setPw(tmp);
+                        account.setName(nameET.getText().toString());
+                        account.setPhone(phoneET.getText().toString());
 
                         // 서버에 계정 정보 갱신
                         JSONTask.getInstance().updateAccount(account);
@@ -103,8 +90,8 @@ public class AdminMyPageActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        nameET.setText(name);
-                        phoneET.setText(phone);
+                        nameET.setText(account.getName());
+                        phoneET.setText(account.getPhone());
                         passwordET.setText("");
                     }
                 });

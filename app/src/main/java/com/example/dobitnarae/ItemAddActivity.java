@@ -36,7 +36,6 @@ public class ItemAddActivity extends AppCompatActivity {
     private Uri photoURI, resultUri;
     private ImageView imageViewStore;
 
-    private DecimalFormat dc;
     private LinearLayout btnReduce, btnAdd;
     private TextView selectCnt;
     private Store store;
@@ -51,6 +50,9 @@ public class ItemAddActivity extends AppCompatActivity {
     private int categoryData, defaultItem;
     private TextView tvCategory;
 
+    private EditText name, description, price;
+    private RadioGroup rg;
+    private RadioButton rb1, rb2;
     private int sexData;
 
     public ItemAddActivity() {
@@ -68,23 +70,19 @@ public class ItemAddActivity extends AppCompatActivity {
 
         item = new Clothes();
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(myToolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.tool_bar));
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         //뒤로가기
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener(){
+        ((ImageButton)findViewById(R.id.backButton)).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 finish();
             }
         });
 
-        TextView titleName = (TextView)findViewById(R.id.toolbar_title);
-        titleName.setText(store.getName());
+        ((TextView)findViewById(R.id.toolbar_title)).setText(store.getName());
 
-        // 이미지
-        imageViewStore = findViewById(R.id.reserve_clothes_img);
+        imageViewStore = (ImageView) findViewById(R.id.reserve_clothes_img);
         imageViewStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,31 +116,19 @@ public class ItemAddActivity extends AppCompatActivity {
 
         camera.checkPermission(activity);
 
-        // 옷 이름
-        final EditText name = findViewById(R.id.reserve_clothes_name);
-        name.setText(item.getName());
+        name = findViewById(R.id.reserve_clothes_name);
+        description = findViewById(R.id.reserve_clothes_introduction);
 
-        // 옷 설명
-        final EditText description = findViewById(R.id.reserve_clothes_introduction);
-        description.setText(item.getIntro());
-
-        // 카테고리 선택
         categoryList = new ArrayList<String>();
         for(int i =0; i<Constant.CATEGORY_CNT; i++){
             if(i == 0)
                 continue;
             categoryList.add(Constant.CATEGORY[i]);
         }
-        categoryData = 1;
 
         items2 =  categoryList.toArray(new String[ categoryList.size()]);
 
-        SelectedItems  = new ArrayList();
-        defaultItem = 0;
-        SelectedItems.add(defaultItem);
-
         tvCategory = findViewById(R.id.tv_category);
-        tvCategory.setText(categoryList.get(categoryData-1));
         tvCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,12 +136,17 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
-        final EditText price = findViewById(R.id.item_price);
-        price.setText("");
+        price = findViewById(R.id.item_price);
 
         btnReduce = findViewById(R.id.counting_btn_reduce);
         btnAdd = findViewById(R.id.counting_btn_add);
         selectCnt = findViewById(R.id.reserve_clothes_cnt);
+
+        rg = (RadioGroup) findViewById(R.id.rg);
+        rb1 = (RadioButton) findViewById(R.id.rb1);
+        rb2 = (RadioButton) findViewById(R.id.rb2);
+
+        clearSetting();
 
         // 수량 추가, 감소 버튼 이벤트
         btnReduce.setOnClickListener(new View.OnClickListener() {
@@ -178,14 +169,7 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
-        final RadioGroup rg = (RadioGroup) findViewById(R.id.rg);
-        final RadioButton rb1 = (RadioButton) findViewById(R.id.rb1);
-        final RadioButton rb2 = (RadioButton) findViewById(R.id.rb2);
-        // 디폴드 설정
-        rg.check(R.id.rb1);
-
-        LinearLayout dataUpdate = (LinearLayout)findViewById(R.id.order_clothes_basket);
-        dataUpdate.setOnClickListener(new View.OnClickListener() {
+        ((LinearLayout)findViewById(R.id.order_clothes_basket)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int value;
@@ -210,16 +194,8 @@ public class ItemAddActivity extends AppCompatActivity {
                                 NaverTranslate test = new NaverTranslate();
                                 item.setTransName(test.translatedResult(item.getName()));
                                 item.setTransIntro(test.translatedResult(item.getIntro()));
-                                // 데이터 초기화
-                                name.setText("");
-                                description.setText("");
-                                price.setText("");
-                                selectCnt.setText("1");
-                                rg.check(R.id.rb1);
-                                sexData = 1;
-                                SelectedItems.clear();
-                                defaultItem = 0;
-                                categoryData = 1;
+
+                                clearSetting();
 
                                 JSONTask.getInstance().insertCloth(item, store.getId());
                                 Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
@@ -234,14 +210,23 @@ public class ItemAddActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout dataDelete = (LinearLayout)findViewById(R.id.order_clothes_reserve);
-        dataDelete.setOnClickListener(new View.OnClickListener() {
+        ((LinearLayout)findViewById(R.id.order_clothes_reserve)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "취소되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
+    }
+
+    public void clearSetting(){
+        selectCnt.setText("1");
+        rg.check(R.id.rb1);
+        defaultItem = 0;
+        SelectedItems  = new ArrayList();
+        SelectedItems.add(defaultItem);
+        categoryData = 1;
+        tvCategory.setText(categoryList.get(categoryData-1));
     }
 
     @Override
