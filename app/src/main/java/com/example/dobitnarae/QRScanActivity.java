@@ -52,8 +52,6 @@ public class QRScanActivity extends CaptureActivity {
                     intent.putExtra("order", reserved);
                     intent.putExtra("store", store);
                     startActivity(intent);
-
-                    Toast.makeText(getApplicationContext(), result.getContents(), Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -61,8 +59,6 @@ public class QRScanActivity extends CaptureActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-        Log.v("요/~~~~~~~", "ㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴ");
         finishAffinity();
     }
 }

@@ -81,16 +81,16 @@ public class ServerImg {
             @Override
             public void onResponse(Call<ImageInfo> call, Response<ImageInfo> response) {
                 if (response.body() != null && !response.body().error) {
-                    Toast.makeText(context.getApplicationContext(), "File Uploaded Successfully...", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context.getApplicationContext(), "File Uploaded Successfully...", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(context.getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context.getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageInfo> call, Throwable t) {
                 Log.e("","" + call.toString() + ", " + t.getMessage());
-                Toast.makeText(context.getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(context.getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
