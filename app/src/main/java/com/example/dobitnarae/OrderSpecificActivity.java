@@ -204,7 +204,7 @@ public class OrderSpecificActivity extends AppCompatActivity {
     private void showAlert(final Context context, final Order order){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String name = JSONTask.getInstance().getAccountAll(order.getUser_id()).get(0).getName();
-        builder.setMessage(name+ "님의 주문정보를 삭제하시겠습니까?\n 주문내역에서 사라집니다.");
+        builder.setMessage(name+ "님의 주문정보를 삭제하시겠습니까?\n주문내역에서 사라집니다.");
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     @Override
