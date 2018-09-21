@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
@@ -79,6 +80,9 @@ public class StoreManagementFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_management_store, container, false);
+
+        // 가로모드 고정
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 
         LinearLayout logout = (LinearLayout)rootView.findViewById(R.id.footer_logout);
         logout.setOnClickListener(new View.OnClickListener() {

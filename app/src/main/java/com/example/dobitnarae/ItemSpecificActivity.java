@@ -3,6 +3,7 @@ package com.example.dobitnarae;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -65,6 +66,9 @@ public class ItemSpecificActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         activity = this;
+
+        // 가로모드 고정
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 
         Intent intent = getIntent();
         index = intent.getIntExtra("clothesid", 0);

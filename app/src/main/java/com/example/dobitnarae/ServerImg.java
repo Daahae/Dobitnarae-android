@@ -164,7 +164,7 @@ public class ServerImg {
             public void onFailure(Call<ImageInfo> call, Throwable t) {
                 Log.e("","" + call.toString() + ", " + t.getMessage());
                 //Toast.makeText(context.getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-                //Camera.removeDir(context,"Pictures/img");
+                Camera.removeDir(context,"Pictures/img");
                 //Camera.removeDir(context,"Pictures");
             }
         });
