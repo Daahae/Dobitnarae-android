@@ -465,7 +465,7 @@
             android:layout_marginRight="5dp"
             android:src="@drawable/fab_edit"
             android:visibility="visible"
-            app:backgroundTint="#ffffff"
+            app:backgroundTint="#ff8484"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp" />
     </android.support.design.widget.CoordinatorLayout>

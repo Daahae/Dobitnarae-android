@@ -1,8 +1,6 @@
 package com.example.dobitnarae;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,7 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +18,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
-import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
 public class StoreActivity extends AppCompatActivity {
     private Store store;
@@ -70,8 +59,8 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sex = Constant.MAN;
-                manTextView.setTextColor(Color.parseColor("#000000"));
-                manTextView.setBackground(v.getResources().getDrawable(R.drawable.border_bottom_layout_item_thick));
+                manTextView.setTextColor(v.getResources().getColor(R.color.blue));
+                manTextView.setBackground(v.getResources().getDrawable(R.drawable.border_bottom_layout_item_thick_blue));
 
                 womanTextView.setTextColor(Color.parseColor("#aaaaaa"));
                 womanTextView.setBackground(null);
@@ -83,8 +72,8 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sex = Constant.WOMAN;
-                womanTextView.setTextColor(Color.parseColor("#000000"));
-                womanTextView.setBackground(v.getResources().getDrawable(R.drawable.border_bottom_layout_item_thick));
+                womanTextView.setTextColor(v.getResources().getColor(R.color.red));
+                womanTextView.setBackground(v.getResources().getDrawable(R.drawable.border_bottom_layout_item_thick_red));
 
                 manTextView.setTextColor(Color.parseColor("#aaaaaa"));
                 manTextView.setBackground(null);

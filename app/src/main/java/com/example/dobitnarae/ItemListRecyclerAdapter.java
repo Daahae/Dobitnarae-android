@@ -39,7 +39,7 @@ public class ItemListRecyclerAdapter extends RecyclerView.Adapter<ItemListRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Clothes item = clothes.get(position);
-        ServerImg.getClothesImageGlide(context, item.getCloth_id(), holder.image);
+        ServerImg.getAdminClothesImageGlide(context, item.getCloth_id(), holder.image);
         holder.name.setText(item.getName());
         DecimalFormat dc = new DecimalFormat("###,###,###,###");
         holder.price.setText(dc.format(item.getPrice()) + " 원");

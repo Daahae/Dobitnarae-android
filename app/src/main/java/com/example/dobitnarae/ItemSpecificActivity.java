@@ -4,32 +4,31 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +36,7 @@ import java.util.Objects;
 public class ItemSpecificActivity extends AppCompatActivity {
     private Camera camera;
     private Uri photoURI, resultUri;
+    private String resultAdd;
     private ImageView imageViewStore;
 
     private LinearLayout btnReduce, btnAdd;
@@ -54,6 +54,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
     private List SelectedItems;
     private int categoryData, defaultItem;
     private TextView tvCategory;
+    private boolean uploadFlag = false;
 
     public ItemSpecificActivity() {
         this.camera = new Camera();
@@ -93,7 +94,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
 
         // 이미지
         imageViewStore = findViewById(R.id.reserve_clothes_img);
-        ServerImg.getClothesImageGlide(getApplicationContext(), item.getCloth_id(), imageViewStore);
+        ServerImg.getAdminClothesImageGlide(getApplicationContext(), item.getCloth_id(), imageViewStore);
 
         imageViewStore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,8 +230,13 @@ public class ItemSpecificActivity extends AppCompatActivity {
                                 item.setTransIntro(test.translatedResult(item.getIntro()));
 
                                 JSONTask.getInstance().updateCloth(item);
+                                // 업로드 후 백그라운드에서 콜백메소드 실행 후 임시파일 및 디렉토리 삭제
+                                if(uploadFlag)
+                                    ServerImg.uploadFileOnPath(camera.getmCurrentPhotoPath(), String.valueOf(store.getId()), String.valueOf(item.getCloth_id()), getApplicationContext());
                                 Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
                                 ItemManagementFragment.changeFlg = true;
+                                // 바로 종료시 에러있음
+                                //finish();
                             }
                         }
                     }
@@ -283,7 +289,10 @@ public class ItemSpecificActivity extends AppCompatActivity {
                         try {
                             photoURI = data.getData();
                             InputStream i = getContentResolver().openInputStream(photoURI);
-                            camera.createImageFile();
+
+                            Bitmap bitmap = camera.resize(getApplicationContext(), photoURI, 200);
+
+                            camera.createImageFileByBitmap(bitmap);
                             camera.copyFile(activity, i, camera.getmCurrentPhotoPath());
                             File f = new File(camera.getmCurrentPhotoPath());
                             resultUri = Uri.fromFile(f);
@@ -303,8 +312,7 @@ public class ItemSpecificActivity extends AppCompatActivity {
                 CropImage.ActivityResult result= CropImage.getActivityResult(data);
                 if(resultCode == Activity.RESULT_OK) {
                     imageViewStore.setImageURI(resultUri);
-                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), String.valueOf(item.getCloth_id()), this);
-                    camera.removeDir(activity,"Pictures/img");
+                    uploadFlag = true;
                 } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                     Exception error = result.getError();
                 }

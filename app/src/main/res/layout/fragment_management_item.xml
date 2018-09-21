@@ -35,7 +35,6 @@
             android:layout_height="match_parent" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
         android:layout_width="wrap_content"
@@ -45,7 +44,7 @@
         android:layout_marginRight="15sp"
         android:src="@drawable/fab_add"
         android:visibility="invisible"
-        app:backgroundTint="#ffffff"
+        app:backgroundTint="#ff8484"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -59,7 +58,7 @@
         android:layout_marginRight="15sp"
         android:src="@drawable/fab_delete"
         android:visibility="invisible"
-        app:backgroundTint="#ffffff"
+        app:backgroundTint="#ff8484"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
@@ -72,7 +71,7 @@
         android:layout_marginRight="15dp"
         android:src="@drawable/fab_menu"
         android:visibility="visible"
-        app:backgroundTint="#ffffff"
+        app:backgroundTint="#ff8484"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 

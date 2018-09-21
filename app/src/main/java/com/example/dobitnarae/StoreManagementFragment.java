@@ -5,13 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -20,38 +19,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 @SuppressLint("ValidFragment")
 public class StoreManagementFragment extends Fragment {
@@ -71,6 +56,8 @@ public class StoreManagementFragment extends Fragment {
 
     private FloatingActionButton btnEdit;
     private LinearLayout linearLayout;
+
+    private boolean uploadFlag = false;
 
     private Camera camera;
     public StoreManagementFragment(Store store) {
@@ -273,14 +260,16 @@ public class StoreManagementFragment extends Fragment {
                         try {
                             photoURI = data.getData();
                             InputStream i = getActivity().getContentResolver().openInputStream(photoURI);
-                            camera.createImageFile();
+
+                            Bitmap bitmap = camera.resize(getContext(), photoURI, 200);
+
+                            camera.createImageFileByBitmap(bitmap);
                             camera.copyFile(getContext(), i, camera.getmCurrentPhotoPath());
                             File f = new File(camera.getmCurrentPhotoPath());
                             resultUri = Uri.fromFile(f);
                             CropImage.activity(resultUri)
                                     .setGuidelines(CropImageView.Guidelines.ON)
-                                    .setCropMenuCropButtonTitle("올리기")
-                                    .setAllowFlipping(false)
+                                    .setCropMenuCropButtonTitle("자르기")
                                     //.setActivityTitle("이미지 업로드")
                                     .setOutputUri(resultUri)
                                     .start(getActivity());
@@ -294,8 +283,7 @@ public class StoreManagementFragment extends Fragment {
                 CropImage.ActivityResult result= CropImage.getActivityResult(data);
                 if(resultCode == Activity.RESULT_OK) {
                     imageViewStore.setImageURI(resultUri);
-                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), String.valueOf(-1), getContext());
-                    camera.removeDir(getContext(),"Pictures/img");
+                    uploadFlag = true;
                 } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                     Exception error = result.getError();
                 }
@@ -337,6 +325,10 @@ public class StoreManagementFragment extends Fragment {
                         updateStoreByText(store);
                         JSONTask.getInstance().updateStore(store, store.getAdmin_id());
                         //setEditText(store);
+
+                        if(uploadFlag)
+                            ServerImg.uploadFileOnPath(camera.getmCurrentPhotoPath(), String.valueOf(store.getId()), String.valueOf(-1), getContext());
+
                         Toast.makeText(getContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
                         for (EditText item:editTextArrayList) {
                             item.setFocusableInTouchMode(false);

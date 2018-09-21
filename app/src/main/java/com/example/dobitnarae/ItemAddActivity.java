@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +27,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +53,7 @@ public class ItemAddActivity extends AppCompatActivity {
     private EditText name, description, price;
     private RadioGroup rg;
     private RadioButton rb1, rb2;
-    private int sexData;
+    private boolean uploadFlag = false;
 
     public ItemAddActivity() {
         this.camera = new Camera();
@@ -185,19 +185,25 @@ public class ItemAddActivity extends AppCompatActivity {
                             if(value <= 0){
                                 Toast.makeText(getApplicationContext(), "에러: 올바른 가격을 입력하세요", Toast.LENGTH_SHORT).show();
                             } else {
+                                item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(price.getText().toString()), Integer.parseInt(selectCnt.getText().toString()), Constant.MAN);
                                 if(rb1.isChecked())
-                                    sexData = 1;
+                                    item.setSex(Constant.MAN);
                                 else if(rb2.isChecked())
-                                    sexData = 2;
-
-                                item = new Clothes(0, store.getId(), categoryData, name.getText().toString(), description.getText().toString(), Integer.parseInt(price.getText().toString()), Integer.parseInt(selectCnt.getText().toString()), sexData);
+                                    item.setSex(Constant.WOMAN);
                                 NaverTranslate test = new NaverTranslate();
                                 item.setTransName(test.translatedResult(item.getName()));
                                 item.setTransIntro(test.translatedResult(item.getIntro()));
 
                                 clearSetting();
-
+                                imageViewStore.setBackground(null);
                                 JSONTask.getInstance().insertCloth(item, store.getId());
+                                ArrayList<Clothes> items = JSONTask.getInstance().getClothesAll(store.getAdmin_id());
+                                int index = items.size();
+                                item = items.get(index-1);
+
+                                if(uploadFlag)
+                                    ServerImg.uploadFileOnPath(camera.getmCurrentPhotoPath(), String.valueOf(store.getId()), String.valueOf(item.getCloth_id()), getApplicationContext());
+
                                 Toast.makeText(getApplicationContext(), "추가되었습니다. 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
                                 ItemManagementFragment.changeFlg = true;
                             }
@@ -220,6 +226,9 @@ public class ItemAddActivity extends AppCompatActivity {
     }
 
     public void clearSetting(){
+        name.setText("");
+        description.setText("");
+        price.setText("");
         selectCnt.setText("1");
         rg.check(R.id.rb1);
         defaultItem = 0;
@@ -261,7 +270,10 @@ public class ItemAddActivity extends AppCompatActivity {
                         try {
                             photoURI = data.getData();
                             InputStream i = getContentResolver().openInputStream(photoURI);
-                            camera.createImageFile();
+
+                            Bitmap bitmap = camera.resize(getApplicationContext(), photoURI, 200);
+
+                            camera.createImageFileByBitmap(bitmap);
                             camera.copyFile(activity, i, camera.getmCurrentPhotoPath());
                             File f = new File(camera.getmCurrentPhotoPath());
                             resultUri = Uri.fromFile(f);
@@ -281,8 +293,7 @@ public class ItemAddActivity extends AppCompatActivity {
                 CropImage.ActivityResult result= CropImage.getActivityResult(data);
                 if(resultCode == Activity.RESULT_OK) {
                     imageViewStore.setImageURI(resultUri);
-                    ServerImg.uploadFile(photoURI, String.valueOf(store.getId()), String.valueOf(item.getCloth_id()),this);
-                    camera.removeDir(activity,"Pictures/img");
+                    uploadFlag = true;
                 } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                     Exception error = result.getError();
                 }

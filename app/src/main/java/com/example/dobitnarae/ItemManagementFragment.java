@@ -207,6 +207,7 @@ public class ItemManagementFragment extends Fragment{
             dataRefresh();
             changeFlg = false;
         }
+        deleteList.clear();
     }
 
     public void anim() {
