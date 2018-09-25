@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -32,6 +33,15 @@ public class StoreListActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 finish();
+            }
+        });
+
+        LinearLayout basket = (LinearLayout)findViewById(R.id.store_basket);
+        basket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreListActivity.this, BasketActivity.class);
+                startActivity(intent);
             }
         });
 

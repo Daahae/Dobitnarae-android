@@ -23,35 +23,32 @@
                 android:textSize="15dp"
                 android:text="@string/hanbok_rule"/>
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <LinearLayout
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/hanbok_guide_bg"
+                android:scaleType="fitXY"/>
+            <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/hanbok"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/hanbok_guide"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+                android:src="@drawable/guide_book"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/hanbok_guideline"
+                android:fontFamily="@font/jejuhallasan"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40dp"
+                android:textColor="#fff"
+                android:textSize="30dp"/>
+        </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

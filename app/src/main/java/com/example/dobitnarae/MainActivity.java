@@ -72,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        LinearLayout basket = findViewById(R.id.main_basket);
+        basket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BasketActivity.class);
+                startActivity(intent);
+            }
+        });
+
         CoordinatorLayout sector1 = (CoordinatorLayout) findViewById(R.id.store_sector_1);
         sector1.setOnClickListener(gotoStoreList);
 

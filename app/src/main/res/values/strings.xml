@@ -36,7 +36,7 @@
     <string name="papago_ID" translatable="false">zgvN61GVH8aqvH8kEtH0</string>
 
     <!--main_activity-->
-    <string name="store_location_text">대여점 위치</string>
+    <string name="store_location_text">대여점 위치를 선택해 주세요</string>
     <string name="store_location1" translatable="false">서촌</string>
     <string name="store_location2" translatable="false">북촌</string>
     <string name="hanbok_recommand">오늘의 추천 한복</string>
@@ -92,5 +92,5 @@
     <string name="piece1_text"> 벌</string>
 
     <string name="hanbok_rule">한복 입는 법</string>
-    <string name="hanbok_guideline">한복 무료관람\n가이드라인</string>
+    <string name="hanbok_guideline">한복\n가이드라인</string>
 </resources>
