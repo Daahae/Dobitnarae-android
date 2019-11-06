@@ -1,5 +1,5 @@
 # 두빛나래
-__[2018년 서울시 앱 공모전 출품작](https://mplatform.seoul.go.kr/w/contest/award/2018/wnpz/selectPageListWinner.do)__
+__[2018년 서울시 앱 공모전 장려상 수상작](https://mplatform.seoul.go.kr/w/contest/award/2018/wnpz/selectPageListWinner.do)__
 ## 소개
 한복 대여를 더 편리하게 만듬으로써, 한복의 아름다움을 더 많은 사람들에게 알리기위한 앱
 
